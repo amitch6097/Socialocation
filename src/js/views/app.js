@@ -9,8 +9,8 @@ define(['backbone',
   var App = Backbone.View.extend({
     initialize: function() {
       Backbone.history.start()
-      var navModel = new NavModel();
-      var navView = new NavView({el: "#nav-data", router:navModel});
+      let navModel = new NavModel();
+      let navView = new NavView({el: "#nav-data", router:navModel});
     }
   });
 

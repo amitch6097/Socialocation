@@ -38,8 +38,8 @@ define(['backbone',
     },
 
     onClick: function(e){
-        var $li = $(e.target);
-        var router = this.router;
+        let $li = $(e.target);
+        let router = this.router;
         router.navigate($li.attr("data-url"), { trigger: true });
     }
 

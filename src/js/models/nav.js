@@ -15,12 +15,12 @@ define(['backbone',
       },
 
       viewHome: function(){
-        var homeView = new HomeView({el: "#app-main"});
+        let homeView = new HomeView({el: "#app-main"});
         homeView.render();
       },
 
       viewNew: function(){
-        var newView = new NewView({el: "#app-main"});
+        let newView = new NewView({el: "#app-main"});
         newView.render();
       }
 

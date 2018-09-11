@@ -31,5 +31,18 @@ body {
   text-decoration: underline;
 }
 #app-main {
-  overflow: auto;
+  display: grid;
+}
+#app-main #app-boxs {
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+#app-main #app-boxs .box {
+  margin: 100px;
+  height: 100px;
+  width: 100px;
+  background-color: black;
 }

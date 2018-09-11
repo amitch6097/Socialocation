@@ -10,8 +10,7 @@ define(['backbone',
     initialize: function() {
       Backbone.history.start()
       var navModel = new NavModel();
-      var navView = new NavView({el: "#nav-bar", router:navModel});
-      // navView.render();
+      var navView = new NavView({el: "#nav-data", router:navModel});
     }
   });
 

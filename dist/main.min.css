@@ -1,3 +1,35 @@
 body {
   background-color: white;
+  margin: 0 auto;
+}
+#nav-bar {
+  font-family: Arial, Helvetica, sans-serif;
+  overflow: auto;
+  border-bottom: 1px solid light-grey;
+  -webkit-box-shadow: 0px 0.25rem 0.75rem rgba(0, 0, 0, 0.05);
+  -moz-box-shadow: 0px 0.25rem 0.75rem rgba(0, 0, 0, 0.05);
+  box-shadow: 0px 0.25rem 0.75rem rgba(0, 0, 0, 0.05);
+  padding: 10px;
+}
+#nav-bar h1 {
+  display: inline-block;
+}
+#nav-bar #nav-data {
+  display: inline-block;
+  float: right;
+  margin-top: 15px;
+}
+#nav-bar #nav-data ul {
+  display: inline-block;
+  list-style: none;
+}
+#nav-bar #nav-data ul li {
+  padding: 30px;
+  display: inline;
+}
+#nav-bar #nav-data ul li:hover {
+  text-decoration: underline;
+}
+#app-main {
+  overflow: auto;
 }

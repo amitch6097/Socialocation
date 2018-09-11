@@ -21,6 +21,11 @@ module.exports = function(grunt) {
   grunt.initConfig({
 
     // Task configuration
+    ts: {
+      default : {
+        tsconfig: 'tsconfig.json'
+      }
+    },
     less: {
         development: {
             options: {
@@ -57,6 +62,15 @@ module.exports = function(grunt) {
               livereload: true
             }
         },
+        ts: {
+            // Watch all .ts files from the styles directory)
+            files: ['src/**/*.ts'],
+            tasks: ['ts'],
+            // Reloads the browser
+            options: {
+              livereload: true
+            }
+        },
         requirejs: {
             // Watch only main.js so that we do not constantly recompile the .js files
             files: [ 'src/js/main.js' ],
@@ -70,6 +84,7 @@ module.exports = function(grunt) {
   });
 
   // Plugin loading
+  grunt.loadNpmTasks('grunt-ts');
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-requirejs');
   grunt.loadNpmTasks('grunt-contrib-watch');

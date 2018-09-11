@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "module": "commonJS",
+        "alwaysStrict": true,
+        "removeComments": true,
+        "include": [
+            "src/**/*"
+        ],
+        "exclude": [
+            "node_modules"
+        ]
+    }
+}

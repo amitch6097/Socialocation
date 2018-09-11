@@ -1,3 +1,51 @@
+@width: 0.5;
+@vertical_offset: 5px;
+
 body{
   background-color: white;
+  margin: 0 auto;
+}
+
+#app-body{
+
+}
+
+#nav-bar{
+  font-family: Arial, Helvetica, sans-serif;
+  overflow: auto;
+
+  border-bottom: 1px solid light-grey;
+  -webkit-box-shadow:0px 0.25rem 0.75rem rgba(0, 0, 0, .05);
+  -moz-box-shadow:0px 0.25rem 0.75rem rgba(0, 0, 0, .05);
+  box-shadow:0px 0.25rem 0.75rem rgba(0, 0, 0, .05);
+
+  padding:10px;
+
+  h1{
+    display: inline-block;
+  }
+
+  #nav-data{
+    display: inline-block;
+    float: right;
+    margin-top:15px;
+
+    ul {
+      display: inline-block;
+      list-style: none;
+
+      li {
+        padding: 30px;
+        // border: 2px solid black;
+        display: inline;
+        &:hover{
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}
+
+#app-main{
+  overflow: auto;
 }

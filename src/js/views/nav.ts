@@ -6,9 +6,9 @@ interface Data {
     router: object;
 }
 
-define(['backbone',
+define('NavView',[
+  'backbone',
   'underscore',
-  'NavView'
   ],
   function(
     Backbone,
@@ -20,6 +20,7 @@ define(['backbone',
     initialize: function(data: Data) {
 
       this.router = data.router;
+
       let template = _.template(`
         <ul>
           <% _.each(Object.keys(routes), function(route){ %>
@@ -37,7 +38,7 @@ define(['backbone',
       "click": "onClick"
     },
 
-    onClick: function(e){
+    onClick: function(e: Event){
         let $li = $(e.target);
         let router = this.router;
         router.navigate($li.attr("data-url"), { trigger: true });

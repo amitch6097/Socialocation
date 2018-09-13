@@ -4,12 +4,25 @@ require.config({
     'underscore': 'lib/underscore/underscore',
     'backbone': 'lib/backbone/backbone',
 
+    'SingletonView': 'views/SingletonView',
+    'HolderView': 'views/HolderView',
+
 
     'NavView': 'views/nav',
     'HomeView': 'views/home',
     'NewView': 'views/new',
+    'BoxView': 'views/box',
+    'BoxesView': 'views/boxes',
+    'TweetView': 'views/tweetView',
+    'TweetsView': 'views/tweetsView',
 
-    'NavModel': 'models/nav'
+
+    'NavModel': 'models/nav',
+    'BoxModel': 'models/box',
+    'TweetModel': 'models/tweetModel',
+
+    'BoxesCollection': 'collections/boxes',
+    'TweetCollection': 'collections/TweetCollection'
 
   },
   shim: {

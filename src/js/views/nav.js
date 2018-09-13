@@ -1,7 +1,7 @@
 "use strict";
-define(['backbone',
+define('NavView', [
+    'backbone',
     'underscore',
-    'NavView'
 ], function (Backbone, _) {
     var NavView = Backbone.View.extend({
         initialize: function (data) {

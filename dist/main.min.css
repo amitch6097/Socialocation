@@ -33,16 +33,46 @@ body {
 #app-main {
   display: grid;
 }
-#app-main #app-boxs {
+#app-main #app-boxes {
   margin: 0 auto;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
 }
-#app-main #app-boxs .box {
+#app-main #app-boxes .box {
   margin: 100px;
   height: 100px;
   width: 100px;
   background-color: black;
+}
+#app-main #tweet-holder {
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+}
+#app-main #tweet-holder #tweet-holder-left {
+  height: 90%;
+  background-color: black;
+  padding: 10px;
+  border-radius: 10px;
+  margin: 20px;
+  left: 0;
+  top: 0;
+  bottom: 20px;
+  position: fixed;
+  overflow: scroll;
+  z-index: 1;
+}
+#app-main #tweet-holder #tweet-holder-right {
+  height: 90%;
+  background-color: black;
+  padding: 10px;
+  border-radius: 10px;
+  margin: 20px;
+  right: 0;
+  top: 0;
+  position: fixed;
+  overflow: scroll;
+  z-index: 1;
 }

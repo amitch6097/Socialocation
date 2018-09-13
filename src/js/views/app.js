@@ -1,4 +1,5 @@
-define(['backbone',
+define([
+  'backbone',
   'NavView',
   'NavModel'
   ],
@@ -8,9 +9,12 @@ define(['backbone',
 
   var App = Backbone.View.extend({
     initialize: function() {
-      Backbone.history.start()
       let navModel = new NavModel();
+      Backbone.history.start()
+      navModel.navigate(location.hash, true)
+
       let navView = new NavView({el: "#nav-data", router:navModel});
+
     }
   });
 

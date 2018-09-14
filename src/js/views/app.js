@@ -9,8 +9,8 @@ define([
 
   var App = Backbone.View.extend({
     initialize: function() {
-      let navModel = new NavModel();
       Backbone.history.start()
+      let navModel = new NavModel();
       navModel.navigate(location.hash, true)
 
       let navView = new NavView({el: "#nav-data", router:navModel});

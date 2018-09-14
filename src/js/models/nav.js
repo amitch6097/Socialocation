@@ -10,9 +10,6 @@ define('NavModel',[
   var NavModel = Backbone.Router.extend({
 
       initialize: function () {
-        console.log("NEW ROUTER")
-        Backbone.history.start()
-
         return this;
       },
 

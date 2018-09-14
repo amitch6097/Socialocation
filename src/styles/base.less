@@ -11,7 +11,7 @@ body{
 }
 
 #nav-bar{
-  
+
   font-family: Arial, Helvetica, sans-serif;
   overflow: auto;
 
@@ -65,36 +65,45 @@ body{
     }
   }
 
-  #tweet-holder{
+  #home-view{
     margin: 0 auto;
     display: flex;
     flex-direction: row;
 
-    #tweet-holder-left{
+    .holder {
       height: 90%;
       background-color: black;
       padding: 10px;
       border-radius: 10px;
       margin:20px;
-      left:0;
       top: 0;
-      bottom: 20px;
-      position: fixed;
-      overflow: scroll;
+      position: absolute;
       z-index: 1;
+
+      .holder-title{
+        position: relative;
+        z-index: 2;
+      }
     }
 
-    #tweet-holder-right{
+    .holder-items {
+      position: relative;
       height: 90%;
-      background-color: black;
-      padding: 10px;
-      border-radius: 10px;
-      margin:20px;
-      right:0;
-      top: 0;
-      position: fixed;
       overflow: scroll;
-      z-index: 1;
+    }
+
+    #tweet-items{
+      height: 85%;
+    }
+
+    #holder-left{
+      left:0;
+      background-color: rgb(71,160,234);
+    }
+
+    #holder-right{
+      right:0;
+      background-color: rgba(0, 0, 0, .5);
     }
   }
 }

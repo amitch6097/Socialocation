@@ -46,33 +46,38 @@ body {
   width: 100px;
   background-color: black;
 }
-#app-main #tweet-holder {
+#app-main #home-view {
   margin: 0 auto;
   display: flex;
   flex-direction: row;
 }
-#app-main #tweet-holder #tweet-holder-left {
+#app-main #home-view .holder {
   height: 90%;
   background-color: black;
   padding: 10px;
   border-radius: 10px;
   margin: 20px;
-  left: 0;
   top: 0;
-  bottom: 20px;
-  position: fixed;
-  overflow: scroll;
+  position: absolute;
   z-index: 1;
 }
-#app-main #tweet-holder #tweet-holder-right {
+#app-main #home-view .holder .holder-title {
+  position: relative;
+  z-index: 2;
+}
+#app-main #home-view .holder-items {
+  position: relative;
   height: 90%;
-  background-color: black;
-  padding: 10px;
-  border-radius: 10px;
-  margin: 20px;
-  right: 0;
-  top: 0;
-  position: fixed;
   overflow: scroll;
-  z-index: 1;
+}
+#app-main #home-view #tweet-items {
+  height: 85%;
+}
+#app-main #home-view #holder-left {
+  left: 0;
+  background-color: #47a0ea;
+}
+#app-main #home-view #holder-right {
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.5);
 }

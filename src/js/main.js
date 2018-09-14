@@ -20,6 +20,7 @@ require.config({
     'NavModel': 'models/nav',
     'BoxModel': 'models/box',
     'TweetModel': 'models/tweetModel',
+    'LocationModel': 'models/locationModel',
 
     'BoxesCollection': 'collections/boxes',
     'TweetCollection': 'collections/TweetCollection'

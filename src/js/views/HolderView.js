@@ -9,29 +9,24 @@ define('HolderView',[
       var HolderView = Backbone.View.extend({
 
         initialize: function(data) {
-          console.log('new holder view')
           this.collection = data.collection;
-          this.views = [];
-
-          this.collection.forEach((model) => {
-            var view = new viewObj({
-              el: data.el,
-              model: model,
-            });
-            this.views.push(view);
-          });
-
+          this.el = data.el;
+          this.collection.on("change", this.render.bind(this));
           return this;
         },
 
-        // ONLY CALLED WHEN PAGE IS REOPENED
-
         render: function() {
-          this.views.forEach((view)=>{
+          this.$el.empty();
+          this.collection.each((model) => {
+            var view = new viewObj({
+              el: this.el,
+              model: model,
+            });
             view.render();
           });
           return this;
         }
+
       });
 
       return HolderView;

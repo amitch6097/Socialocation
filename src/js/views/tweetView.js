@@ -19,14 +19,13 @@ define('TweetView',[
           <script async src="https://platform.twitter.com/widgets.js"  charset="utf-8"></script>
         `);
 
+        this.model.on("response", this.render)
         return this;
       },
 
       render: function(){
         let link = this.model.getLink();
-
         $(this.el).append(this.template({link: link}));
-
         return this;
       }
 

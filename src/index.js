@@ -15,23 +15,23 @@ var T = new Twit({
 app.use(express.static(__dirname));
 
 app.get('/', function (req, res) {
-  // res.send('Hello World');
   res.sendFile(path.join(__dirname+'/index.html'));
-
 });
 
 app.get('/api/tweets', function (req, res) {
+  console.log(req.query)
   T.get('search/tweets',
-    {geocode:'42.9634,-85.6681,1mi', count: 5},
+    req.query,
     function(err, data, response) {
-      res.send(data.statuses[0]);
+      res.send(data.statuses);
   });
 });
 
 app.get('/api/san', function (req, res) {
-  var sanFrancisco = [ '-122.75', '36.8', '-121.75', '37.8' ];
+  var sanFrancisco = [ '-122.75', '36.8', '-121.75', '37.8' ]
+  var grandRapids = [ '-85.751534','42.88364','-85.568649','43.029053'];
 
-  var stream = T.stream('statuses/filter', { locations: sanFrancisco })
+  var stream = T.stream('statuses/filter', { locations: grandRapids })
 
   stream.on('tweet', function (tweet) {
     console.log(tweet)

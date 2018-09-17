@@ -3,10 +3,12 @@ require.config({
     'jquery': 'lib/jquery/dist/jquery',
     'underscore': 'lib/underscore/underscore',
     'backbone': 'lib/backbone/backbone',
+    'gmaps': 'https://maps.googleapis.com/maps/api/js?key=AIzaSyB9-3aZldPIm53JmxMM4ATdZdJ6Gh0qw6s',
+
+    'Mediator': 'helpers/Mediator',
 
     'SingletonView': 'views/SingletonView',
     'HolderView': 'views/HolderView',
-
 
     'NavView': 'views/nav',
     'HomeView': 'views/home',
@@ -15,12 +17,16 @@ require.config({
     'BoxesView': 'views/boxes',
     'TweetView': 'views/tweetView',
     'TweetsView': 'views/tweetsView',
+    'MapView': 'views/MapView',
+    'PanelView': 'views/PanelView',
+    'PanelHeadingView': 'views/PanelHeadingView',
 
 
     'NavModel': 'models/nav',
     'BoxModel': 'models/box',
     'TweetModel': 'models/tweetModel',
     'LocationModel': 'models/locationModel',
+    'MapModel':'models/mapModel',
 
     'BoxesCollection': 'collections/boxes',
     'TweetCollection': 'collections/TweetCollection'
@@ -33,6 +39,9 @@ require.config({
       backbone: {
           exports: 'Backbone',
           deps: ['jquery', 'underscore']
+      },
+      gmaps: {
+        exports: 'google.maps'
       }
   },
   deps: ['jquery', 'underscore']

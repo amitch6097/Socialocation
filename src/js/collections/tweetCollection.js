@@ -11,22 +11,21 @@ define('TweetCollection',[
       url: '/api/tweets',
 
       parse: function(data) {
-        console.log(data);
         return data;
       },
 
-      populateModels: function(data){
-
-      }
+      fetchData(query){
+        this.fetch({
+          data: query,
+          processData: true,
+          remove: true,
+          success: (collection, response) => {this.trigger("change");},
+          error: (collection, response) => {console.log(response);}
+        });
+      },
 
       initialize: function(data){
-        var data = this.fetch({success: this.populateModels});
-
-        for(var i = 0; i < 5; i++){
-          var tweet = new TweetModel({link:'https://twitter.com/ABforPresident/status/1040282272723886080'});
-          this.add(tweet);
-        }
-
+        this.fetchData({geocode: "42.9634,-85.6681,1mi"})
         return this;
       }
 

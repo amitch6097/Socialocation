@@ -4,8 +4,10 @@ require.config({
     'underscore': 'lib/underscore/underscore',
     'backbone': 'lib/backbone/backbone',
     'gmaps': 'https://maps.googleapis.com/maps/api/js?key=AIzaSyB9-3aZldPIm53JmxMM4ATdZdJ6Gh0qw6s',
+    'gmapsTwo': 'https://cdnjs.cloudflare.com/ajax/libs/markerclustererplus/2.1.4/markerclusterer.js?',
 
-    'Mediator': 'helpers/Mediator',
+
+    'EventMediator': 'helpers/EventMediator',
 
     'SingletonView': 'views/SingletonView',
     'HolderView': 'views/HolderView',

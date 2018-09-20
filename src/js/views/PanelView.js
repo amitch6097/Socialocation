@@ -3,27 +3,42 @@ define('PanelView',[
   'TweetCollection',
   'TweetsView',
   'PanelHeadingView',
-  'Mediator'
+  'EventMediator'
   ],
   function(
-    Backbone, TweetCollection, TweetsView, PanelHeadingView,Mediator
+    Backbone, TweetCollection, TweetsView, PanelHeadingView, EventMediator
   ){
 
     var PanelView = Backbone.View.extend({
 
       events: {
         "click .button-twitter-result-type": "twitterPopularFetch",
-        "map-click":"mapClicked"
+        "map-click":"mapClicked",
+        "mouseenter .tweet-link": "tweetClicked"
       },
 
       mapClicked: function(e){
         console.log("PANEL VIEW: MAP CLICK");
       },
 
+      updateBounds: function(bounds){
+        this.collection.fetchData(bounds);
+        return;
+      },
+
       twitterPopularFetch: function(e){
         let resultType = $(e.target).attr("data-url");
-        console.log("PANEL VIEW:", resultType);
-        this.collection.fetchData({geocode: "42.9634,-85.6681,1mi", result_type: resultType})
+        this.collection.fetchData({result_type: resultType})
+      },
+
+      tweetClicked: function(e){
+        e.preventDefault();
+        let cid = $(e.currentTarget).attr("data-url");
+        this.collection.selectActiveTweet(cid);
+
+        // $('.holder-items').animate({
+        //   scrollTop: $parent.scrollTop() + $child.position().top
+        // }, 1000);
       },
 
       initialize: function(data) {
@@ -35,8 +50,7 @@ define('PanelView',[
         `;
 
         this.$el.html(this.html);
-        
-        Mediator.subscribe("map-click", this.mapClicked, this);
+
         this.collection = new TweetCollection();
         this.tweetsView = new TweetsView({el: '#tweet-items', collection: this.collection});
         this.headingView = new PanelHeadingView({el: '#holder-left-title'});

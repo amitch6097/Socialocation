@@ -4,10 +4,10 @@ var path = require("path");
 var Twit = require('twit')
 
 var T = new Twit({
-  consumer_key:         'lLytUaErwoz6frJrKwY9oca4c',
-  consumer_secret:      'IBntWThegBjmOw3XX7cCTE2M2zomcAGdm8pfxBMlkiZxM6AJo2',
-  access_token:         '1039961884668166144-D2JFUvhR3CCvdg9xWDbiATZeNfsmkG',
-  access_token_secret:  'MsPGWHG55qPWbPG8eKagfEWeqrnmgEzbvyBREn4aXkq2P',
+  consumer_key:         'GcpGCN2anSPIUx92QfGync03i',
+  consumer_secret:      'hIdD8PEZ7KbA7r5oqc8C2baebuJDqH7wn4rEndZYKbf0QevcH7',
+  access_token:         '1039961884668166144-P9uyQ2JYnhTfK9H2WSpZEIkHQ0Jy0V',
+  access_token_secret:  'Y9dnPiYaINfAOY2GHZ5wIf9Zqrgm9sh8jpD3UV91ufgxR',
   timeout_ms:           60*1000,  // optional HTTP request timeout to apply to all requests.
   strictSSL:            true,     // optional - requires SSL certificates to be valid.
 })
@@ -18,8 +18,12 @@ app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname+'/index.html'));
 });
 
+var timeout = false;
+
 app.get('/api/tweets', function (req, res) {
+
   console.log(req.query)
+
   T.get('search/tweets',
     req.query,
     function(err, data, response) {

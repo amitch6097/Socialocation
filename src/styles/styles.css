@@ -30,6 +30,9 @@ body {
 #nav-bar #nav-data ul li:hover {
   text-decoration: underline;
 }
+twitterwidget {
+  cursor: not-allowed;
+}
 #app-main {
   display: grid;
 }

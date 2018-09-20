@@ -1,15 +1,14 @@
-define('Mediator',[
+define('EventMediator',[
   'backbone',
-  'SingletonView'
   ],
   function(
     Backbone
   ){
 
-    var mediator = function(){
+    var EventMediator = function(){
       let events = {};
 
-      var subscribe = function(event, callback, obj){
+      var listen = function(event, callback, obj){
         if(!events[event]) events[event] = [];
         events[event].push({callback: callback, obj:obj});
         return this;
@@ -18,17 +17,17 @@ define('Mediator',[
       var emit = function(event, data){
         if(!events[event]) return false;
         events[event].forEach((subscription) => {
-          subscription.callback.apply(subscription.obj, data)
+          subscription.callback.apply(subscription.obj, [data])
         });
         return this;
       };
 
       return {
-        subscribe: subscribe,
+        listen: listen,
         emit: emit
       };
 
     }();
 
-    return mediator;
+    return EventMediator;
 });

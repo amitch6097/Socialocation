@@ -8,9 +8,41 @@ define('TweetModel',[
   var TweetModel = Backbone.Model.extend({
 
       initialize: function (data) {
+        // console.log(data);
+
         this.id_str = data.id_str
         this.username = data.user.screen_name;
-        return this;
+        // this.locationNamde = data.place.name;
+        this.latlng = null;
+        this.selected = false;
+
+        // {lat: 42.883679, lng: -85.751406}
+
+        if(data.geo){
+          let latlng = data.geo.coordinates;
+          this.latlng = {lat: latlng[0], lng: latlng[1]};
+        }
+
+        if(this.latlng === null &&
+          data.place &&
+          data.place.bounding_box &&
+          data.place.bounding_box.coordinates &&
+          data.place.bounding_box.coordinates[0] &&
+          data.place.bounding_box.coordinates[0][0]
+        ){
+          let latlng = data.place.bounding_box.coordinates[0][0];
+          this.latlng = {lat: latlng[1], lng: latlng[0]};
+        }
+
+      },
+
+      getLatLng: function(){
+        if(this.latlng === null){
+          return null;
+        }
+        let obj = {};
+        obj[this.cid] = this.latlng;
+        return obj;
       },
 
       getLink: function(){

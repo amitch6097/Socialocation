@@ -1,19 +1,15 @@
 define([
   'backbone',
-  'NavView',
-  'NavModel'
+  'HomeView'
   ],
   function(
-    Backbone, NavView, NavModel
+    Backbone, HomeView
   ){
 
   var App = Backbone.View.extend({
     initialize: function() {
-      Backbone.history.start()
-      let navModel = new NavModel();
-      navModel.navigate(location.hash, true)
-
-      let navView = new NavView({el: "#nav-data", router:navModel});
+      var homeView = new HomeView({el: "#app-main"});
+      homeView.render();
 
     }
   });

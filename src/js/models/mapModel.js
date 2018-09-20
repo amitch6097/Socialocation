@@ -11,24 +11,20 @@ define('MapModel',[
   var MapModel = Backbone.Model.extend({
 
       initialize: function (data) {
-        EventMediator.listen("locations-loaded", this.loadLocations, this);
-        EventMediator.listen('tweet-clicked', this.setCurrentLocation, this);
+        EventMediator.listen("twitter-locations-loaded", this.loadLocations, this);
+        EventMediator.listen('twitter-tweet-hover', this.setCurrentLocationMarker, this);
 
         this.locations = {};
         this.selected = {};
+        this.locationMarker = {};
       },
 
       loadLocations: function(locations){
         this.set('locations', Object.assign(this.locations, locations));
       },
 
-      setCurrentLocation: function(latlng){
-        console.log(latlng);
-        this.set('currentLocation', latlng);
-      },
-
-      getLocations: function(){
-        return this.locations;
+      setCurrentLocationMarker: function(latlng){
+        this.set('locationMarker', latlng);
       },
 
       updateSelected: function(cluster){
@@ -41,8 +37,7 @@ define('MapModel',[
         });
 
         EventMediator.emit('map-cluster-selected', this.selected);
-
-        this.set('currentLocation', {lat:lat, lng:lng});
+        this.set('locationMarker', {lat:lat, lng:lng});
       },
 
       updateBounds: function(data){
@@ -58,10 +53,15 @@ define('MapModel',[
         let distLat = Math.abs(lat - latf);
         let distLng = Math.abs(lng - lngb);
 
-        let miles = LAT_LNG_TO_MILES(Math.max(distLat, distLng));
+        let distMax = Math.max(distLat, distLng)
 
-        let params = {geocode: `${lat},${lng},${miles}mi`}
-        EventMediator.emit("bounds-changed", params);
+        let miles = LAT_LNG_TO_MILES(distMax);
+
+        let params = {
+          query: {geocode: `${lat},${lng},${miles}mi`},
+          bounds: {center: {lat: lat, lng: lng}, dist: distMax}
+        };
+        EventMediator.emit("map-bounds-changed", params);
       }
 
   });

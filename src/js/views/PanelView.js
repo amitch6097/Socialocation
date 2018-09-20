@@ -1,66 +1,38 @@
 define('PanelView',[
   'backbone',
-  'TweetCollection',
-  'TweetsView',
   'PanelHeadingView',
-  'EventMediator'
+  'EventMediator',
+  'ScrollView',
   ],
   function(
-    Backbone, TweetCollection, TweetsView, PanelHeadingView, EventMediator
+    Backbone, PanelHeadingView, EventMediator, ScrollView
   ){
 
     var PanelView = Backbone.View.extend({
 
-      events: {
-        "click .button-twitter-result-type": "twitterPopularFetch",
-        "map-click":"mapClicked",
-        "mouseenter .tweet-link": "tweetClicked"
-      },
-
-      mapClicked: function(e){
-        console.log("PANEL VIEW: MAP CLICK");
-      },
-
-      updateBounds: function(bounds){
-        this.collection.fetchData(bounds);
-        return;
-      },
-
-      twitterPopularFetch: function(e){
-        let resultType = $(e.target).attr("data-url");
-        this.collection.fetchData({result_type: resultType})
-      },
-
-      tweetClicked: function(e){
-        e.preventDefault();
-        let cid = $(e.currentTarget).attr("data-url");
-        this.collection.selectActiveTweet(cid);
-
-        // $('.holder-items').animate({
-        //   scrollTop: $parent.scrollTop() + $child.position().top
-        // }, 1000);
-      },
-
       initialize: function(data) {
-        this.html = `
-          <div class="holder-title" id="holder-left-title">
-          </div>
-          <div class="holder-items" id="tweet-items">
-          </div>
-        `;
+        let titleId = `panel-${this.uniqueName}-title`;
+        let itemsId = `panel-${this.uniqueName}-items`;
 
-        this.$el.html(this.html);
+        this.template = _.template(`
+          <div class="panel-title" id="<%= titleId %>">
+          </div>
+          <div class="panel-items" id="<%= itemsId %>">
+          </div>
+        `);
+        this.$el.html(this.template({titleId:titleId, itemsId:itemsId}));
 
-        this.collection = new TweetCollection();
-        this.tweetsView = new TweetsView({el: '#tweet-items', collection: this.collection});
-        this.headingView = new PanelHeadingView({el: '#holder-left-title'});
+        this.headingView = new PanelHeadingView({el: `#${titleId}`});
+
+        let ScrollViewInit = new ScrollView(this.subView);
+        this.scrollView = new ScrollViewInit({el: `#${itemsId}`, collection: this.collection});
 
         return this;
       },
 
       render: function(){
         this.headingView.render()
-        this.tweetsView.render();
+        this.scrollView.render();
         return this;
       }
 

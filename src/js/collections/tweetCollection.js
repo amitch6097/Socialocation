@@ -11,24 +11,44 @@ define('TweetCollection',[
       model: TweetModel,
       url: '/api/tweets',
 
-      parse: function(data) {
+      parse:function(data){
         return data;
       },
 
-			dataLoaded: function(collection, response){
-				collection.forEach((model)=> {
-					collection.mapLocations = Object.assign(collection.mapLocations, model.getLatLng());
-				});
+      initialize: function(data){
+        this.timeout = false;
+        this.scrollTo = undefined;
 
-				EventMediator.emit("locations-loaded", {twitter: this.mapLocations});
-				this.trigger("change");
-			},
+        this.mapLocations = {};
+        this.visibleElements = [];
 
-      selectActiveTweet: function(cid){
-				let model = this.get(cid);
-				EventMediator.emit('tweet-clicked', model.latlng);
+        this.bounds = {center:{lat: 42.9634, lon:-85.6681}, dist: 0.015};
+
+        EventMediator.listen('map-bounds-changed', this.mapBoundsChange, this);
+        EventMediator.listen('map-cluster-selected', this.mapClusterSelected, this);
+
+        this.params = {geocode: "42.9634,-85.6681,1mi"}
+        this.fetchData(this.params);
+
+        return this;
       },
 
+      clear: function(){
+        this.scrollTo;
+        this.visibleElements = [];
+        this.mapLocations = {};
+        this.reset();
+      },
+
+      tweetSearch: function(searchValue){
+        this.clear();
+        this.fetchData({q:searchValue});
+      },
+
+      mapBoundsChange: function(data){
+        this.bounds = data.bounds;
+        this.fetchData(data.query);
+      },
 
       fetchData: function(query){
         if(this.timeout){
@@ -50,41 +70,46 @@ define('TweetCollection',[
         setTimeout(() => {this.timeout = false;}, 1000);
       },
 
-      moveTweets: function(cids){
+      dataLoaded: function(collection, response){
+        collection.visibleElements = [];
+
+        collection.each((model)=> {
+          if(model.withinBounds(this.bounds)){
+            collection.visibleElements.push(model)
+          }
+          collection.mapLocations = Object.assign(collection.mapLocations, model.getLatLng());
+        });
+
+
+        EventMediator.emit("twitter-locations-loaded", {twitter: collection.mapLocations});
+        this.trigger("change:visibleElements");
+      },
+
+      selectTweetHover: function(cid){
+        let model = this.get(cid);
+        EventMediator.emit('twitter-tweet-hover', model.latlng);
+      },
+
+      mapClusterSelected: function(clusterCids){
         this.each((model) => {
           model.set({selected: false}, {trigger: false});
         });
 
-        cids.forEach((cid) => {
+        this.scrollTo = clusterCids[0];
+        this.trigger("change:scrollTo");
+
+        clusterCids.forEach((cid) => {
           let model = this.get(cid);
           model.selected = true;
           model.set({selected: true});
         });
       },
-
-      initialize: function(data){
-        this.timeout = false;
-				this.mapLocations = {};
-        EventMediator.listen('bounds-changed', this.fetchData, this);
-        EventMediator.listen('map-cluster-selected', this.moveTweets, this);
-
-        this.params = {geocode: "42.9634,-85.6681,1mi"}
-        this.fetchData(this.params);
-        return this;
-      }
-
     });
 
-    // ANDREW NOT SURE IF THIS WORKS
     TweetCollection.prototype.add = function(tweet) {
-      // Using isDupe routine from @Bill Eisenhauer's answer
       var isDupe = this.any(function(_tweet) {
           return _tweet.get('id_str') === tweet.get('id_str');
       });
-
-      // Up to you either return false or throw an exception or silently ignore
-      // NOTE: DEFAULT functionality of adding duplicate to collection is to IGNORE and RETURN. Returning false here is unexpected. ALSO, this doesn't support the merge: true flag.
-      // Return result of prototype.add to ensure default functionality of .add is maintained.
       return isDupe ? false : Backbone.Collection.prototype.add.call(this, tweet);
     }
 

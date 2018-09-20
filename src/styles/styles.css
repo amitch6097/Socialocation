@@ -54,7 +54,7 @@ twitterwidget {
   display: flex;
   flex-direction: row;
 }
-#app-main #home-view .holder {
+#app-main #home-view .panel {
   height: 90%;
   background-color: black;
   padding: 10px;
@@ -64,23 +64,32 @@ twitterwidget {
   position: absolute;
   z-index: 1;
 }
-#app-main #home-view .holder .holder-title {
+#app-main #home-view .panel .panel-title {
   position: relative;
   z-index: 2;
 }
-#app-main #home-view .holder-items {
+#app-main #home-view .panel-items {
   position: relative;
   height: 90%;
   overflow: scroll;
 }
-#app-main #home-view #tweet-items {
+#app-main #home-view #panel-twitter-items {
+  background-color: rgba(0, 0, 0, 0);
   height: 85%;
 }
-#app-main #home-view #holder-left {
+#app-main #home-view #panel-twitter-items .tweet-container:hover {
+  margin-left: 10px;
+  box-shadow: -10px 10px 10px 0 rgba(0, 0, 0, 0.2);
+}
+#app-main #home-view #panel-twitter-items .tweet-container-selected {
+  margin-left: 10px;
+  box-shadow: -10px 10px 10px 0 rgba(0, 0, 0, 0.2);
+}
+#app-main #home-view #panel-twitter {
   left: 0;
   background-color: #47a0ea;
 }
-#app-main #home-view #holder-right {
+#app-main #home-view #panel-right {
   right: 0;
   background-color: rgba(0, 0, 0, 0.5);
 }

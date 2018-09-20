@@ -4,25 +4,25 @@ define('HomeView',[
   'LocationModel',
   'PanelView',
   'MapView',
+  'TwitterView'
   ],
   function(
-    Backbone, SingletonView, LocationModel, PanelView, MapView
+    Backbone, SingletonView, LocationModel, PanelView, MapView, TwitterView
   ){
 
     var HomeView = Backbone.View.extend({
 
       initialize: function() {
         this.html = `
-          <p>Home</p>
           <div id="home-view">
             <div id="map-view"></div>
-            <div class="holder" id="holder-left"></div>
+            <div class="panel" id="panel-twitter"></div>
           </div>
         `;
         this.$el.html(this.html);
 
-        this.panelView = new PanelView({el:'#holder-left'});
-        this.MapView = new MapView({el:'#map-view', subscribers:[this.panelView]});
+        this.panelView = new TwitterView({el:'#panel-twitter'});
+        this.MapView = new MapView({el:'#map-view'});
         return this;
       },
 

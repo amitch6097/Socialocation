@@ -10,27 +10,23 @@ require.config({
     'EventMediator': 'helpers/EventMediator',
 
     'SingletonView': 'views/SingletonView',
-    'HolderView': 'views/HolderView',
+    'ScrollView': 'views/ScrollView',
 
     'NavView': 'views/nav',
     'HomeView': 'views/home',
-    'NewView': 'views/new',
-    'BoxView': 'views/box',
-    'BoxesView': 'views/boxes',
     'TweetView': 'views/tweetView',
     'TweetsView': 'views/tweetsView',
     'MapView': 'views/MapView',
     'PanelView': 'views/PanelView',
     'PanelHeadingView': 'views/PanelHeadingView',
+    'TwitterView':'views/TwitterView',
 
-
-    'NavModel': 'models/nav',
-    'BoxModel': 'models/box',
     'TweetModel': 'models/tweetModel',
     'LocationModel': 'models/locationModel',
     'MapModel':'models/mapModel',
+    'MarkerModel': 'models/MarkerModel',
+    'ClusterMarkerModel': 'models/ClusterMarkerModel',
 
-    'BoxesCollection': 'collections/boxes',
     'TweetCollection': 'collections/TweetCollection'
 
   },

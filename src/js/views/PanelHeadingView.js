@@ -8,11 +8,13 @@ define('PanelHeadingView',[
     var PanelHeadingView = Backbone.View.extend({
 
       initialize: function(data) {
+        this.el = data.el;
+
         this.html = `
         <h1> Tweets </h1>
         <div id="twitter-search">
-          <input type="text">
-          <button>Submit</button>
+          <input id="tweet-search-text" type="text">
+          <button id="tweet-search-submit" >Submit</button>
         </div>
         <div id="twitter-buttons">
           <button class="button-twitter-result-type" data-url="popular" >Popular</button>
@@ -20,7 +22,8 @@ define('PanelHeadingView',[
           <button class="button-twitter-result-type" data-url="mixed" >Mixed</button>
         </div>
         `;
-        this.$el.html(this.html);
+
+        $(this.el).html(this.html);
         return this;
 
       },

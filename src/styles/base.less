@@ -74,7 +74,7 @@ twitterwidget{
     display: flex;
     flex-direction: row;
 
-    .holder {
+    .panel {
       height: 90%;
       background-color: black;
       padding: 10px;
@@ -84,28 +84,40 @@ twitterwidget{
       position: absolute;
       z-index: 1;
 
-      .holder-title{
+      .panel-title{
         position: relative;
         z-index: 2;
       }
     }
 
-    .holder-items {
+    .panel-items {
       position: relative;
       height: 90%;
       overflow: scroll;
     }
 
-    #tweet-items{
+    #panel-twitter-items{
+      background-color: rgba(0, 0, 0, 0);
       height: 85%;
+      .tweet-container:hover{
+        margin-left: 10px;
+        box-shadow: -10px 10px 10px 0 rgba(0, 0, 0, 0.2);
+      }
+      .tweet-container-selected{
+        margin-left: 10px;
+        box-shadow: -10px 10px 10px 0 rgba(0, 0, 0, 0.2);
+      }
     }
 
-    #holder-left{
+    #panel-twitter{
       left:0;
+
       background-color: rgb(71,160,234);
+      // background-color: rgba(0, 0, 0, 0);
+
     }
 
-    #holder-right{
+    #panel-right{
       right:0;
       background-color: rgba(0, 0, 0, .5);
     }

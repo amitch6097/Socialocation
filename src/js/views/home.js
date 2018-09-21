@@ -28,7 +28,7 @@ define('HomeView',[
 
       render: function(){
         this.panelView.render();
-        this.MapView.render();
+        // this.MapView.render();
       }
 
     });

@@ -21,6 +21,8 @@ define('TweetCollection',[
 
         this.mapLocations = {};
         this.visibleElements = [];
+        this.allModels = {};
+
 
         this.bounds = {center:{lat: 42.9634, lon:-85.6681}, dist: 0.015};
 
@@ -60,7 +62,7 @@ define('TweetCollection',[
         this.fetch({
           data: this.params,
           processData: true,
-          remove: false,
+          remove: true,
           success: this.dataLoaded.bind(this),
           error: (collection, response) => {
 						throw "ERROR FETCHING TWEETS";
@@ -70,47 +72,42 @@ define('TweetCollection',[
         setTimeout(() => {this.timeout = false;}, 1000);
       },
 
-      dataLoaded: function(collection, response){
-        collection.visibleElements = [];
-
-        collection.each((model)=> {
-          if(model.withinBounds(this.bounds)){
-            collection.visibleElements.push(model)
-          }
-          collection.mapLocations = Object.assign(collection.mapLocations, model.getLatLng());
+      dataLoaded: function(collection, response, options){
+        collection.each((model) => {
+          this.allModels[model.id_str] = model;
         });
 
-
-        EventMediator.emit("twitter-locations-loaded", {twitter: collection.mapLocations});
-        this.trigger("change:visibleElements");
+        this.newElements = this.models;
+        EventMediator.emit("twitter-locations-loaded", {twitter: this.models});
+        this.trigger("change:newElements");
       },
 
       selectTweetHover: function(cid){
-        let model = this.get(cid);
+        let model = this.allModels[cid];
         EventMediator.emit('twitter-tweet-hover', model.latlng);
       },
 
-      mapClusterSelected: function(clusterCids){
-        this.each((model) => {
-          model.set({selected: false}, {trigger: false});
-        });
+      mapClusterSelected: function(cid){
 
-        this.scrollTo = clusterCids[0];
+        this.scrollTo = cid;
         this.trigger("change:scrollTo");
 
-        clusterCids.forEach((cid) => {
-          let model = this.get(cid);
-          model.selected = true;
-          model.set({selected: true});
-        });
+        // clusterCids.forEach((cid) => {
+        //   let model = this.get(cid);
+        //   model.selected = true;
+        //   model.set({selected: true});
+        // });
       },
+
     });
 
-    TweetCollection.prototype.add = function(tweet) {
-      var isDupe = this.any(function(_tweet) {
-          return _tweet.get('id_str') === tweet.get('id_str');
+    TweetCollection.prototype.set = function(tweets) {
+
+      let newTweets = _.reject(tweets, (tweet) => {
+        return this.allModels[tweet.id_str] !== undefined;
       });
-      return isDupe ? false : Backbone.Collection.prototype.add.call(this, tweet);
+
+      return Backbone.Collection.prototype.set.call(this, newTweets);
     }
 
 	return TweetCollection;

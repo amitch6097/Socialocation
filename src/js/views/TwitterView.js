@@ -25,12 +25,13 @@ define('TwitterView',[
         PanelView.prototype.initialize.apply(this, [options])
 
         this.collection.on("change:scrollTo", this.scrollTo.bind(this));
-        this.collection.on("change:visibleElements", this.scrollView.render.bind(this.scrollView));
+        this.collection.on("change:newElements", this.scrollView.render.bind(this.scrollView));
       },
 
       scrollTo: function(){
+        console.log($(`#tweet-${this.collection.scrollTo}`))
         $('.panel-twitter-items').animate({
-          scrollTop: $(this.el).scrollTop() + $(`#tweet-${this.collection.scrollTo}`).position().top
+          scrollTop: $('.panel-twitter-items').scrollTop() + $(`#tweet-${this.collection.scrollTo}`).position().top
         }, 1000);
       },
 

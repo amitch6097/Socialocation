@@ -14,15 +14,18 @@ define('MapModel',[
         EventMediator.listen("twitter-locations-loaded", this.loadLocations, this);
         EventMediator.listen('twitter-tweet-hover', this.setCurrentLocationMarker, this);
 
+        this.visibleClusters = []
         this.locations = {};
         this.selected = {};
         this.locationMarker = {};
       },
 
       loadLocations: function(locations){
-        console.log(this)
-        this.set('locations', Object.assign(this.locations, locations));
-        this.trigger('change:locations');
+
+        // this.set('locations', Object.assign(this.locations, locations));
+        this.locations = Object.assign(this.locations, locations);
+        EventMediator.emit('map-model-assign-locations', this)
+        // this.trigger("change:locations")
       },
 
       setCurrentLocationMarker: function(latlng){
@@ -34,10 +37,14 @@ define('MapModel',[
         let lng = cluster.center_.lng();
 
         let markers = cluster.markers_;
-        this.selected = markers.map((marker) => {
-          return marker['label']
-        });
-
+        markers.forEach((marker) => {
+          marker.model.changeVisible(true);
+        })
+        this.selected = markers[0].model.cid;
+        console.log(this.selected)
+        // this.selected = markers.map((marker) => {
+        //   return marker['label']
+        // });
         EventMediator.emit('map-cluster-selected', this.selected);
         this.set('locationMarker', {lat:lat, lng:lng});
       },
@@ -45,6 +52,23 @@ define('MapModel',[
       updateBounds: function(data){
         let bounds = data.bounds;
         let center = data.center;
+        let markers = data.markers;
+        let markerCluster = data.markerCluster;
+
+
+        let visibleClusters = [];
+        console.log(markers.length)
+
+        markers.forEach((mmarker) => {
+          mmarker.model.changeVisible(false);
+        });
+        console.log(markerCluster.markers_.length)
+        markerCluster.clusters_.forEach((cluster) => {
+          cluster.markers_.forEach((cmarker) =>{
+            cmarker.model.changeVisible(true);
+          });
+        });
+
 
         let lat = center.lat();
         let lng = center.lng();
@@ -61,7 +85,8 @@ define('MapModel',[
 
         let params = {
           query: {geocode: `${lat},${lng},${miles}mi`},
-          bounds: {center: {lat: lat, lng: lng}, dist: distMax}
+          bounds: {center: {lat: lat, lng: lng}, dist: distMax},
+          clusters: visibleClusters
         };
         EventMediator.emit("map-bounds-changed", params);
       }

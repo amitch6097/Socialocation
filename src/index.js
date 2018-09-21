@@ -27,8 +27,36 @@ app.get('/api/tweets', function (req, res) {
   T.get('search/tweets',
     req.query,
     function(err, data, response) {
-      res.send(data.statuses);
+      let statuses = [];
+      for(let status of data.statuses){
+        status = getLatLng(status);
+        if(status.latlng !== null){
+          statuses.push(status)
+        }
+      }
+      res.send(statuses);
   });
+
+  var getLatLng = function(status){
+    status.latlng = null;
+
+    if(status.geo){
+      let coords = status.geo.coordinates;
+      status.latlng = {lat: coords[0], lng: coords[1]};
+    }
+
+    if(status.latlng === null &&
+      status.place &&
+      status.place.bounding_box &&
+      status.place.bounding_box.coordinates &&
+      status.place.bounding_box.coordinates[0] &&
+      status.place.bounding_box.coordinates[0][0]
+    ){
+      let coords = status.place.bounding_box.coordinates[0][0];
+      status.latlng = {lat: coords[1], lng: coords[0]};
+    }
+    return status;
+  }
 });
 
 app.get('/api/san', function (req, res) {

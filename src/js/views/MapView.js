@@ -4,10 +4,11 @@ define('MapView',[
   'gmaps',
   'gmapsTwo',
   'MarkerModel',
-  'ClusterMarkerModel'
+  'ClusterMarkerModel',
+  'EventMediator'
   ],
   function(
-    Backbone, MapModel, gmaps, gmapsTwo, MarkerModel, ClusterMarkerModel
+    Backbone, MapModel, gmaps, gmapsTwo, MarkerModel, ClusterMarkerModel, EventMediator
   ){
 
     var MapView = Backbone.View.extend({
@@ -16,6 +17,7 @@ define('MapView',[
         this.markers = [];
         this.markerCluster;
         this.currentLocationMarker;
+        this.allMarkers = [];
 
         this.html = `
         <div id="map"></div>
@@ -31,21 +33,41 @@ define('MapView',[
           mapTypeId: google.maps.MapTypeId.ROADMAP
         });
 
+        this.markerCluster = new ClusterMarkerModel(this.map, this.markers,[
+          {listen:"clusterclick", context:this.model, callback:this.model.updateSelected},
+          {listen:"mouseover", context:console, callback:console.log}
+        ]);
+
+        this.map.addListener('tilesloaded', (e) => {
+          console.log(this.allMarkers)
+          this.model.updateBounds({
+            bounds: this.map.getBounds(),
+            center: this.map.getCenter(),
+            markers: this.allMarkers,
+            markerCluster: this.markerCluster
+          });
+        });
+
         this.map.addListener('bounds_changed', (e) => {
-          this.model.updateBounds({bounds: this.map.getBounds(), center: this.map.getCenter()});
+          console.log(this.allMarkers)
+          this.model.updateBounds({
+            bounds: this.map.getBounds(),
+            center: this.map.getCenter(),
+            markers: this.allMarkers,
+            markerCluster: this.markerCluster
+          });
         });
 
         this.model.on('change:locations', this.render.bind(this));
         this.model.on('change:locationMarker', this.updateLocationMarker.bind(this));
+        EventMediator.listen('map-model-assign-locations', this.render, this)
 
         return this;
       },
 
-      render: function(){
-
-        let locations = this.model.get('locations');
+      render: function(model){
+        let locations = model.locations
         this.createCluster(locations);
-        console.log(locations)
         // this.markerCluster.repaint();
 
       },
@@ -63,17 +85,16 @@ define('MapView',[
       },
 
       createCluster: function(locations){
-
+        console.log("CREATE")
+        console.log(locations);
+        let markers = [];
         for(subscriber in locations){
-          this.markers = Object.keys(locations[subscriber]).map( (cid) => {
-              return new MarkerModel(locations[subscriber][cid], cid);
+          markers = locations[subscriber].map((model) => {
+              return new MarkerModel(model);
           });
         }
-
-        this.markerCluster = new ClusterMarkerModel(this.map, this.markers,[
-          {listen:"clusterclick", context:this.model, callback:this.model.updateSelected},
-          {listen:"mouseover", context:console, callback:console.log}
-        ]);
+        this.allMarkers = this.allMarkers.concat(markers);
+        this.markerCluster.addMarkers(markers);
       },
 
     });

@@ -10,29 +10,40 @@ define('TweetModel',[
       initialize: function (data) {
         this.modelType = "tweet";
         this.id_str = data.id_str
+        this.cid = data.id_str;
         this.username = data.user.screen_name;
         // this.locationNamde = data.place.name;
-        this.latlng = null;
+        this.latlng = data.latlng;
         this.selected = false;
+        this.visible = true;
 
-        // {lat: 42.883679, lng: -85.751406}
+        // ANDREW NOW HANDLED IN SERVER
+        // // {lat: 42.883679, lng: -85.751406}
+        //
+        // if(data.geo){
+        //   let latlng = data.geo.coordinates;
+        //   this.latlng = {lat: latlng[0], lng: latlng[1]};
+        // }
+        //
+        // if(this.latlng === null &&
+        //   data.place &&
+        //   data.place.bounding_box &&
+        //   data.place.bounding_box.coordinates &&
+        //   data.place.bounding_box.coordinates[0] &&
+        //   data.place.bounding_box.coordinates[0][0]
+        // ){
+        //   let latlng = data.place.bounding_box.coordinates[0][0];
+        //   this.latlng = {lat: latlng[1], lng: latlng[0]};
+        // }
 
-        if(data.geo){
-          let latlng = data.geo.coordinates;
-          this.latlng = {lat: latlng[0], lng: latlng[1]};
-        }
 
-        if(this.latlng === null &&
-          data.place &&
-          data.place.bounding_box &&
-          data.place.bounding_box.coordinates &&
-          data.place.bounding_box.coordinates[0] &&
-          data.place.bounding_box.coordinates[0][0]
-        ){
-          let latlng = data.place.bounding_box.coordinates[0][0];
-          this.latlng = {lat: latlng[1], lng: latlng[0]};
-        }
 
+      },
+
+
+      // ?WHAT THE
+      changeVisible: function(value){
+        this.set('visible', value);
       },
 
       withinBounds: function(bounds){

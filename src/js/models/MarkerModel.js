@@ -5,11 +5,12 @@ define('MarkerModel',[
     gmaps
   ){
 
-    var MarkerModel = function(position, cid){
+    var MarkerModel = function(tweetModel){
 
       var marker = new google.maps.Marker({
-        position: position,
-        label: cid
+        position: {lat: tweetModel.latlng.lat, lng: tweetModel.latlng.lng },
+        label: tweetModel.cid,
+        model: tweetModel
       });
 
       return marker;

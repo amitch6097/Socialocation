@@ -15,13 +15,12 @@ define('ScrollView',[
         },
 
         render: function() {
-          $(this.el).empty();
-          this.collection.visibleElements.forEach((model) => {
+          // $(this.el).empty();
+          this.collection.each((model) => {
             var view = new viewObj({
               el: this.el,
               model: model,
             });
-            view.render();
           });
           return this;
         }

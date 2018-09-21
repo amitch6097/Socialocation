@@ -20,7 +20,9 @@ define('MapModel',[
       },
 
       loadLocations: function(locations){
+        console.log(this)
         this.set('locations', Object.assign(this.locations, locations));
+        this.trigger('change:locations');
       },
 
       setCurrentLocationMarker: function(latlng){

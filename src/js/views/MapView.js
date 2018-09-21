@@ -45,7 +45,8 @@ define('MapView',[
 
         let locations = this.model.get('locations');
         this.createCluster(locations);
-        this.markerCluster.repaint();
+        console.log(locations)
+        // this.markerCluster.repaint();
 
       },
 

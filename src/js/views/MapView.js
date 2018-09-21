@@ -14,6 +14,8 @@ define('MapView',[
     var MapView = Backbone.View.extend({
 
       initialize: function(data) {
+        EventMediator.listen('map-refresh-request', this.initialize, this);
+
         this.markers = [];
         this.markerCluster;
         this.currentLocationMarker;
@@ -61,8 +63,13 @@ define('MapView',[
         this.model.on('change:locations', this.render.bind(this));
         this.model.on('change:locationMarker', this.updateLocationMarker.bind(this));
         EventMediator.listen('map-model-assign-locations', this.render, this)
+        EventMediator.listen('map-center-request', this.setCenter, this)
 
         return this;
+      },
+
+      setCenter: function(center){
+        this.map.setCenter(center);
       },
 
       render: function(model){

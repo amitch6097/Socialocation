@@ -3,10 +3,11 @@ define('TwitterView',[
   'PanelView',
   'TweetView',
   'TweetCollection',
-  'SingletonView'
+  'SingletonView',
+  'EventMediator'
   ],
   function(
-    Backbone, PanelView, TweetView, TweetCollection, SingletonView
+    Backbone, PanelView, TweetView, TweetCollection, SingletonView, EventMediator
   ){
 
     var TwitterView = PanelView.extend({
@@ -15,6 +16,7 @@ define('TwitterView',[
         "click .button-twitter-result-type": "twitterFetchResultType",
         "mouseenter .tweet-container": "tweetMouseHover",
         "click #tweet-search-submit": "tweetSearch",
+        "click .button-go-to-tweet-location": "tweetLocationRequest"
       },
 
       initialize: function(options) {
@@ -28,10 +30,17 @@ define('TwitterView',[
         this.collection.on("change:newElements", this.scrollView.render.bind(this.scrollView));
       },
 
+      tweetLocationRequest: function(e){
+        e.preventDefault();
+        let latlng = $(e.target).attr("data-url");
+        console.log(latlng);
+        console.log(JSON.parse(latlng));
+        EventMediator.emit('map-center-request', JSON.parse(latlng));
+      },
+
       scrollTo: function(){
-        console.log($(`#tweet-${this.collection.scrollTo}`))
-        $('.panel-twitter-items').animate({
-          scrollTop: $('.panel-twitter-items').scrollTop() + $(`#tweet-${this.collection.scrollTo}`).position().top
+        $('#panel-twitter-items').animate({
+          scrollTop: $('#panel-twitter-items').scrollTop() + $(`#tweet-${this.collection.scrollTo}`).position().top
         }, 1000);
       },
 

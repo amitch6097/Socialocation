@@ -16,11 +16,6 @@ define('PanelHeadingView',[
           <input id="tweet-search-text" type="text">
           <button id="tweet-search-submit" >Submit</button>
         </div>
-        <div id="twitter-buttons">
-          <button class="button-twitter-result-type" data-url="popular" >Popular</button>
-          <button class="button-twitter-result-type" data-url="recent" >Recent</button>
-          <button class="button-twitter-result-type" data-url="mixed" >Mixed</button>
-        </div>
         `;
 
         $(this.el).html(this.html);
@@ -36,3 +31,15 @@ define('PanelHeadingView',[
 
     return PanelHeadingView;
 });
+
+
+// <h1> Tweets </h1>
+// <div id="twitter-search">
+//   <input id="tweet-search-text" type="text">
+//   <button id="tweet-search-submit" >Submit</button>
+// </div>
+// <div id="twitter-buttons">
+//   <button class="button-twitter-result-type" data-url="popular" >Popular</button>
+//   <button class="button-twitter-result-type" data-url="recent" >Recent</button>
+//   <button class="button-twitter-result-type" data-url="mixed" >Mixed</button>
+// </div>

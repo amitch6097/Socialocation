@@ -14,7 +14,7 @@ define('TweetView',[
 
         this.template = _.template(`
           <div class="tweet-container" id="tweet-<%= cid %>" data-url="<%= cid %>">
-          <p><%= cid %></p>
+            <button class="button-go-to-tweet-location" id="location-<%= cid %>" data-url=<%= latlng %> >Go To Location</button>
             <blockquote class="twitter-tweet" width="300" data-lang="en">
               <a href="<%= link %>">
               </a>
@@ -24,7 +24,12 @@ define('TweetView',[
         `);
 
         let link = this.model.getLink();
-        this.html = this.template({cid: this.model.cid,link: link});
+        console.log(JSON.stringify(this.model.latlng))
+        this.html = this.template({
+          cid: this.model.cid,
+          link: link,
+          latlng: JSON.stringify(this.model.latlng)
+        });
         this.model.on("change:selected", this.selected.bind(this));
         this.model.on("change:visible", this.v.bind(this));
 

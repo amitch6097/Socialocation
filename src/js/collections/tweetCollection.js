@@ -36,9 +36,11 @@ define('TweetCollection',[
       },
 
       clear: function(){
+        EventMediator.emit('map-refresh-request', null);
         this.scrollTo;
         this.visibleElements = [];
         this.mapLocations = {};
+        this.allModels = {};
         this.reset();
       },
 

@@ -32,7 +32,7 @@ define('MapModel',[
         this.set('locationMarker', latlng);
       },
 
-      updateSelected: function(cluster){
+      updateSelectedCluster: function(cluster){
         let lat = cluster.center_.lat();
         let lng = cluster.center_.lng();
 
@@ -41,7 +41,6 @@ define('MapModel',[
           marker.model.changeVisible(true);
         })
         this.selected = markers[0].model.cid;
-        console.log(this.selected)
         // this.selected = markers.map((marker) => {
         //   return marker['label']
         // });
@@ -55,20 +54,15 @@ define('MapModel',[
         let markers = data.markers;
         let markerCluster = data.markerCluster;
 
-
-        let visibleClusters = [];
-        console.log(markers.length)
-
-        markers.forEach((mmarker) => {
-          mmarker.model.changeVisible(false);
+        markers.forEach((mMarker) => {
+          mMarker.model.changeVisible(false);
         });
-        console.log(markerCluster.markers_.length)
+
         markerCluster.clusters_.forEach((cluster) => {
-          cluster.markers_.forEach((cmarker) =>{
-            cmarker.model.changeVisible(true);
+          cluster.markers_.forEach((cMarker) =>{
+            cMarker.model.changeVisible(true);
           });
         });
-
 
         let lat = center.lat();
         let lng = center.lng();
@@ -81,13 +75,16 @@ define('MapModel',[
 
         let distMax = Math.max(distLat, distLng)
 
-        let miles = LAT_LNG_TO_MILES(distMax);
-
         let params = {
-          query: {geocode: `${lat},${lng},${miles}mi`},
-          bounds: {center: {lat: lat, lng: lng}, dist: distMax},
-          clusters: visibleClusters
+          bounds: {
+            center: {
+              lat: lat,
+              lng: lng
+            },
+            dist: distMax
+          },
         };
+
         EventMediator.emit("map-bounds-changed", params);
       }
 

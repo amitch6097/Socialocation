@@ -23,22 +23,20 @@ define('TwitterView',[
         this.subView = TweetView;
         this.uniqueName = "twitter";
 
-        this.collection = new TweetCollection();
+        this.collection = new TweetCollection(null, {bounds: options.bounds});
         PanelView.prototype.initialize.apply(this, [options])
 
-        this.collection.on("change:scrollTo", this.scrollTo.bind(this));
+        this.collection.on("change:scrollTo", this.tweetScrollTo.bind(this));
         this.collection.on("change:newElements", this.scrollView.render.bind(this.scrollView));
       },
 
       tweetLocationRequest: function(e){
         e.preventDefault();
         let latlng = $(e.target).attr("data-url");
-        console.log(latlng);
-        console.log(JSON.parse(latlng));
-        EventMediator.emit('map-center-request', JSON.parse(latlng));
+        EventMediator.emit('tweet-location-pressed', JSON.parse(latlng));
       },
 
-      scrollTo: function(){
+      tweetScrollTo: function(){
         $('#panel-twitter-items').animate({
           scrollTop: $('#panel-twitter-items').scrollTop() + $(`#tweet-${this.collection.scrollTo}`).position().top
         }, 1000);

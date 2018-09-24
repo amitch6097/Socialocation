@@ -8,6 +8,7 @@ require.config({
 
 
     'EventMediator': 'helpers/EventMediator',
+    'Router': 'models/router',
 
     'SingletonView': 'views/SingletonView',
     'ScrollView': 'views/ScrollView',

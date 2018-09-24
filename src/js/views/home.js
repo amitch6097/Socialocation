@@ -12,7 +12,7 @@ define('HomeView',[
 
     var HomeView = Backbone.View.extend({
 
-      initialize: function() {
+      initialize: function(options) {
         this.html = `
           <div id="home-view">
             <div id="map-view"></div>
@@ -21,10 +21,14 @@ define('HomeView',[
         `;
         this.$el.html(this.html);
 
-        this.panelView = new TwitterView({el:'#panel-twitter'});
-        this.MapView = new MapView({el:'#map-view'});
+        this.bounds = options.bounds !== undefined ?
+          options.bounds :  {center:{lat: 42.9634, lng:-85.6681}, dist: 0.015};
+
+        this.panelView = new TwitterView({el:'#panel-twitter', bounds: this.bounds});
+        this.MapView = new MapView({el:'#map-view', bounds: this.bounds});
         return this;
       },
+
 
       render: function(){
         this.panelView.render();

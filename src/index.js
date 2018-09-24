@@ -27,7 +27,12 @@ app.get('/api/tweets', function (req, res) {
   T.get('search/tweets',
     req.query,
     function(err, data, response) {
+
       let statuses = [];
+      if(!data.statuses) {
+        res.send([]);
+        return;
+      }
       for(let status of data.statuses){
         status = getLatLng(status);
         if(status.latlng !== null){

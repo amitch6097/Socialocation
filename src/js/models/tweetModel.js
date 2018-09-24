@@ -46,26 +46,26 @@ define('TweetModel',[
         this.set('visible', value);
       },
 
-      withinBounds: function(bounds){
-        if(this.latlng === null){
-          return false;
-        }
-
-        let center = bounds.center;
-        let latlng = this.latlng;
-
-        let dist = Math.sqrt(
-          (Math.abs(latlng.lat*100 - center.lat*100) + Math.abs(latlng.lng*100-center.lng*100))
-        );
-
-        let maxDist = bounds.dist*100;
-
-        if(dist < maxDist*2){
-          return true
-        }
-
-        return false;
-      },
+      // withinBounds: function(bounds){
+      //   if(this.latlng === null){
+      //     return false;
+      //   }
+      //
+      //   let center = bounds.center;
+      //   let latlng = this.latlng;
+      //
+      //   let dist = Math.sqrt(
+      //     (Math.abs(latlng.lat*100 - center.lat*100) + Math.abs(latlng.lng*100-center.lng*100))
+      //   );
+      //
+      //   let maxDist = bounds.dist*100;
+      //
+      //   if(dist < maxDist*2){
+      //     return true
+      //   }
+      //
+      //   return false;
+      // },
 
       getLatLng: function(){
         if(this.latlng === null){

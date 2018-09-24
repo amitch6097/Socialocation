@@ -1,16 +1,17 @@
 define([
   'backbone',
-  'HomeView'
+  'HomeView',
+  'Router'
   ],
   function(
-    Backbone, HomeView
+    Backbone, HomeView, Router
   ){
 
   var App = Backbone.View.extend({
     initialize: function() {
-      var homeView = new HomeView({el: "#app-main"});
-      homeView.render();
-
+      var router = new Router();
+      Backbone.history.start();
+      router.start();
     }
   });
 

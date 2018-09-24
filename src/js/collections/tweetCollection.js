@@ -5,6 +5,7 @@ define('TweetCollection',[
 ], function (
   Backbone, TweetModel, EventMediator
 ){
+  var LAT_LNG_TO_MILES = function(miles){return miles*69;}
 
 	var TweetCollection = Backbone.Collection.extend({
 
@@ -15,7 +16,13 @@ define('TweetCollection',[
         return data;
       },
 
-      initialize: function(data){
+      boundsQueryToString(bounds){
+        console.log(bounds);
+
+        return `${bounds.center.lat},${bounds.center.lng},${LAT_LNG_TO_MILES(bounds.dist)}mi`;
+      },
+
+      initialize: function(models, options){
         this.timeout = false;
         this.scrollTo = undefined;
 
@@ -23,25 +30,27 @@ define('TweetCollection',[
         this.visibleElements = [];
         this.allModels = {};
 
+        this.bounds = options.bounds;
+        console.log(this.bounds);
+        console.log(this.boundsQueryToString(this.bounds));
 
-        this.bounds = {center:{lat: 42.9634, lon:-85.6681}, dist: 0.015};
+        this.params = {geocode: this.boundsQueryToString(this.bounds)}
+        console.log(this.params);
 
         EventMediator.listen('map-bounds-changed', this.mapBoundsChange, this);
         EventMediator.listen('map-cluster-selected', this.mapClusterSelected, this);
 
-        this.params = {geocode: "42.9634,-85.6681,1mi"}
         this.fetchData(this.params);
-
         return this;
       },
 
       clear: function(){
-        EventMediator.emit('map-refresh-request', null);
         this.scrollTo;
         this.visibleElements = [];
         this.mapLocations = {};
         this.allModels = {};
         this.reset();
+        EventMediator.emit('tweets-clear', null);
       },
 
       tweetSearch: function(searchValue){
@@ -51,7 +60,8 @@ define('TweetCollection',[
 
       mapBoundsChange: function(data){
         this.bounds = data.bounds;
-        this.fetchData(data.query);
+        let query = {geocode: this.boundsQueryToString(this.bounds)};
+        this.fetchData(query);
       },
 
       fetchData: function(query){

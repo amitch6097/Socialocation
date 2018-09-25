@@ -35,34 +35,19 @@ define('TwitterView',[
 
       addTwitter: function(){
         this.collection.setSettings({remove:false});
-
-        $(this.el).animate({
-          left: "-=500",
-        }, 200, ()=>{
-          $(this.el).html(this.holdHtml);
-          $('#panel-twitter-items').empty();
-          $(this.el).css({height: "90%"})
-          $(this.el).animate({
-            left: "+=500",
-          }, 200, () =>{
-            this.collection.forceRender();
-          });
-        });
+        let html = this.holdHtml
+        let css = {height: "90%"};
+        let callback = this.collection.forceRender;
+        let context = this.collection;
+        this.changeView(this.holdHtml, css, callback, context);
       },
 
       removeTwitter: function(){
         this.collection.setSettings({remove:true})
         this.holdHtml = $(this.el).html();
-
-        $(this.el).animate({
-          left: "-=500",
-        }, 200, ()=>{
-          $(this.el).html(`<button id="twitter-add" >Add</button>`);
-          $(this.el).css({height: "auto"})
-          $(this.el).animate({
-            left: "+=500",
-          }, 200);
-        });
+        let html = `<button id="twitter-add" >Add</button>`;
+        let css = {height: "auto"};
+        this.changeView(html, css);
       },
 
       tweetLocationRequest: function(e){
@@ -78,9 +63,12 @@ define('TwitterView',[
       },
 
       tweetSearch: function(e){
+        console.log("tweet search")
         e.preventDefault();
         let searchValue = $("#tweet-search-text").val();
-        this.collection.tweetSearch(searchValue);
+        this.collection.setSearchValue(searchValue);
+        this.clear();
+        this.collection.clear();
       },
 
       twitterFetchResultType: function(e){
@@ -93,6 +81,22 @@ define('TwitterView',[
         e.preventDefault();
         let cid = $(e.currentTarget).attr("data-url");
         this.collection.selectTweetHover(cid);
+      },
+
+      changeView: function(html, css, callback, context){
+        $(this.el).animate({
+          left: "-=500",
+        }, 200, ()=>{
+          $(this.el).html(html);
+          $(this.el).css(css)
+          $(this.el).animate({
+            left: "+=500",
+          }, 200, () => {
+            if(callback !== undefined){
+              callback.call(context);
+            }
+          });
+        });
       },
 
     });

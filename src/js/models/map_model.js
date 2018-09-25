@@ -12,15 +12,19 @@ define('MapModel',[
 
       initialize: function (data) {
 
-        this.visibleClusters = []
         this.locations = {};
         this.selected = {};
         this.locationMarker = {};
 
-
         EventMediator.listen("twitter-locations-loaded", this.loadLocations, this);
         EventMediator.listen('twitter-tweet-hover', this.setCurrentLocationMarker, this);
 
+      },
+
+      clear: async function(){
+        this.locations = {};
+        this.selected = {};
+        this.locationMarker = {};
       },
 
       loadLocations: function(locations){

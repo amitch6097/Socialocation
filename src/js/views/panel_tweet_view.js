@@ -32,11 +32,9 @@ define('PanelTweetView',[
         this.elementId = `#tweet-${this.model.cid}`;
 
         this.model.on("change:selected", this.selected.bind(this));
-        // this.model.on("change:visible", this.changeVisible.bind(this));
         this.model.on("change:updateView", this.updateView.bind(this));
 
-
-        this.render();
+        this.updateView();
 
         return this;
       },
@@ -49,7 +47,7 @@ define('PanelTweetView',[
       },
 
       updateView: function(){
-        console.log(this.visible, this.model.visible)
+        // console.log(this.visible, this.model.visible)
 
         if(this.visible === true && this.model.visible === true){
           this.model.visible = false;
@@ -65,20 +63,6 @@ define('PanelTweetView',[
         }
         this.model.visible = false;
       },
-
-      // changeVisible:function(model, value, options){
-      //   if(this.visible && value) return;
-      //
-      //   $(this.elementId).remove();
-      //
-      //   if(value){
-      //     this.visible = true;
-      //     $(this.el).append(this.html);
-      //   } else {
-      //     this.visible = false
-      //   }
-      //
-      // },
 
     });
 

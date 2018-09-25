@@ -31,10 +31,9 @@ define('TweetView',[
       },
 
       render: function() {
-        console.log(this.html)
         $(this.el).append(this.html);
         return this;
-      }
+      },
 
     });
 

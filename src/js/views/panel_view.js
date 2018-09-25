@@ -34,7 +34,11 @@ define('PanelView',[
         this.headingView.render()
         this.scrollView.render();
         return this;
-      }
+      },
+
+      clear: function(){
+        this.scrollView.clear();
+      },
 
     });
 

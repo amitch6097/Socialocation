@@ -33,6 +33,7 @@ define('MapView',[
 
         this.model = new MapModel();
 
+        // ANDREW MAP CAN'T BE IN IN THE MODEL
         this.map = new google.maps.Map(this.el,{
           zoom:16,
           center: new google.maps.LatLng(
@@ -49,22 +50,35 @@ define('MapView',[
         ]);
 
 
-
-        // this.map.addListener('tilesloaded', this.mapBoundsUpdated.bind(this));
+        this.map.addListener('bounds_changed', this.clusterView.empty.bind(this.clusterView));
         this.markerCluster.addListener('clusteringend', this.mapBoundsUpdated.bind(this));
         this.map.addListener('click', this.clusterView.empty.bind(this.clusterView));
         this.model.on('change:locations', this.render.bind(this));
         this.model.on('change:locationMarker', this.updateLocationMarker.bind(this));
         EventMediator.listen('map-model-assign-locations', this.render, this);
         EventMediator.listen('tweet-location-pressed', this.setCenter, this);
-        EventMediator.listen('twitter-clear', this.initialize, this);
+        EventMediator.listen('twitter-clear', this.clear, this);
 
         return this;
       },
 
-      resetClusterView: function(e){
-        console.log(e)
+      clear: function(){
+        console.log("clear")
+        this.model.clear();
+        if(this.currentLocationMarker !== undefined ){
+          this.currentLocationMarker.setMap(null);
+          this.currentLocationMarker = undefined;
+        }
+
+        // VERY AGRESSIVE
+        this.markerCluster.removeMarkers(this.markers);
+        this.markerCluster.clearMarkers();
+        this.markerCluster.clusters_ = [];
+        this.markerCluster.repaint();
+
+        this.markers = [];
       },
+
 
       fromLatLngToPoint: function(latLng, map) {
       	var topRight = map.getProjection().fromLatLngToPoint(map.getBounds().getNorthEast());
@@ -80,14 +94,12 @@ define('MapView',[
       },
 
       mapBoundsUpdated:function(){
-        this.clusterView.empty();
-        // console.log(this.markerCluster)
         params = {};
         params['bounds'] = this.map.getBounds();
         params['center'] = this.map.getCenter();
         params['markers'] = this.allMarkers;
         params['clusters'] = this.markerCluster.getClusters();
-        console.log(this.markerCluster.clusters_)
+
         this.model.updateBounds(params);
       },
 
@@ -98,7 +110,6 @@ define('MapView',[
       render: function(model){
         let locations = model.locations
         this.createCluster(locations);
-        // this.markerCluster.repaint();
       },
 
       updateLocationMarker: function(){

@@ -14,6 +14,10 @@ define('ScrollView',[
           return this;
         },
 
+        clear: function(){
+          $(this.el).empty();
+        },
+
         render: function() {
           // $(this.el).empty();
           this.collection.each((model) => {

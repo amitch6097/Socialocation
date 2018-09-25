@@ -35,7 +35,7 @@ define('TweetCollection',[
 
         EventMediator.listen('map-bounds-changed', this.mapBoundsChange, this);
         EventMediator.listen('map-cluster-selected', this.mapClusterSelected, this);
-
+        console.log("inti")
         this.fetchData(this.params);
         return this;
       },
@@ -52,14 +52,18 @@ define('TweetCollection',[
         this.allModels = {};
         this.markers = [];
         this.clusters = [];
-        this.reset();
-        EventMediator.emit('tweets-clear', null);
+        this.each((model) => {
+          model.hide();
+        });
+        // this.each((model)=>{
+        //   this.remove(model, {silent: true})
+        // })
+        EventMediator.emit('twitter-clear', null);
       },
 
-      tweetSearch: function(searchValue){
+      setSearchValue: function(searchValue){
         if(this.settings.remove === true) return;
-        this.clear();
-        this.fetchData({q:searchValue});
+        this.params = Object.assign(this.params, {q:searchValue});
       },
 
       forceClear: function(){
@@ -89,6 +93,7 @@ define('TweetCollection',[
         this.markers = data.markers;
         this.clusters = data.clusters;
         this.bounds = data.bounds;
+        console.log("t mapBoundsChange")
 
         this.forceRender();
         let query = {geocode: this.boundsQueryToString(this.bounds)};
@@ -100,6 +105,8 @@ define('TweetCollection',[
           return;
         }
         this.timeout  = true;
+
+        console.log("fetch")
 
         this.params = Object.assign(this.params, query);
         this.fetch({

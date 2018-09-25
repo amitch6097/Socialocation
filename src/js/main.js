@@ -4,31 +4,33 @@ require.config({
     'underscore': 'lib/underscore/underscore',
     'backbone': 'lib/backbone/backbone',
     'gmaps': 'https://maps.googleapis.com/maps/api/js?key=AIzaSyB9-3aZldPIm53JmxMM4ATdZdJ6Gh0qw6s',
-    'gmapsTwo': 'https://cdnjs.cloudflare.com/ajax/libs/markerclustererplus/2.1.4/markerclusterer.js?',
+    'gmapsTwo': 'lib/markerCluster/markercluster',
 
 
-    'EventMediator': 'helpers/EventMediator',
+    'EventMediator': 'helpers/event_mediator',
     'Router': 'models/router',
 
-    'SingletonView': 'views/SingletonView',
-    'ScrollView': 'views/ScrollView',
+    'SingletonView': 'views/singleton_view',
+    'ScrollView': 'views/scroll_view',
 
     'NavView': 'views/nav',
     'HomeView': 'views/home',
-    'TweetView': 'views/tweetView',
-    'TweetsView': 'views/tweetsView',
-    'MapView': 'views/MapView',
-    'PanelView': 'views/PanelView',
-    'PanelHeadingView': 'views/PanelHeadingView',
-    'TwitterView':'views/TwitterView',
+    'TweetView': 'views/tweet_view',
+    'TweetsView': 'views/tweets_view',
+    'MapView': 'views/map_view',
+    'PanelView': 'views/panel_view',
+    'PanelHeadingView': 'views/panel_heading_view',
+    'TwitterView':'views/twitter_view',
+    'ClusterView': 'views/cluster_view',
+    'PanelTweetView': 'views/panel_tweet_view',
 
-    'TweetModel': 'models/tweetModel',
-    'LocationModel': 'models/locationModel',
-    'MapModel':'models/mapModel',
-    'MarkerModel': 'models/MarkerModel',
-    'ClusterMarkerModel': 'models/ClusterMarkerModel',
+    'TweetModel': 'models/tweet_model',
+    'LocationModel': 'models/location_model',
+    'MapModel':'models/map_model',
+    'MarkerModel': 'models/marker_model',
+    'ClusterMarkerModel': 'models/cluster_marker_model',
 
-    'TweetCollection': 'collections/TweetCollection'
+    'TweetCollection': 'collections/tweet_collection'
 
   },
   shim: {

@@ -15,7 +15,7 @@ define('TweetModel',[
         // this.locationNamde = data.place.name;
         this.latlng = data.latlng;
         this.selected = false;
-        this.visible = true;
+        this.visible = false;
 
         // ANDREW NOW HANDLED IN SERVER
         // // {lat: 42.883679, lng: -85.751406}
@@ -36,36 +36,24 @@ define('TweetModel',[
         //   this.latlng = {lat: latlng[1], lng: latlng[0]};
         // }
 
-
-
       },
 
+      show: function(){
+        this.changeVisible(true);
+        this.updateView();
+      },
 
-      // ?WHAT THE
+      hide: function(){
+        this.changeVisible(false);
+        this.updateView();
+      },
+
       changeVisible: function(value){
-        this.set('visible', value);
+        this.visible = value;
       },
-
-      // withinBounds: function(bounds){
-      //   if(this.latlng === null){
-      //     return false;
-      //   }
-      //
-      //   let center = bounds.center;
-      //   let latlng = this.latlng;
-      //
-      //   let dist = Math.sqrt(
-      //     (Math.abs(latlng.lat*100 - center.lat*100) + Math.abs(latlng.lng*100-center.lng*100))
-      //   );
-      //
-      //   let maxDist = bounds.dist*100;
-      //
-      //   if(dist < maxDist*2){
-      //     return true
-      //   }
-      //
-      //   return false;
-      // },
+      updateView: function(){
+        this.trigger('change:updateView')
+      },
 
       getLatLng: function(){
         if(this.latlng === null){

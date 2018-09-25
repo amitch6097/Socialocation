@@ -11,6 +11,7 @@ define('PanelHeadingView',[
         this.el = data.el;
 
         this.html = `
+        <button id="twitter-remove" >Remove</button>
         <h1> Tweets </h1>
         <div id="twitter-search">
           <input id="tweet-search-text" type="text">

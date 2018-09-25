@@ -26,16 +26,12 @@ define('MapView',[
         <div id="map"></div>
         `;
 
+        this.clusterView = data.clusterView;
+
         this.$el.html(this.html);
         this.$el.css({width:$( window ).width(), height:$( window ).height()});
 
         this.model = new MapModel();
-
-        console.log(
-          this.bounds,
-PARSE_LAT_LNG(this.bounds.center.lat),
-PARSE_LAT_LNG(this.bounds.center.lng)
-);
 
         this.map = new google.maps.Map(this.el,{
           zoom:16,
@@ -48,11 +44,15 @@ PARSE_LAT_LNG(this.bounds.center.lng)
 
         this.markerCluster = new ClusterMarkerModel(this.map, this.markers,[
           {listen:"clusterclick", context:this.model, callback:this.model.updateSelectedCluster},
-          {listen:"mouseover", context:console, callback:console.log}
+          {listen:"clusterclick", context:this, callback:this.populateClusterView},
+          {listen:"clusterclick", context:console, callback:console.log}
         ]);
 
-        this.map.addListener('tilesloaded', this.mapBoundsUpdated.bind(this));
-        this.map.addListener('bounds_changed', this.mapBoundsUpdated.bind(this));
+
+
+        // this.map.addListener('tilesloaded', this.mapBoundsUpdated.bind(this));
+        this.markerCluster.addListener('clusteringend', this.mapBoundsUpdated.bind(this));
+        this.map.addListener('click', this.clusterView.empty.bind(this.clusterView));
         this.model.on('change:locations', this.render.bind(this));
         this.model.on('change:locationMarker', this.updateLocationMarker.bind(this));
         EventMediator.listen('map-model-assign-locations', this.render, this);
@@ -62,13 +62,33 @@ PARSE_LAT_LNG(this.bounds.center.lng)
         return this;
       },
 
+      resetClusterView: function(e){
+        console.log(e)
+      },
+
+      fromLatLngToPoint: function(latLng, map) {
+      	var topRight = map.getProjection().fromLatLngToPoint(map.getBounds().getNorthEast());
+      	var bottomLeft = map.getProjection().fromLatLngToPoint(map.getBounds().getSouthWest());
+      	var scale = Math.pow(2, map.getZoom());
+      	var worldPoint = map.getProjection().fromLatLngToPoint(latLng);
+      	return new google.maps.Point((worldPoint.x - bottomLeft.x) * scale, (worldPoint.y - topRight.y) * scale);
+      },
+
+      populateClusterView: function(cluster){
+        var point = this.fromLatLngToPoint(cluster.getCenter(), this.map);
+        this.clusterView.update(point, cluster.getMarkers());
+      },
+
       mapBoundsUpdated:function(){
+        this.clusterView.empty();
+        // console.log(this.markerCluster)
         params = {};
         params['bounds'] = this.map.getBounds();
         params['center'] = this.map.getCenter();
         params['markers'] = this.allMarkers;
-        params['markerCluster'] = this.markerCluster;
-        this.model.updateBounds(params)
+        params['clusters'] = this.markerCluster.getClusters();
+        console.log(this.markerCluster.clusters_)
+        this.model.updateBounds(params);
       },
 
       setCenter: function(center){

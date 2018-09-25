@@ -1,13 +1,13 @@
 define('TwitterView',[
   'backbone',
   'PanelView',
-  'TweetView',
+  'PanelTweetView',
   'TweetCollection',
   'SingletonView',
   'EventMediator'
   ],
   function(
-    Backbone, PanelView, TweetView, TweetCollection, SingletonView, EventMediator
+    Backbone, PanelView, PanelTweetView, TweetCollection, SingletonView, EventMediator
   ){
 
     var TwitterView = PanelView.extend({
@@ -16,11 +16,14 @@ define('TwitterView',[
         "click .button-twitter-result-type": "twitterFetchResultType",
         "mouseenter .tweet-container": "tweetMouseHover",
         "click #tweet-search-submit": "tweetSearch",
-        "click .button-go-to-tweet-location": "tweetLocationRequest"
+        "click .button-go-to-tweet-location": "tweetLocationRequest",
+        "click #twitter-remove": 'removeTwitter',
+        "click #twitter-add": 'addTwitter'
+
       },
 
       initialize: function(options) {
-        this.subView = TweetView;
+        this.subView = PanelTweetView;
         this.uniqueName = "twitter";
 
         this.collection = new TweetCollection(null, {bounds: options.bounds});
@@ -28,6 +31,38 @@ define('TwitterView',[
 
         this.collection.on("change:scrollTo", this.tweetScrollTo.bind(this));
         this.collection.on("change:newElements", this.scrollView.render.bind(this.scrollView));
+      },
+
+      addTwitter: function(){
+        this.collection.setSettings({remove:false});
+
+        $(this.el).animate({
+          left: "-=500",
+        }, 200, ()=>{
+          $(this.el).html(this.holdHtml);
+          $('#panel-twitter-items').empty();
+          $(this.el).css({height: "90%"})
+          $(this.el).animate({
+            left: "+=500",
+          }, 200, () =>{
+            this.collection.forceRender();
+          });
+        });
+      },
+
+      removeTwitter: function(){
+        this.collection.setSettings({remove:true})
+        this.holdHtml = $(this.el).html();
+
+        $(this.el).animate({
+          left: "-=500",
+        }, 200, ()=>{
+          $(this.el).html(`<button id="twitter-add" >Add</button>`);
+          $(this.el).css({height: "auto"})
+          $(this.el).animate({
+            left: "+=500",
+          }, 200);
+        });
       },
 
       tweetLocationRequest: function(e){

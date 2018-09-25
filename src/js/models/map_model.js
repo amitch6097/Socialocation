@@ -11,21 +11,21 @@ define('MapModel',[
   var MapModel = Backbone.Model.extend({
 
       initialize: function (data) {
-        EventMediator.listen("twitter-locations-loaded", this.loadLocations, this);
-        EventMediator.listen('twitter-tweet-hover', this.setCurrentLocationMarker, this);
 
         this.visibleClusters = []
         this.locations = {};
         this.selected = {};
         this.locationMarker = {};
+
+
+        EventMediator.listen("twitter-locations-loaded", this.loadLocations, this);
+        EventMediator.listen('twitter-tweet-hover', this.setCurrentLocationMarker, this);
+
       },
 
       loadLocations: function(locations){
-
-        // this.set('locations', Object.assign(this.locations, locations));
         this.locations = Object.assign(this.locations, locations);
         EventMediator.emit('map-model-assign-locations', this)
-        // this.trigger("change:locations")
       },
 
       setCurrentLocationMarker: function(latlng){
@@ -38,8 +38,8 @@ define('MapModel',[
 
         let markers = cluster.markers_;
         markers.forEach((marker) => {
-          marker.model.changeVisible(true);
-        })
+          marker.model.show();
+        });
         this.selected = markers[0].model.cid;
         // this.selected = markers.map((marker) => {
         //   return marker['label']
@@ -52,17 +52,6 @@ define('MapModel',[
         let bounds = data.bounds;
         let center = data.center;
         let markers = data.markers;
-        let markerCluster = data.markerCluster;
-
-        markers.forEach((mMarker) => {
-          mMarker.model.changeVisible(false);
-        });
-
-        markerCluster.clusters_.forEach((cluster) => {
-          cluster.markers_.forEach((cMarker) =>{
-            cMarker.model.changeVisible(true);
-          });
-        });
 
         let lat = center.lat();
         let lng = center.lng();
@@ -83,6 +72,8 @@ define('MapModel',[
             },
             dist: distMax
           },
+          markers: markers,
+          clusters: data.clusters,
         };
 
         EventMediator.emit("map-bounds-changed", params);

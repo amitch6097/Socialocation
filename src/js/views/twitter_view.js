@@ -53,7 +53,7 @@ define('TwitterView',[
       tweetLocationRequest: function(e){
         e.preventDefault();
         let latlng = $(e.target).attr("data-url");
-        EventMediator.emit('tweet-location-pressed', JSON.parse(latlng));
+        EventMediator.emit('map-center-request', JSON.parse(latlng));
       },
 
       tweetScrollTo: function(){
@@ -63,7 +63,6 @@ define('TwitterView',[
       },
 
       tweetSearch: function(e){
-        console.log("tweet search")
         e.preventDefault();
         let searchValue = $("#tweet-search-text").val();
         this.collection.setSearchValue(searchValue);

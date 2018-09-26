@@ -16,6 +16,8 @@ define('TweetModel',[
         this.latlng = data.latlng;
         this.selected = false;
         this.visible = false;
+        this.data = data;
+
 
         // ANDREW NOW HANDLED IN SERVER
         // // {lat: 42.883679, lng: -85.751406}

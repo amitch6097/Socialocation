@@ -5,10 +5,11 @@ define('HomeView',[
   'PanelView',
   'MapView',
   'TwitterView',
-  'ClusterView'
+  'ClusterView',
+  'GeolocationView'
   ],
   function(
-    Backbone, SingletonView, LocationModel, PanelView, MapView, TwitterView, ClusterView
+    Backbone, SingletonView, LocationModel, PanelView, MapView, TwitterView, ClusterView, GeolocationView
   ){
 
     var HomeView = Backbone.View.extend({
@@ -17,6 +18,7 @@ define('HomeView',[
         this.html = `
           <div id="home-view">
             <div id="map-view"></div>
+            <div id="geolocation-view"></div>
             <div class="panel" id="panel-twitter"></div>
             <div class="panel-moving" id="panel-cluster"></div>
           </div>
@@ -28,6 +30,8 @@ define('HomeView',[
 
         let clusterView = new ClusterView({el: '#panel-cluster'});
         this.panelView = new TwitterView({el:'#panel-twitter', bounds: this.bounds});
+        let geolocationView = new GeolocationView({el: '#geolocation-view'});
+
         this.MapView = new MapView({el:'#map-view', bounds: this.bounds, clusterView: clusterView});
         return this;
       },

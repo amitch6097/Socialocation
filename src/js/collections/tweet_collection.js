@@ -93,7 +93,6 @@ define('TweetCollection',[
         this.markers = data.markers;
         this.clusters = data.clusters;
         this.bounds = data.bounds;
-        console.log("t mapBoundsChange")
 
         this.forceRender();
         let query = {geocode: this.boundsQueryToString(this.bounds)};
@@ -105,8 +104,6 @@ define('TweetCollection',[
           return;
         }
         this.timeout  = true;
-
-        console.log("fetch")
 
         this.params = Object.assign(this.params, query);
         this.fetch({

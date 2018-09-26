@@ -15,6 +15,10 @@ define('MapView',[
 
     var MapView = Backbone.View.extend({
 
+      events: {
+        "click #map-button-search":"userLocationInput"
+      },
+
       initialize: function(data) {
         this.markers = [];
         this.markerCluster;
@@ -23,18 +27,21 @@ define('MapView',[
         this.bounds = data.bounds;
 
         this.html = `
-        <div id="map"></div>
+        <div id="map-map">
+          <div id="map"></div>
+        </div>
         `;
 
         this.clusterView = data.clusterView;
 
         this.$el.html(this.html);
-        this.$el.css({width:$( window ).width(), height:$( window ).height()});
+        this.mapElement = '#map-map'
+        $(this.mapElement).css({width:$( window ).width(), height:$( window ).height()});
 
         this.model = new MapModel();
 
         // ANDREW MAP CAN'T BE IN IN THE MODEL
-        this.map = new google.maps.Map(this.el,{
+        this.map = new google.maps.Map(document.getElementById('map'),{
           zoom:16,
           center: new google.maps.LatLng(
             PARSE_LAT_LNG(this.bounds.center.lat),
@@ -45,26 +52,28 @@ define('MapView',[
 
         this.markerCluster = new ClusterMarkerModel(this.map, this.markers,[
           {listen:"clusterclick", context:this.model, callback:this.model.updateSelectedCluster},
-          {listen:"clusterclick", context:this, callback:this.populateClusterView},
-          {listen:"clusterclick", context:console, callback:console.log}
+          {listen:"clusterclick", context:this.clusterView, callback:this.clusterView.populate},
+          {listen:"clusteringend", context:this, callback:this.mapBoundsUpdated},
+          {listen:"clusterclick", context:console, callback:console.log},
+
         ]);
 
 
         this.map.addListener('bounds_changed', this.clusterView.empty.bind(this.clusterView));
-        this.markerCluster.addListener('clusteringend', this.mapBoundsUpdated.bind(this));
+        // this.markerCluster.addListener('clusteringend', this.mapBoundsUpdated.bind(this));
         this.map.addListener('click', this.clusterView.empty.bind(this.clusterView));
         this.model.on('change:locations', this.render.bind(this));
         this.model.on('change:locationMarker', this.updateLocationMarker.bind(this));
         EventMediator.listen('map-model-assign-locations', this.render, this);
-        EventMediator.listen('tweet-location-pressed', this.setCenter, this);
+        EventMediator.listen('map-center-request', this.setCenter, this);
         EventMediator.listen('twitter-clear', this.clear, this);
 
         return this;
       },
 
       clear: function(){
-        console.log("clear")
         this.model.clear();
+
         if(this.currentLocationMarker !== undefined ){
           this.currentLocationMarker.setMap(null);
           this.currentLocationMarker = undefined;
@@ -75,22 +84,9 @@ define('MapView',[
         this.markerCluster.clearMarkers();
         this.markerCluster.clusters_ = [];
         this.markerCluster.repaint();
-
         this.markers = [];
-      },
 
-
-      fromLatLngToPoint: function(latLng, map) {
-      	var topRight = map.getProjection().fromLatLngToPoint(map.getBounds().getNorthEast());
-      	var bottomLeft = map.getProjection().fromLatLngToPoint(map.getBounds().getSouthWest());
-      	var scale = Math.pow(2, map.getZoom());
-      	var worldPoint = map.getProjection().fromLatLngToPoint(latLng);
-      	return new google.maps.Point((worldPoint.x - bottomLeft.x) * scale, (worldPoint.y - topRight.y) * scale);
-      },
-
-      populateClusterView: function(cluster){
-        var point = this.fromLatLngToPoint(cluster.getCenter(), this.map);
-        this.clusterView.update(point, cluster.getMarkers());
+        this.clusterView.empty();
       },
 
       mapBoundsUpdated:function(){

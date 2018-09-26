@@ -23,12 +23,14 @@ require.config({
     'TwitterView':'views/twitter_view',
     'ClusterView': 'views/cluster_view',
     'PanelTweetView': 'views/panel_tweet_view',
+    'GeolocationView': 'views/geolocation_view',
 
     'TweetModel': 'models/tweet_model',
     'LocationModel': 'models/location_model',
     'MapModel':'models/map_model',
     'MarkerModel': 'models/marker_model',
     'ClusterMarkerModel': 'models/cluster_marker_model',
+    'GeolocationModel': 'models/geolocation_model',
 
     'TweetCollection': 'collections/tweet_collection'
 

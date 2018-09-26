@@ -54,10 +54,17 @@ twitterwidget {
   display: flex;
   flex-direction: row;
 }
+#app-main #home-view #map-options {
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  top: 10%;
+}
 #app-main #home-view .panel-moving {
   position: absolute;
   z-index: 1;
-  padding: 10px;
+  margin: 0px;
+  padding: 0px;
   background-color: black;
   overflow: scroll;
 }

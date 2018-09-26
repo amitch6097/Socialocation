@@ -9,9 +9,9 @@ define('EventMediator',[
 
       let events = {
         'twitter-clear':[],
-        'twitter-locations-loaded':[],
+        'collection-locations-loaded':[],
         'map-center-request':[],
-        'twitter-tweet-hover':[],
+        'item-hover-request':[],
         'map-model-assign-locations':[],
         'map-bounds-changed':[],
       };

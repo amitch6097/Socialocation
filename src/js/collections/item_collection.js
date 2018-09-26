@@ -1,13 +1,12 @@
-define('TweetCollection',[
+define('ItemCollection',[
 	'backbone',
-  'ItemModelTweet',
   'EventMediator'
 ], function (
   Backbone, ItemModelTweet, EventMediator
 ){
   var LAT_LNG_TO_MILES = function(miles){return miles*69;}
 
-	var TweetCollection = Backbone.Collection.extend({
+	var ItemCollection = Backbone.Collection.extend({
 
       model: ItemModelTweet,
       url: '/api/tweets',
@@ -120,7 +119,7 @@ define('TweetCollection',[
 
       dataLoaded: function(collection, response, options){
         collection.each((model) => {
-          this.allModels[model.id_str] = model;
+          this.allModels[model.id] = model;
         });
 
         this.newElements = this.models;
@@ -130,14 +129,14 @@ define('TweetCollection',[
         this.trigger("change:newElements");
       },
 
-      selectTweetHover: function(cid){
-        let model = this.allModels[cid];
+      selectHover: function(id){
+        let model = this.allModels[id];
         EventMediator.emit('item-hover-request', model.latlng);
       },
 
-      mapClusterSelected: function(cid){
+      mapClusterSelected: function(id){
         if(this.settings.remove === true) return;
-        this.scrollTo = cid;
+        this.scrollTo = id;
         this.trigger("change:scrollTo");
 
         // clusterCids.forEach((cid) => {
@@ -149,12 +148,12 @@ define('TweetCollection',[
 
     });
 
-    TweetCollection.prototype.set = function(tweets) {
-      let newTweets = _.reject(tweets, (tweet) => {
-        return this.allModels[tweet.id_str] !== undefined;
+    ItemCollection.prototype.set = function(items) {
+      let newItems = _.reject(items, (item) => {
+        return this.allModels[item.id] !== undefined;
       });
-      return Backbone.Collection.prototype.set.call(this, newTweets);
+      return Backbone.Collection.prototype.set.call(this, newItems);
     }
 
-	return TweetCollection;
+	return ItemCollection;
 });

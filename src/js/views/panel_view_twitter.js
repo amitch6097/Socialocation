@@ -1,16 +1,16 @@
-define('TwitterView',[
+define('PanelViewTwitter',[
   'backbone',
   'PanelView',
-  'PanelTweetView',
+  'PanelViewTweet',
   'TweetCollection',
   'SingletonView',
   'EventMediator'
   ],
   function(
-    Backbone, PanelView, PanelTweetView, TweetCollection, SingletonView, EventMediator
+    Backbone, PanelView, PanelViewTweet, TweetCollection, SingletonView, EventMediator
   ){
 
-    var TwitterView = PanelView.extend({
+    var PanelViewTwitter = PanelView.extend({
 
       events: {
         "click .button-twitter-result-type": "twitterFetchResultType",
@@ -23,8 +23,16 @@ define('TwitterView',[
       },
 
       initialize: function(options) {
-        this.subView = PanelTweetView;
+        this.subView = PanelViewTweet;
         this.uniqueName = "twitter";
+
+        this.heading = `
+        <h1> Tweets </h1>
+        <div id="twitter-search">
+          <input id="tweet-search-text" type="text">
+          <button id="tweet-search-submit" >Submit</button>
+        </div>
+        `
 
         this.collection = new TweetCollection(null, {bounds: options.bounds});
         PanelView.prototype.initialize.apply(this, [options])
@@ -100,5 +108,5 @@ define('TwitterView',[
 
     });
 
-    return new SingletonView(TwitterView);
+    return new SingletonView(PanelViewTwitter);
 });

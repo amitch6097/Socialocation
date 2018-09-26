@@ -10,16 +10,12 @@ define('PanelHeadingView',[
       initialize: function(data) {
         this.el = data.el;
 
-        this.html = `
+        this.template = _.template(`
         <button id="twitter-remove" >Remove</button>
-        <h1> Tweets </h1>
-        <div id="twitter-search">
-          <input id="tweet-search-text" type="text">
-          <button id="tweet-search-submit" >Submit</button>
-        </div>
-        `;
+        <%= heading %>
+        `);
 
-        $(this.el).html(this.html);
+        $(this.el).html(this.template({heading: data.heading}));
         return this;
 
       },

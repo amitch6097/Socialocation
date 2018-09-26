@@ -1,11 +1,17 @@
 define('ClusterView',[
   'backbone',
   'TweetView',
+  'InstagramView',
   'gmaps'
   ],
   function(
-    Backbone, TweetView, gmaps
+    Backbone, TweetView, InstagramView, gmaps
   ){
+
+    var VIEW_TYPES  = {
+      "tweet" : TweetView,
+      "instagram" : InstagramView
+    }
 
     var ClusterView = Backbone.View.extend({
 
@@ -18,7 +24,7 @@ define('ClusterView',[
         this.markers = [];
         this.index = 0;
         this.point;
-        
+
 
         this.html = `
         <div class="holder-title" id="holder-map-title">
@@ -104,7 +110,10 @@ define('ClusterView',[
       },
 
       addTweet: function(model){
-        let tweet = new TweetView({
+        console.log("Double>")
+        let modelType = model.modelType
+        let viewObject = VIEW_TYPES[modelType];
+        let tweet = new viewObject({
           el: this.subElement,
           model: model,
           width: 100

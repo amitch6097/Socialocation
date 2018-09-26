@@ -11,28 +11,41 @@ require.config({
     'Router': 'models/router',
 
     'SingletonView': 'views/singleton_view',
-    'ScrollView': 'views/scroll_view',
 
     'NavView': 'views/nav',
     'HomeView': 'views/home',
-    'TweetView': 'views/tweet_view',
-    'TweetsView': 'views/tweets_view',
-    'MapView': 'views/map_view',
+
     'PanelView': 'views/panel_view',
     'PanelHeadingView': 'views/panel_heading_view',
-    'TwitterView':'views/twitter_view',
-    'ClusterView': 'views/cluster_view',
-    'PanelTweetView': 'views/panel_tweet_view',
-    'GeolocationView': 'views/geolocation_view',
+    'ScrollView': 'views/scroll_view',
 
-    'TweetModel': 'models/tweet_model',
-    'LocationModel': 'models/location_model',
+    'PanelViewTwitter':'views/panel_view_twitter',
+    'PanelViewInstagram': 'views/panel_view_instagram',
+    'PanelViewTweet': 'views/panel_view_tweet',
+
+    'ClusterView': 'views/cluster_view',
+    'GeolocationView': 'views/geolocation_view',
+    'MapView': 'views/map_view',
+
+    'InstagramView': 'views/instagram_view',
+    'TweetView': 'views/tweet_view',
+
+
+
+    'ItemModel': 'models/item_model',
+    'ItemModelTweet': 'models/item_model_tweet',
+    'ItemModelInstagram': 'models/item_model_instagram',
+
     'MapModel':'models/map_model',
     'MarkerModel': 'models/marker_model',
     'ClusterMarkerModel': 'models/cluster_marker_model',
     'GeolocationModel': 'models/geolocation_model',
 
-    'TweetCollection': 'collections/tweet_collection'
+
+    'ItemCollection': 'collections/item_collection',
+    'TweetCollection': 'collections/tweet_collection',
+    'InstagramCollection': 'collections/instagram_collection',
+
 
   },
   shim: {

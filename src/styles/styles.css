@@ -87,6 +87,10 @@ twitterwidget {
   height: 90%;
   overflow: scroll;
 }
+#app-main #home-view #panel-instagram-items {
+  display: grid;
+  height: 85%;
+}
 #app-main #home-view #panel-twitter-items {
   background-color: rgba(0, 0, 0, 0);
   height: 85%;
@@ -103,7 +107,7 @@ twitterwidget {
   left: 0;
   background-color: #47a0ea;
 }
-#app-main #home-view #panel-right {
+#app-main #home-view #panel-instagram {
   right: 0;
   background-color: rgba(0, 0, 0, 0.5);
 }

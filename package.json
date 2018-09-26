@@ -19,6 +19,7 @@
   "dependencies": {
     "express": "^4.16.3",
     "grunt-ts": "^6.0.0-beta.21",
+    "instagram-node": "^0.5.8",
     "jquery": "^3.3.1",
     "twit": "^2.2.11",
     "typescript": "^3.0.3",

@@ -22,7 +22,7 @@ define('PanelView',[
         `);
         this.$el.html(this.template({titleId:titleId, itemsId:itemsId}));
 
-        this.headingView = new PanelHeadingView({el: `#${titleId}`});
+        this.headingView = new PanelHeadingView({el: `#${titleId}`, heading: this.heading});
 
         let ScrollViewInit = new ScrollView(this.subView);
         this.scrollView = new ScrollViewInit({el: `#${itemsId}`, collection: this.collection});

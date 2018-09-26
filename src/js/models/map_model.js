@@ -16,8 +16,8 @@ define('MapModel',[
         this.selected = {};
         this.locationMarker = {};
 
-        EventMediator.listen("twitter-locations-loaded", this.loadLocations, this);
-        EventMediator.listen('twitter-tweet-hover', this.setCurrentLocationMarker, this);
+        EventMediator.listen("collection-locations-loaded", this.loadLocations, this);
+        EventMediator.listen('item-hover-request', this.setCurrentLocationMarker, this);
 
       },
 

@@ -1,4 +1,4 @@
-define('PanelTweetView',[
+define('PanelViewTweet',[
   'backbone',
   'TweetView'
   ],
@@ -6,7 +6,7 @@ define('PanelTweetView',[
     Backbone, TweetView
   ){
 
-    var PanelTweetView = Backbone.View.extend({
+    var PanelViewTweet = Backbone.View.extend({
 
       initialize: function(data) {
         this.model = data.model;
@@ -66,5 +66,5 @@ define('PanelTweetView',[
 
     });
 
-    return PanelTweetView;
+    return PanelViewTweet;
 });

@@ -75,7 +75,6 @@ define('PanelViewTwitter',[
       tweetLocationRequest: function(e){
         e.preventDefault();
         let latlng = $(e.target).attr("data-url");
-        console.log(latlng)
         EventMediator.emit('map-center-request', JSON.parse(latlng));
       },
 

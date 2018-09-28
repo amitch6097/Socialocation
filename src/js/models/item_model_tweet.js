@@ -8,18 +8,20 @@ define('ItemModelTweet',[
 
   var ItemModelTweet = ItemModel.extend({
 
+      defaults:{
+        'modelType': "twitter",
+        'selected': false,
+        'visible': false
+      },
+
       initialize: function (data) {
-        this.modelType = "twitter";
         this.id_str = data.id_str;
-        this.username = data.user.screen_name;
-        this.latlng = data.latlng;
-        this.selected = false;
-        this.visible = false;
-        this.data = data;
       },
 
       getLink: function(){
-        let link = `https://twitter.com/${this.username}/status/${this.id_str}`;
+        let username = this.get('user').screen_name;
+        let id_str = this.get('id_str');
+        let link = `https://twitter.com/${username}/status/${id_str}`;
         return link;
       }
   });

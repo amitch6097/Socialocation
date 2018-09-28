@@ -14,18 +14,20 @@ define('ClusterModel',[
         minimumClusterSize: 1
       });
 
-      this.clear = function(){
-        cluster.clearMarkers();
-        cluster.clusters_ = [];
-        cluster.repaint();
+      if(events !== undefined){
+        // [{event:"event", context:"this", callback:"func"}, ...]
+        events.forEach((item) => {
+          google.maps.event.addListener(cluster, item.listen, (clusterItem) => {
+            item.callback.apply(item.context, [clusterItem])
+          });
+        });
       }
 
-      // [{event:"event", context:"this", callback:"func"}, ...]
-      events.forEach((item) => {
-        google.maps.event.addListener(cluster, item.listen, (clusterItem) => {
-          item.callback.apply(item.context, [clusterItem])
-        });
-      });
+      MarkerClusterer.prototype.clear = function(){
+        this.clearMarkers();
+        this.clusters_ = [];
+        this.repaint();
+      }
 
       return cluster;
     }

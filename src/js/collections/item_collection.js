@@ -35,7 +35,6 @@ define('ItemCollection',[
         if(this.settings.hide === true ||
           this.settings.pause == true
         ) return;
-				console.log(this.allModels)
         Object.keys(this.allModels).forEach((id_str) => {
           this.allModels[id_str].updateView();
         });
@@ -83,7 +82,7 @@ define('ItemCollection',[
 
       selectHover: function(id_str){
         let model = this.allModels[id_str];
-        EventMediator.emit('item-hover-request', model.latlng);
+        EventMediator.emit('item-hover-request', model.get('latlng'));
       },
 
       mapClusterSelected: function(model){

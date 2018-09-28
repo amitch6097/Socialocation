@@ -140,12 +140,15 @@ app.get('/api/instagram', function (req, res) {
               let lat = locations[index].lat;
               let lng = locations[index].lng;
 
-              edges.forEach((edge) => {
+              // edges.forEach((edge) => {
+              for(edge of edges){
                 edge['lat'] = lat;
                 edge['lng'] = lng;
                 edge['id_str'] = edge.node.id;
                 instagrams.push(edge)
-              })
+                break;
+              }
+              // });
             }
             itemsProcessed++;
             if(itemsProcessed === locations.length){

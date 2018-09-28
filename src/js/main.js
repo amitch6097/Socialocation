@@ -24,7 +24,7 @@ require.config({
     'PanelViewInstagram': 'views/panel_view_instagram',
     'PanelViewGram': 'views/panel_view_gram',
 
-    'ClusterView': 'views/cluster_view',
+    'PopupView': 'views/popup_view',
     'GeolocationView': 'views/geolocation_view',
     'MapView': 'views/map_view',
 
@@ -40,10 +40,12 @@ require.config({
     'ClusterModel': 'models/cluster_model',
     'GeolocationModel': 'models/geolocation_model',
 
+    'PopupModel': 'models/popup_model',
+
+
     'ItemCollection': 'collections/item_collection',
     'TweetCollection': 'collections/tweet_collection',
     'InstagramCollection': 'collections/instagram_collection',
-
 
   },
   shim: {

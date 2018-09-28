@@ -8,6 +8,7 @@ define('Router',[
   ){
 
   var Router = Backbone.Router.extend({
+
     routes: {
       "location/:lat/:lng/:dist":"location",
     },
@@ -42,7 +43,6 @@ define('Router',[
         },
         dist: parseFloat(dist),
       };
-
       this.homeView = new HomeView({el: "#app-main", bounds: bounds});
     },
 

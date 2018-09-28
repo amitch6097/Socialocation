@@ -34,8 +34,11 @@ define('PanelView',[
       },
 
       scrollTo: function(){
-        console.log("SCROLL")
-        if(this.uniqueName !== this.collection.scrollTo.modelType) return;
+        if(this.uniqueName !== this.collection.scrollTo.get('modelType')) return;
+        console.log(this.collection.scrollTo)
+        console.log(`#${this.uniqueName}-${this.collection.scrollTo.id_str}`)
+        console.log($(`#${this.uniqueName}-${this.collection.scrollTo.id_str}`))
+
         $(`#panel-${this.uniqueName}-items`).animate({
           scrollTop: $(`#panel-${this.uniqueName}-items`).scrollTop() + $(`#${this.uniqueName}-${this.collection.scrollTo.id_str}`).position().top
         }, 1000);

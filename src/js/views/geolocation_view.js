@@ -27,9 +27,8 @@ define('GeolocationView',[
         this.model.parseUserInput(input)
       },
 
-      modelLocationLoaded: function(){
-        latlng = this.model.latlng;
-        EventMediator.emit('map-center-request', latlng);
+      modelLocationLoaded: function(model, value){
+        EventMediator.emit('map-center-request', value);
       },
     });
 

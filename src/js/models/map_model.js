@@ -14,15 +14,8 @@ define('MapModel',[
   var MapModel = Backbone.Model.extend({
 
       defaults: {
-        'locations': {},
-        'selected': {},
-        'locationMarker':{},
-        'bounds' : {},
-        'markers': [],
-        'allMarkers': [],
-        'params': {},
-        'markerCluster': undefined,
-        'currentLocationMarker': undefined,
+        'selected': undefined,
+        'mapParams': {},
       },
 
       initialize: function (data) {
@@ -36,61 +29,43 @@ define('MapModel',[
           mapTypeId: google.maps.MapTypeId.ROADMAP
         });
 
-        this.markerCluster = new ClusterModel(this.map, this.get('markers'),[
-          {listen:"clusterclick", context:console, callback:console.log},
-        ]);
-      },
-
-      setCenter: function(center){
-        this.map.setCenter(center);
+        this.clusters = new ClusterModel(this.map, []);
       },
 
       updateLocationMarker: function(latlng){
-        let currentLocationMarker = this.currentLocationMarker;
-        if(currentLocationMarker !== undefined){
-          currentLocationMarker.setMap(null);
-        }
+        this.clearCurrentLocationMarker();
 
-        this.currentLocationMarker = new google.maps.Marker({
+        const params = {
           position: latlng,
           label: "currenTweets",
           map: this.map
-        });
-      },
+        };
 
-      createCluster: function(locations){
-        let markers = [];
-        for(subscriber in locations){
-          markers = locations[subscriber].map((model) => {
-              return new MarkerModel(model);
-          });
-        }
-        // this.allMarkers = this.allMarkers.concat(markers);
-        this.markerCluster.addMarkers(markers);
+        this.currentLocationMarker = new google.maps.Marker(params);
       },
 
       clear: function(){
-        this.set({
-          'locations': {},
-          'selected': {},
-          'locationMarker':{}
-        });
+        this.clearCurrentLocationMarker();
+        this.clusters.clear();
+      },
+
+      clearCurrentLocationMarker: function(){
+        if(this.currentLocationMarker !== undefined){
+          this.currentLocationMarker.setMap(null);
+        }
       },
 
       addLocations: function(locations){
 
-        this.set('locations',
-          Object.assign(this.get('locations'), locations)
-        );
-
         let markers = [];
+
         for(subscriber in locations){
           markers = locations[subscriber].map((model) => {
               return new MarkerModel(model);
           });
         }
-        // this.allMarkers = this.allMarkers.concat(markers);
-        this.markerCluster.addMarkers(markers);
+
+        this.clusters.addMarkers(markers);
       },
 
       updateSelectedCluster: function(cluster){
@@ -103,15 +78,13 @@ define('MapModel',[
         });
 
         this.set('selected', markers[0].model)
-
-        // EventMediator.emit('map-cluster-selected', this.selected);
         this.updateLocationMarker({lat:lat, lng:lng});
       },
 
       updateBounds: function(data){
         let bounds = this.map.getBounds();
         let center = this.map.getCenter();
-        let clusters = this.markerCluster.getClusters();
+        let clusters = this.clusters.getClusters();
 
         let lat = center.lat();
         let lng = center.lng();
@@ -136,13 +109,12 @@ define('MapModel',[
         };
 
         for(let cluster of clusters){
-          console.log(cluster.markers_.length);
           for(let marker of cluster.markers_){
             marker.model.changeVisible(true);
           }
         }
 
-        this.set('params', params);
+        this.set('mapParams', params);
       },
   });
 

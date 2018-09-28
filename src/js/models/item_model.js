@@ -19,19 +19,21 @@ define('ItemModel',[
       },
 
       changeVisible: function(value){
-        this.visible = value;
+        this.set('visible', value);
+        // this.visible = value;
       },
       updateView: function(){
         this.trigger('change:update');
-        this.trigger('change:updateDone');
       },
 
       getLatLng: function(){
-        if(this.latlng === null){
+        let latlng = this.get('latlng');
+
+        if(latlng === null){
           return null;
         }
         let obj = {};
-        obj[this.id_str] = this.latlng;
+        obj[this.id_str] = latlng;
         return obj;
       },
 

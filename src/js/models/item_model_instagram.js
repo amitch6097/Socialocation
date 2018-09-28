@@ -8,18 +8,20 @@ define('ItemModelInstagram',[
 
   var ItemModelInstagram = ItemModel.extend({
 
+      defaults:{
+        'modelType': "instagram",
+        'selected': false,
+        'visible': false,
+      },
+
       initialize: function (data) {
-        this.modelType = "instagram";
-        this.node = data.node;
-        this.latlng = {lat: data.lat, lng:data.lng};
+        this.set('latlng', {lat: data.lat, lng:data.lng});
         this.id_str = data.id_str;
-        this.viewType = data.viewType;
-        this.selected = false;
-        this.visible = false;
       },
 
       getLink: function(){
-        return this.node.thumbnail_src;
+        let node = this.get('node');
+        return node.thumbnail_src;
       },
 
   });

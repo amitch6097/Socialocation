@@ -8,12 +8,11 @@ define('GeolocationModel',[
 
   var GeolocationModel = Backbone.Model.extend({
 
-      url: "/api/geolocation",
-
-      initialize: function () {
-        this.params = {};
-        this.geocoder = new google.maps.Geocoder();
-        return this;
+      defaults: {
+        'params' : {},
+        'latlng' : {},
+        'timeout' : false,
+        'geocoder' : new google.maps.Geocoder()
       },
 
       parseUserInput: function(input){
@@ -33,31 +32,33 @@ define('GeolocationModel',[
         // 42.9653,-85.6739
         let lat = parseFloat(splitInput[0]);
         let lng = parseFloat(splitInput[1]);
-        this.dataLoaded({lat: lat, lng:lng});
+        this.set('latlng', {lat: lat, lng: lng});
       },
 
       fetchData: function(query){
-        if(this.timeout){
+        const timeout = this.get('timeout');
+        if(timeout){
           return;
         }
-        this.timeout  = true;
+        this.set('timeout', true);
 
-        this.geocoder.geocode( { 'address': query}, (results, status) => {
-          if (status == 'OK') {
-            this.dataLoaded(results)
-           } else {
-             console.log('Geocode was not successful for the following reason: ' + status);
-           }
-        });
+        const geocoder = this.get('geocoder');
+        geocoder.geocode(
+          {'address': query},
+          this.geocodeDataLoad.bind(this)
+        );
 
-        setTimeout(() => {this.timeout = false;}, 1000);
+        setTimeout(() => {this.set('timeout', false)}, 1000);
       },
 
-      dataLoaded: function(results){
-        let lat = results[0].geometry.location.lat();
-        let lng = results[0].geometry.location.lng();
-        this.latlng = {lat: lat, lng: lng};
-        this.trigger("change:latlng")
+      geocodeDataLoad: function(results, status){
+        if (status == 'OK') {
+          let lat = results[0].geometry.location.lat();
+          let lng = results[0].geometry.location.lng();
+          this.set('latlng', {lat: lat, lng: lng});
+         } else {
+           console.log('Geocode was not successful for the following reason: ' + status);
+         }
       },
 
   });

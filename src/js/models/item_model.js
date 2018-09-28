@@ -22,7 +22,8 @@ define('ItemModel',[
         this.visible = value;
       },
       updateView: function(){
-        this.trigger('change:updateView')
+        this.trigger('change:update');
+        this.trigger('change:updateDone');
       },
 
       getLatLng: function(){
@@ -30,7 +31,7 @@ define('ItemModel',[
           return null;
         }
         let obj = {};
-        obj[this.id] = this.latlng;
+        obj[this.id_str] = this.latlng;
         return obj;
       },
 

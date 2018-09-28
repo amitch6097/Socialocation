@@ -9,16 +9,13 @@ define('ItemModelTweet',[
   var ItemModelTweet = ItemModel.extend({
 
       initialize: function (data) {
-        this.modelType = "tweet";
-        this.id = data.id_str;
-        this.id_str = data.id_str
-        this.cid = data.id_str;
+        this.modelType = "twitter";
+        this.id_str = data.id_str;
         this.username = data.user.screen_name;
         this.latlng = data.latlng;
         this.selected = false;
         this.visible = false;
         this.data = data;
-
       },
 
       getLink: function(){

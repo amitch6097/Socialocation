@@ -1,13 +1,14 @@
 define('TweetCollection',[
 	'backbone',
   'ItemModelTweet',
-  'EventMediator'
+  'ItemCollection',
+	'EventMediator'
 ], function (
-  Backbone, ItemModelTweet, EventMediator
+  Backbone, ItemModelTweet, ItemCollection, EventMediator
 ){
   var LAT_LNG_TO_MILES = function(miles){return miles*69;}
 
-	var TweetCollection = Backbone.Collection.extend({
+	var TweetCollection = ItemCollection.extend({
 
       model: ItemModelTweet,
       url: '/api/tweets',
@@ -21,140 +22,45 @@ define('TweetCollection',[
       },
 
       initialize: function(models, options){
-        this.timeout = false;
-        this.scrollTo = undefined;
-
-        this.markers = [];
-        this.clusters = [];
-
-        this.allModels = {};
-        this.settings = {remove: false, collapse: false};
-
         this.bounds = options.bounds;
         this.params = {geocode: this.boundsQueryToString(this.bounds)}
+        this.timeout = false;
+        this.scrollTo = undefined;
+        this.clusters = [];
+        this.allModels = {};
+        this.settings = {hide: false, pause: false};
 
         EventMediator.listen('map-bounds-changed', this.mapBoundsChange, this);
         EventMediator.listen('map-cluster-selected', this.mapClusterSelected, this);
+
         this.fetchData(this.params);
         return this;
       },
 
-      setSettings: function(settings){
-        this.settings = Object.assign(this.settings, settings);
-        if(this.settings.remove === true){
-          this.forceClear();
-        }
-      },
+			mapBoundsChange: function(data){
+				this.bounds = data.bounds;
+        this.clusters = data.clusters;
+				data.query = {geocode: this.boundsQueryToString(data.bounds)};
+        if(data.query.geocode === this.params.geocode) return;
+				ItemCollection.prototype.mapBoundsChange.apply(this, [data])
+			},
 
       clear: function(){
-        this.scrollTo = undefined;
-        this.allModels = {};
-        this.markers = [];
-        this.clusters = [];
-        this.each((model) => {
-          model.hide();
-        });
-        // this.each((model)=>{
-        //   this.remove(model, {silent: true})
-        // })
+				ItemCollection.prototype.clear.apply(this)
         EventMediator.emit('twitter-clear', null);
       },
 
       setSearchValue: function(searchValue){
-        if(this.settings.remove === true) return;
         this.params = Object.assign(this.params, {q:searchValue});
       },
 
-      forceClear: function(){
-        this.markers.forEach((mMarker) => {
-          mMarker.model.hide();
-        });
-      },
-
-      forceRender: function(){
-        if(this.settings.remove === true) return;
-
-        // MARK AND CLEAR
-        //mark all visible cluster models as true
-        this.clusters.forEach((cluster) => {
-          cluster.markers_.forEach((cMarker) =>{
-            cMarker.model.changeVisible(true);
-          });
-        });
-
-        //asks each view to clear for us
-        this.markers.forEach((mMarker) => {
-          mMarker.model.updateView();
-        });
-      },
-
-      mapBoundsChange: function(data){
-        this.markers = data.markers;
-        this.clusters = data.clusters;
-        this.bounds = data.bounds;
-
-        this.forceRender();
-        let query = {geocode: this.boundsQueryToString(this.bounds)};
-        this.fetchData(query);
-      },
-
-      fetchData: function(query){
-        if(this.timeout){
-          return;
-        }
-        this.timeout  = true;
-
-        this.params = Object.assign(this.params, query);
-        this.fetch({
-          data: this.params,
-          processData: true,
-          remove: true,
-          success: this.dataLoaded.bind(this),
-          error: (collection, response) => {
-						throw "ERROR FETCHING TWEETS";
-					}
-        });
-
-        setTimeout(() => {this.timeout = false;}, 1000);
-      },
-
-      dataLoaded: function(collection, response, options){
-        collection.each((model) => {
-          this.allModels[model.id_str] = model;
-        });
-
-        this.newElements = this.models;
-        EventMediator.emit("collection-locations-loaded", {twitter: this.models});
-
-        if(this.settings.remove === true) return;
-        this.trigger("change:newElements");
-      },
-
-      selectTweetHover: function(cid){
-        let model = this.allModels[cid];
-        EventMediator.emit('item-hover-request', model.latlng);
-      },
-
-      mapClusterSelected: function(cid){
-        if(this.settings.remove === true) return;
-        this.scrollTo = cid;
-        this.trigger("change:scrollTo");
-
-        // clusterCids.forEach((cid) => {
-        //   let model = this.get(cid);
-        //   model.selected = true;
-        //   model.set({selected: true});
-        // });
-      },
+			showIds: function(ids){
+				ids.forEach((id) => {
+					this.allModels[id].show();
+				});
+			},
 
     });
-
-    TweetCollection.prototype.set = function(tweets) {
-      let newTweets = _.reject(tweets, (tweet) => {
-        return this.allModels[tweet.id_str] !== undefined;
-      });
-      return Backbone.Collection.prototype.set.call(this, newTweets);
-    }
 
 	return TweetCollection;
 });

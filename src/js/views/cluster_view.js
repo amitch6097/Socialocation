@@ -1,15 +1,16 @@
 define('ClusterView',[
   'backbone',
+  'tpl!views/templates/cluster_view.tpl',
   'TweetView',
   'InstagramView',
   'gmaps'
   ],
   function(
-    Backbone, TweetView, InstagramView, gmaps
+    Backbone, ClusterViewTemplate, TweetView, InstagramView, gmaps
   ){
 
     var VIEW_TYPES  = {
-      "tweet" : TweetView,
+      "twitter" : TweetView,
       "instagram" : InstagramView
     }
 
@@ -25,16 +26,7 @@ define('ClusterView',[
         this.index = 0;
         this.point;
 
-
-        this.html = `
-        <div class="holder-title" id="holder-map-title">
-          <button id="holder-title-previous" >Previous</button>
-          <button id="holder-title-next" >Next</button>
-        </div>
-        <div class="holder-items" id="holder-map-items">
-        </div>
-        `
-
+        this.html = ClusterViewTemplate();
         $(this.el).html(this.html);
         this.subElement = '#holder-map-items';
 
@@ -59,7 +51,9 @@ define('ClusterView',[
       render: function(){
         $(this.subElement).empty();
         this.$el.css({left:this.point.x, top:this.point.y});
-        this.addTweet(this.marker.model);
+
+        this.addItem(this.marker.model);
+
         this.$el.css({visibility: "visible"});
         this.$el.css({ 'max-height': 'calc(100% - ' + this.point.y+ 'px)' });
         $(this.subElement).css({ 'max-height': 'calc(100% - ' + this.point.y+ 'px)' });
@@ -109,16 +103,15 @@ define('ClusterView',[
         this.render();
       },
 
-      addTweet: function(model){
-        console.log("Double>")
+      addItem: function(model){
         let modelType = model.modelType
         let viewObject = VIEW_TYPES[modelType];
-        let tweet = new viewObject({
+        let item = new viewObject({
           el: this.subElement,
           model: model,
           width: 100
         });
-        tweet.render();
+        item.render();
       },
 
     });

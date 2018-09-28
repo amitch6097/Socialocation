@@ -1,8 +1,9 @@
 define('PanelHeadingView',[
-  'backbone'
+  'backbone',
+  'tpl!views/templates/panel_heading_view.tpl'
   ],
   function(
-    Backbone
+    Backbone, PanelHeadingViewTemplate
   ){
 
     var PanelHeadingView = Backbone.View.extend({
@@ -10,14 +11,9 @@ define('PanelHeadingView',[
       initialize: function(data) {
         this.el = data.el;
 
-        this.template = _.template(`
-        <button id="twitter-remove" >Remove</button>
-        <%= heading %>
-        `);
-
-        $(this.el).html(this.template({heading: data.heading}));
+        this.template = PanelHeadingViewTemplate;
+        $(this.el).html(this.template({heading: data.heading, uniqueName: data.uniqueName}));
         return this;
-
       },
 
       render: function(){

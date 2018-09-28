@@ -21,7 +21,7 @@ define('MapModel',[
 
       },
 
-      clear: async function(){
+      clear: function(){
         this.locations = {};
         this.selected = {};
         this.locationMarker = {};
@@ -44,10 +44,9 @@ define('MapModel',[
         markers.forEach((marker) => {
           marker.model.show();
         });
-        this.selected = markers[0].model.cid;
-        // this.selected = markers.map((marker) => {
-        //   return marker['label']
-        // });
+
+        this.selected = markers[0].model;
+
         EventMediator.emit('map-cluster-selected', this.selected);
         this.set('locationMarker', {lat:lat, lng:lng});
       },
@@ -55,7 +54,6 @@ define('MapModel',[
       updateBounds: function(data){
         let bounds = data.bounds;
         let center = data.center;
-        let markers = data.markers;
 
         let lat = center.lat();
         let lng = center.lng();
@@ -76,9 +74,14 @@ define('MapModel',[
             },
             dist: distMax
           },
-          markers: markers,
           clusters: data.clusters,
         };
+
+        for(let cluster of data.clusters){
+          for(let marker of cluster.markers_){
+            marker.model.changeVisible(true);
+          }
+        }
 
         EventMediator.emit("map-bounds-changed", params);
       }

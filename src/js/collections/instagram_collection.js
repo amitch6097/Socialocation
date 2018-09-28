@@ -2,11 +2,12 @@ define('InstagramCollection',[
 	'backbone',
   'ItemModelInstagram',
   'EventMediator',
+	'ItemCollection',
 ], function (
-  Backbone, ItemModelInstagram, EventMediator
+  Backbone, ItemModelInstagram, EventMediator, ItemCollection
 ){
 
-	var InstagramCollection = Backbone.Collection.extend({
+	var InstagramCollection = ItemCollection.extend({
 
       model: ItemModelInstagram,
       url: '/api/instagram',
@@ -16,57 +17,38 @@ define('InstagramCollection',[
       },
 
       initialize: function(models, options){
-        this.bounds = options.bounds;
-        this.params = {lat: this.bounds.center.lat, lng: this.bounds.center.lng};
+				this.bounds = options.bounds;
+				this.params = {lat: this.bounds.center.lat, lng: this.bounds.center.lng};
+        this.timeout = false;
+        this.scrollTo = undefined;
+        this.clusters = [];
         this.allModels = {};
         this.settings = {remove: false, collapse: false};
+
+        EventMediator.listen('map-bounds-changed', this.mapBoundsChange, this);
+        EventMediator.listen('map-cluster-selected', this.mapClusterSelected, this);
+
         this.fetchData(this.params);
+				return this;
       },
 
-      fetchData: function(query){
-        if(this.timeout){
-          return;
-        }
-        this.timeout  = true;
+			mapBoundsChange: function(data){
+				this.bounds = data.bounds;
+        this.clusters = data.clusters;
+				data.query = {lat: this.bounds.center.lat, lng: this.bounds.center.lng};
+        if(Math.abs(data.query.lat - this.params.lat)  < 0.0001 &&
+          Math.abs(data.query.lng - this.params.lng) < 0.0001
+        ) return;
 
-        this.params = Object.assign(this.params, query);
-        this.fetch({
-          data: this.params,
-          processData: true,
-          remove: true,
-          success: this.dataLoaded.bind(this),
-          error: (collection, response) => {
-            throw "ERROR FETCHING TWEETS";
-          }
-        });
+        ItemCollection.prototype.mapBoundsChange.apply(this, [data])
+			},
 
-        setTimeout(() => {this.timeout = false;}, 1000);
-      },
-
-      dataLoaded: function(collection, response, options){
-        console.log(response);
-      },
-
-      dataLoaded: function(collection, response, options){
-        collection.each((model) => {
-          this.allModels[model.id] = model;
-        });
-
-        this.newElements = this.models;
-        EventMediator.emit("collection-locations-loaded", {instagram: this.models});
-
-        if(this.settings.remove === true) return;
-        this.trigger("change:newElements");
+			clear: function(){
+				ItemCollection.prototype.clear.apply(this)
+        EventMediator.emit('instagram-clear', null);
       },
 
     });
-
-    InstagramCollection.prototype.set = function(instagrams) {
-      let newInstagram = _.reject(instagrams, (instagram) => {
-        return this.allModels[instagram.id] !== undefined;
-      });
-      return Backbone.Collection.prototype.set.call(this, newInstagram);
-    }
 
 	return InstagramCollection;
 });

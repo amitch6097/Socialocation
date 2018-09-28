@@ -7,7 +7,7 @@ define('EventMediator',[
 
     var EventMediator = function(){
 
-      let events = {
+      var events = {
         'twitter-clear':[],
         'collection-locations-loaded':[],
         'map-center-request':[],
@@ -25,7 +25,7 @@ define('EventMediator',[
         return this;
       };
 
-      var emit = async function(event, data){
+      var emit = function(event, data){
         if(!events[event]) return false;
         events[event].forEach((subscription) => {
           subscription.callback.apply(subscription.obj, [data])

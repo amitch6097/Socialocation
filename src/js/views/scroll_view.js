@@ -19,7 +19,6 @@ define('ScrollView',[
         },
 
         render: function() {
-          // $(this.el).empty();
           this.collection.each((model) => {
             var view = new viewObj({
               el: this.el,

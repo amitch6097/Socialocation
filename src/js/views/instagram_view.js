@@ -1,8 +1,9 @@
 define('InstagramView',[
-  'backbone'
+  'backbone',
+  'tpl!views/templates/instagram_view.tpl',
   ],
   function(
-    Backbone
+    Backbone, InstagramViewTemplate
   ){
 
     var InstagramView = Backbone.View.extend({
@@ -12,17 +13,12 @@ define('InstagramView',[
         this.el = data.el;
         this.width = data.width === undefined ? 300 : data.width;
 
-        this.template = _.template(`
-          <img src="<%= link %>" alt="Smiley face" height="300" width="300">
-        `);
-
+        this.template = InstagramViewTemplate;
         let link = this.model.getLink();
-
         this.html = this.template({
-          link: link
+          link: link,
+          id_str: this.model.id_str
         });
-        this.render();
-
       },
 
       render: function() {

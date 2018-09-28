@@ -1,10 +1,11 @@
 define('GeolocationView',[
   'backbone',
+  'tpl!views/templates/geolocation_view.tpl',
   'GeolocationModel',
   'EventMediator',
   ],
   function(
-    Backbone, GeolocationModel, EventMediator
+    Backbone, GeolocationViewTemplate, GeolocationModel, EventMediator
   ){
 
     var GeolocationView = Backbone.View.extend({
@@ -15,13 +16,7 @@ define('GeolocationView',[
 
       initialize: function(data) {
         this.model = new GeolocationModel({});
-        this.html = `
-        <div id="map-options">
-          <input id="map-input-search" type="text">
-          <button id="map-button-search">Submit</button>
-        </div>
-        `;
-
+        this.html = GeolocationViewTemplate();
         $(this.el).html(this.html);
 
         this.model.on("change:latlng", this.modelLocationLoaded.bind(this))

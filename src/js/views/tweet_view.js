@@ -1,8 +1,9 @@
 define('TweetView',[
-  'backbone'
+  'backbone',
+  'tpl!views/templates/tweet_view.tpl',
   ],
   function(
-    Backbone
+    Backbone, TweetViewTemplate
   ){
 
     var TweetView = Backbone.View.extend({
@@ -12,16 +13,8 @@ define('TweetView',[
         this.el = data.el;
         this.width = data.width === undefined ? 300 : data.width;
 
-        this.template = _.template(`
-          <blockquote class="twitter-tweet" width="<%= width %>" height="<%= width %>" data-lang="en">
-            <a href="<%= link %>">
-            </a>
-          </blockquote>
-          <script async src="https://platform.twitter.com/widgets.js"  charset="utf-8"></script>
-        `);
-
+        this.template = TweetViewTemplate;
         let link = this.model.getLink();
-
         this.html = this.template({
           link: link,
           width: this.width,

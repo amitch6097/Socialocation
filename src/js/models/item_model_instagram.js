@@ -12,8 +12,10 @@ define('ItemModelInstagram',[
         this.modelType = "instagram";
         this.node = data.node;
         this.latlng = {lat: data.lat, lng:data.lng};
-        this.id = data.id;
+        this.id_str = data.id_str;
         this.viewType = data.viewType;
+        this.selected = false;
+        this.visible = false;
       },
 
       getLink: function(){

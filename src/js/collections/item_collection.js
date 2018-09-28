@@ -2,141 +2,96 @@ define('ItemCollection',[
 	'backbone',
   'EventMediator'
 ], function (
-  Backbone, ItemModelTweet, EventMediator
+  Backbone, EventMediator
 ){
-  var LAT_LNG_TO_MILES = function(miles){return miles*69;}
 
 	var ItemCollection = Backbone.Collection.extend({
 
-      model: ItemModelTweet,
-      url: '/api/tweets',
-
-      parse:function(data){
-        return data;
-      },
-
-      boundsQueryToString(bounds){
-        return `${bounds.center.lat},${bounds.center.lng},${LAT_LNG_TO_MILES(bounds.dist)}mi`;
-      },
-
-      initialize: function(models, options){
-        this.timeout = false;
-        this.scrollTo = undefined;
-
-        this.markers = [];
-        this.clusters = [];
-
-        this.allModels = {};
-        this.settings = {remove: false, collapse: false};
-
-        this.bounds = options.bounds;
-        this.params = {geocode: this.boundsQueryToString(this.bounds)}
-
-        EventMediator.listen('map-bounds-changed', this.mapBoundsChange, this);
-        EventMediator.listen('map-cluster-selected', this.mapClusterSelected, this);
-        this.fetchData(this.params);
-        return this;
-      },
-
       setSettings: function(settings){
         this.settings = Object.assign(this.settings, settings);
-        if(this.settings.remove === true){
-          this.forceClear();
+        if(this.settings.hide === true ||
+          this.settings.pause
+        ){
+          this.forceHide();
         }
       },
 
-      clear: function(){
-        this.scrollTo = undefined;
-        this.allModels = {};
-        this.markers = [];
-        this.clusters = [];
-        this.each((model) => {
-          model.hide();
-        });
-        // this.each((model)=>{
-        //   this.remove(model, {silent: true})
-        // })
-        EventMediator.emit('twitter-clear', null);
-      },
+			clear: function(){
+				this.scrollTo = undefined;
+				this.allModels = {};
+				this.clusters = [];
+				this.each((model) => {
+					model.hide();
+				});
+			},
 
-      setSearchValue: function(searchValue){
-        if(this.settings.remove === true) return;
-        this.params = Object.assign(this.params, {q:searchValue});
-      },
-
-      forceClear: function(){
-        this.markers.forEach((mMarker) => {
-          mMarker.model.hide();
+      forceHide: function(){
+        Object.keys(this.allModels).forEach((id) => {
+          this.allModels[id].hide();
         });
       },
 
-      forceRender: function(){
-        if(this.settings.remove === true) return;
+      updateViews: function(){
+        if(this.settings.hide === true ||
+          this.settings.pause
+        ) return;
+        Object.keys(this.allModels).forEach((id_str) => {
+          this.allModels[id_str].updateView();
 
-        // MARK AND CLEAR
-        //mark all visible cluster models as true
-        this.clusters.forEach((cluster) => {
-          cluster.markers_.forEach((cMarker) =>{
-            cMarker.model.changeVisible(true);
-          });
-        });
-
-        //asks each view to clear for us
-        this.markers.forEach((mMarker) => {
-          mMarker.model.updateView();
         });
       },
 
       mapBoundsChange: function(data){
-        this.markers = data.markers;
-        this.clusters = data.clusters;
-        this.bounds = data.bounds;
+        if(this.settings.pause) return;
 
-        this.forceRender();
-        let query = {geocode: this.boundsQueryToString(this.bounds)};
+				let query = data.query;
+        this.updateViews();
         this.fetchData(query);
       },
 
-      fetchData: function(query){
-        if(this.timeout){
-          return;
-        }
-        this.timeout  = true;
+			fetchData: function(query){
+				if(this.timeout){
+					return;
+				}
+				this.timeout  = true;
 
-        this.params = Object.assign(this.params, query);
-        this.fetch({
-          data: this.params,
-          processData: true,
-          remove: true,
-          success: this.dataLoaded.bind(this),
-          error: (collection, response) => {
-						throw "ERROR FETCHING TWEETS";
+				this.params = Object.assign(this.params, query);
+				this.fetch({
+					data: this.params,
+					processData: true,
+					remove: true,
+					success: this.dataLoaded.bind(this),
+					error: (collection, response) => {
+						throw "ERROR FETCHING";
 					}
-        });
-
-        setTimeout(() => {this.timeout = false;}, 1000);
-      },
+				});
+				 setTimeout(() => {this.timeout = false;}, 1000);
+			},
 
       dataLoaded: function(collection, response, options){
         collection.each((model) => {
-          this.allModels[model.id] = model;
+          this.allModels[model.id_str] = model;
         });
 
         this.newElements = this.models;
+
         EventMediator.emit("collection-locations-loaded", {twitter: this.models});
 
-        if(this.settings.remove === true) return;
+        if(this.settings.hide === true) return;
         this.trigger("change:newElements");
       },
 
-      selectHover: function(id){
-        let model = this.allModels[id];
+      selectHover: function(id_str){
+        let model = this.allModels[id_str];
         EventMediator.emit('item-hover-request', model.latlng);
       },
 
-      mapClusterSelected: function(id){
-        if(this.settings.remove === true) return;
-        this.scrollTo = id;
+      mapClusterSelected: function(id_str){
+        if(this.settings.hide === true ||
+          this.settings.pause
+        ) return;
+
+        this.scrollTo = id_str;
         this.trigger("change:scrollTo");
 
         // clusterCids.forEach((cid) => {
@@ -149,8 +104,10 @@ define('ItemCollection',[
     });
 
     ItemCollection.prototype.set = function(items) {
+      if(this.settings.pause === true) return;
+
       let newItems = _.reject(items, (item) => {
-        return this.allModels[item.id] !== undefined;
+        return this.allModels[item.id_str] !== undefined;
       });
       return Backbone.Collection.prototype.set.call(this, newItems);
     }

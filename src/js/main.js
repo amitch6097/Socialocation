@@ -3,6 +3,8 @@ require.config({
     'jquery': 'lib/jquery/dist/jquery',
     'underscore': 'lib/underscore/underscore',
     'backbone': 'lib/backbone/backbone',
+    'tpl': 'lib/requirejs-tpl-bower/tpl',
+
     'gmaps': 'https://maps.googleapis.com/maps/api/js?key=AIzaSyB9-3aZldPIm53JmxMM4ATdZdJ6Gh0qw6s',
     'gmapsTwo': 'lib/markerCluster/markercluster',
 
@@ -20,8 +22,9 @@ require.config({
     'ScrollView': 'views/scroll_view',
 
     'PanelViewTwitter':'views/panel_view_twitter',
-    'PanelViewInstagram': 'views/panel_view_instagram',
     'PanelViewTweet': 'views/panel_view_tweet',
+    'PanelViewInstagram': 'views/panel_view_instagram',
+    'PanelViewGram': 'views/panel_view_gram',
 
     'ClusterView': 'views/cluster_view',
     'GeolocationView': 'views/geolocation_view',

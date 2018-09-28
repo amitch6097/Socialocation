@@ -9,7 +9,7 @@ define('MarkerModel',[
 
       var marker = new google.maps.Marker({
         position: {lat: tweetModel.latlng.lat, lng: tweetModel.latlng.lng },
-        label: tweetModel.cid,
+        label: tweetModel.id_str,
         model: tweetModel
       });
 

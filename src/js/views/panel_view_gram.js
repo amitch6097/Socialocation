@@ -1,38 +1,36 @@
-define('PanelViewTweet',[
+define('PanelViewGram',[
   'backbone',
-  'TweetView',
-  'EventMediator',
-  'tpl!views/templates/panel_view_tweet.tpl'
+  'InstagramView',
+  'tpl!views/templates/panel_view_gram.tpl'
+
   ],
   function(
-    Backbone, TweetView, EventMediator, PanelViewTweetTemplate
+    Backbone, InstagramView, PanelViewGramTemplate
   ){
 
-    var PanelViewTweet = Backbone.View.extend({
+    var PanelViewGram = Backbone.View.extend({
 
       initialize: function(data) {
         this.model = data.model;
-
-        TweetView.prototype.initialize.apply(this, [data])
+        InstagramView.prototype.initialize.apply(this, [data])
 
         this.el = data.el;
         this.visible = false;
-        this.updating = false;
-        this.elementId = `#tweet-${this.model.id_str}`;
-        this.superTemplate = PanelViewTweetTemplate
 
-        // <button class="button-go-to-tweet-location" id="location-<%= id_str %>" data-url=<%= latlng %> >Go To Location</button>
-
+        this.superTemplate = PanelViewGramTemplate
         this.html = this.superTemplate({
           id_str: this.model.id_str,
-          tweetHtml: this.html,
+          instagramHtml: this.html,
           latlng: JSON.stringify(this.model.latlng)
         });
+
+        this.elementId = `#instagram-${this.model.id_str}`;
 
         this.model.on("change:selected", this.selected.bind(this));
         this.model.on("change:update", this.updateView.bind(this));
 
         this.updateView();
+
         return this;
       },
 
@@ -44,7 +42,6 @@ define('PanelViewTweet',[
       },
 
       updateView: function(){
-
         if(this.visible === true && this.model.visible === true){
           this.model.visible = false;
           return;
@@ -58,10 +55,9 @@ define('PanelViewTweet',[
           this.visible = false
         }
         this.model.visible = false;
-
       },
 
     });
 
-    return PanelViewTweet;
+    return PanelViewGram;
 });

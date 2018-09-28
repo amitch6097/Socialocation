@@ -17,6 +17,7 @@ define('PanelViewTwitter',[
       // "click .button-twitter-result-type": "twitterFetchResultType",
 
       events: {
+        "click .button-go-to-tweet-location": "tweetLocationRequest",
         "mouseenter .tweet-container": "tweetMouseHover",
         "click #tweet-search-submit": "tweetSearch",
         "click #twitter-hide": 'hide',
@@ -71,11 +72,12 @@ define('PanelViewTwitter',[
         });
       },
 
-      // tweetLocationRequest: function(e){
-      //   e.preventDefault();
-      //   let latlng = $(e.target).attr("data-url");
-      //   EventMediator.emit('map-center-request', JSON.parse(latlng));
-      // },
+      tweetLocationRequest: function(e){
+        e.preventDefault();
+        let latlng = $(e.target).attr("data-url");
+        console.log(latlng)
+        EventMediator.emit('map-center-request', JSON.parse(latlng));
+      },
 
       // tweetScrollTo: function(){
       //   $('#panel-twitter-items').animate({

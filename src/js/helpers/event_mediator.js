@@ -28,6 +28,7 @@ define('EventMediator',[
       var emit = function(event, data){
         if(!events[event]) return false;
         events[event].forEach((subscription) => {
+          if(subscription.callback === undefined) return;
           subscription.callback.apply(subscription.obj, [data])
         });
         return this;

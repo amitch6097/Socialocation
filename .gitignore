@@ -1,3 +1,4 @@
 src/js/lib
 node_modules
 .DS_Store
+.env

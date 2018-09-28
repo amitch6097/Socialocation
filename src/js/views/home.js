@@ -26,6 +26,7 @@ define('HomeView',[
 
         let geolocationView = new GeolocationView({el: '#geolocation-view'});
         let mapView = new MapView({el:'#map-view', bounds: this.bounds});
+        mapView.render();
         return this;
       },
 

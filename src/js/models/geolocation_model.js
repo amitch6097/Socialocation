@@ -9,6 +9,7 @@ define('GeolocationModel',[
   var GeolocationModel = Backbone.Model.extend({
 
       url: "/api/geolocation",
+
       initialize: function () {
         this.params = {};
         this.geocoder = new google.maps.Geocoder();
@@ -17,7 +18,6 @@ define('GeolocationModel',[
 
       parseUserInput: function(input){
         let splitInput = input.split(",");
-
         if(isNaN(parseInt(splitInput[0])) &&
           isNaN(parseInt(splitInput[1]))
         ){
@@ -41,21 +41,22 @@ define('GeolocationModel',[
           return;
         }
         this.timeout  = true;
+
         this.geocoder.geocode( { 'address': query}, (results, status) => {
           if (status == 'OK') {
-             let lat = results[0].geometry.location.lat();
-             let lng = results[0].geometry.location.lng();
-             this.dataLoaded({lat: lat, lng: lng});
+            this.dataLoaded(results)
            } else {
-             alert('Geocode was not successful for the following reason: ' + status);
+             console.log('Geocode was not successful for the following reason: ' + status);
            }
         });
 
         setTimeout(() => {this.timeout = false;}, 1000);
       },
 
-      dataLoaded: function(latlng){
-        this.latlng = latlng;
+      dataLoaded: function(results){
+        let lat = results[0].geometry.location.lat();
+        let lng = results[0].geometry.location.lng();
+        this.latlng = {lat: lat, lng: lng};
         this.trigger("change:latlng")
       },
 

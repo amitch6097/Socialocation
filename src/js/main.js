@@ -1,13 +1,11 @@
 require.config({
   paths: {
-    'jquery': 'lib/jquery/dist/jquery',
-    'underscore': 'lib/underscore/underscore',
-    'backbone': 'lib/backbone/backbone',
+    'jquery': 'lib/jquery/dist/jquery.min',
+    'underscore': 'lib/underscore/underscore-min',
+    'backbone': 'lib/backbone/backbone-min',
     'tpl': 'lib/requirejs-tpl-bower/tpl',
-
     'gmaps': 'https://maps.googleapis.com/maps/api/js?key=AIzaSyB9-3aZldPIm53JmxMM4ATdZdJ6Gh0qw6s',
-    'gmapsTwo': 'lib/markerCluster/markercluster',
-
+    'markerclustererplus': 'lib/markerclustererplus/src/markerclusterer.min',
 
     'EventMediator': 'helpers/event_mediator',
     'Router': 'models/router',
@@ -33,17 +31,14 @@ require.config({
     'InstagramView': 'views/instagram_view',
     'TweetView': 'views/tweet_view',
 
-
-
     'ItemModel': 'models/item_model',
     'ItemModelTweet': 'models/item_model_tweet',
     'ItemModelInstagram': 'models/item_model_instagram',
 
     'MapModel':'models/map_model',
     'MarkerModel': 'models/marker_model',
-    'ClusterMarkerModel': 'models/cluster_marker_model',
+    'ClusterModel': 'models/cluster_model',
     'GeolocationModel': 'models/geolocation_model',
-
 
     'ItemCollection': 'collections/item_collection',
     'TweetCollection': 'collections/tweet_collection',

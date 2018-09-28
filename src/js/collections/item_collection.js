@@ -33,11 +33,11 @@ define('ItemCollection',[
 
       updateViews: function(){
         if(this.settings.hide === true ||
-          this.settings.pause
+          this.settings.pause == true
         ) return;
+				console.log(this.allModels)
         Object.keys(this.allModels).forEach((id_str) => {
           this.allModels[id_str].updateView();
-
         });
       },
 
@@ -86,12 +86,12 @@ define('ItemCollection',[
         EventMediator.emit('item-hover-request', model.latlng);
       },
 
-      mapClusterSelected: function(id_str){
+      mapClusterSelected: function(model){
         if(this.settings.hide === true ||
           this.settings.pause
         ) return;
 
-        this.scrollTo = id_str;
+        this.scrollTo = model;
         this.trigger("change:scrollTo");
 
         // clusterCids.forEach((cid) => {

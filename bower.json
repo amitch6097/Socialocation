@@ -5,6 +5,8 @@
     "jquery": "latest",
     "backbone": "latest",
     "underscore": "latest",
-    "requirejs": "^2.3.6"
+    "requirejs": "^2.3.6",
+    "markerclustererplus": "^2.1.4",
+    "requirejs-tpl-bower": "^0.1.0"
   }
 }

@@ -1,39 +1,96 @@
 define('MapModel',[
   'backbone',
-  'EventMediator'
+  'EventMediator',
+  'ClusterModel',
+  'MarkerModel',
   ],
   function(
-    Backbone, EventMediator
+    Backbone, EventMediator, ClusterModel, MarkerModel
   ){
 
   var LAT_LNG_TO_MILES = function(miles){return miles*69;}
+  var PARSE_LAT_LNG = function(num){return parseInt(10000 * num) / 10000;}
 
   var MapModel = Backbone.Model.extend({
 
+      defaults: {
+        'locations': {},
+        'selected': {},
+        'locationMarker':{},
+        'bounds' : {},
+        'markers': [],
+        'allMarkers': [],
+        'params': {},
+        'markerCluster': undefined,
+        'currentLocationMarker': undefined,
+      },
+
       initialize: function (data) {
 
-        this.locations = {};
-        this.selected = {};
-        this.locationMarker = {};
+        this.map = new google.maps.Map(data.mapELE,{
+          zoom:16,
+          center: new google.maps.LatLng(
+            PARSE_LAT_LNG(data.bounds.center.lat),
+            PARSE_LAT_LNG(data.bounds.center.lng)
+          ),
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        });
 
-        EventMediator.listen("collection-locations-loaded", this.loadLocations, this);
-        EventMediator.listen('item-hover-request', this.setCurrentLocationMarker, this);
+        this.markerCluster = new ClusterModel(this.map, this.get('markers'),[
+          {listen:"clusterclick", context:console, callback:console.log},
+        ]);
+      },
 
+      setCenter: function(center){
+        this.map.setCenter(center);
+      },
+
+      updateLocationMarker: function(latlng){
+        let currentLocationMarker = this.currentLocationMarker;
+        if(currentLocationMarker !== undefined){
+          currentLocationMarker.setMap(null);
+        }
+
+        this.currentLocationMarker = new google.maps.Marker({
+          position: latlng,
+          label: "currenTweets",
+          map: this.map
+        });
+      },
+
+      createCluster: function(locations){
+        let markers = [];
+        for(subscriber in locations){
+          markers = locations[subscriber].map((model) => {
+              return new MarkerModel(model);
+          });
+        }
+        // this.allMarkers = this.allMarkers.concat(markers);
+        this.markerCluster.addMarkers(markers);
       },
 
       clear: function(){
-        this.locations = {};
-        this.selected = {};
-        this.locationMarker = {};
+        this.set({
+          'locations': {},
+          'selected': {},
+          'locationMarker':{}
+        });
       },
 
-      loadLocations: function(locations){
-        this.locations = Object.assign(this.locations, locations);
-        EventMediator.emit('map-model-assign-locations', this)
-      },
+      addLocations: function(locations){
 
-      setCurrentLocationMarker: function(latlng){
-        this.set('locationMarker', latlng);
+        this.set('locations',
+          Object.assign(this.get('locations'), locations)
+        );
+
+        let markers = [];
+        for(subscriber in locations){
+          markers = locations[subscriber].map((model) => {
+              return new MarkerModel(model);
+          });
+        }
+        // this.allMarkers = this.allMarkers.concat(markers);
+        this.markerCluster.addMarkers(markers);
       },
 
       updateSelectedCluster: function(cluster){
@@ -45,15 +102,16 @@ define('MapModel',[
           marker.model.show();
         });
 
-        this.selected = markers[0].model;
+        this.set('selected', markers[0].model)
 
-        EventMediator.emit('map-cluster-selected', this.selected);
-        this.set('locationMarker', {lat:lat, lng:lng});
+        // EventMediator.emit('map-cluster-selected', this.selected);
+        this.updateLocationMarker({lat:lat, lng:lng});
       },
 
       updateBounds: function(data){
-        let bounds = data.bounds;
-        let center = data.center;
+        let bounds = this.map.getBounds();
+        let center = this.map.getCenter();
+        let clusters = this.markerCluster.getClusters();
 
         let lat = center.lat();
         let lng = center.lng();
@@ -74,18 +132,18 @@ define('MapModel',[
             },
             dist: distMax
           },
-          clusters: data.clusters,
+          clusters: clusters,
         };
 
-        for(let cluster of data.clusters){
+        for(let cluster of clusters){
+          console.log(cluster.markers_.length);
           for(let marker of cluster.markers_){
             marker.model.changeVisible(true);
           }
         }
 
-        EventMediator.emit("map-bounds-changed", params);
-      }
-
+        this.set('params', params);
+      },
   });
 
   return MapModel;

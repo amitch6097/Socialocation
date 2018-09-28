@@ -17,6 +17,7 @@
     "grunt-contrib-watch": "^0.6.1"
   },
   "dependencies": {
+    "dotenv": "^6.0.0",
     "express": "^4.16.3",
     "grunt-ts": "^6.0.0-beta.21",
     "instagram-node": "^0.5.8",

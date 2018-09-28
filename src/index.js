@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 var express = require('express')
 var app = express();
 var path = require("path");
@@ -6,23 +8,24 @@ var ig = require('instagram-node').instagram();
 var request = require("request");
 
 
+console.log(process.env)
 
 var T = new Twit({
-  consumer_key:         'GcpGCN2anSPIUx92QfGync03i',
-  consumer_secret:      'hIdD8PEZ7KbA7r5oqc8C2baebuJDqH7wn4rEndZYKbf0QevcH7',
-  access_token:         '1039961884668166144-P9uyQ2JYnhTfK9H2WSpZEIkHQ0Jy0V',
-  access_token_secret:  'Y9dnPiYaINfAOY2GHZ5wIf9Zqrgm9sh8jpD3UV91ufgxR',
+  consumer_key:         process.env.TWITTER_CONSUMER_KEY,
+  consumer_secret:      process.env.TWITTER_CONSUMER_SECRET,
+  access_token:         process.env.TWITTER_ACCESS_TOKEN,
+  access_token_secret:  process.env.TWITTER_ACCESS_TOKEN_SECRET,
   timeout_ms:           60*1000,  // optional HTTP request timeout to apply to all requests.
   strictSSL:            true,     // optional - requires SSL certificates to be valid.
 });
 
 ig.use({
-  client_id: '91a2375259584d71b13334976dc499f3',
-  client_secret: '5fda7bc6723643859cabc79aa5a1c136'
+  client_id: process.env.INSTAGRAM_CLIENT_ID,
+  client_secret: process.env.INSTAGRAM_CLIENT_SECRET,
 });
 
-var redirect_uri = 'http://localhost:3000/handleauth';
-var access_token = '8578977274.91a2375.539e53109dd14cee854b99d1307d720b';
+var redirect_uri = process.env.INSTAGRAM_REDIRECT_URI;
+var access_token = process.env.INSTAGRAM_ACCESS_TOKEN;
 var timeout = false;
 
 

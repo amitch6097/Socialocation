@@ -18,10 +18,9 @@ define('PanelViewTweet',[
         this.el = data.el;
         this.visible = false;
         this.updating = false;
-        this.elementId = `#tweet-${this.model.id_str}`;
+        this.elementId = `#twitter-${this.model.id_str}`;
         this.superTemplate = PanelViewTweetTemplate
 
-        // <button class="button-go-to-tweet-location" id="location-<%= id_str %>" data-url=<%= latlng %> >Go To Location</button>
 
         this.html = this.superTemplate({
           id_str: this.model.id_str,
@@ -44,7 +43,7 @@ define('PanelViewTweet',[
       },
 
       updateView: function(){
-
+        console.log(this.visible, this.model.visible )
         if(this.visible === true && this.model.visible === true){
           this.model.visible = false;
           return;

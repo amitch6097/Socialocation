@@ -34,6 +34,7 @@ define('PanelView',[
       },
 
       scrollTo: function(){
+        console.log("SCROLL")
         if(this.uniqueName !== this.collection.scrollTo.modelType) return;
         $(`#panel-${this.uniqueName}-items`).animate({
           scrollTop: $(`#panel-${this.uniqueName}-items`).scrollTop() + $(`#${this.uniqueName}-${this.collection.scrollTo.id_str}`).position().top

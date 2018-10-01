@@ -18,13 +18,13 @@ define('GeolocationView',[
         this.model = new GeolocationModel({});
         this.html = GeolocationViewTemplate();
         $(this.el).html(this.html);
-
         this.model.on("change:latlng", this.modelLocationLoaded.bind(this))
       },
 
       userLocationInput: function(e){
         let input = $('#map-input-search').val();
         this.model.parseUserInput(input)
+        EventMediator.emit('map-clear-all');
       },
 
       modelLocationLoaded: function(model, value){

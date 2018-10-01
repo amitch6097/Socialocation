@@ -32,7 +32,6 @@ define('PanelViewTweet',[
         this.model.on("change:update", this.updateView.bind(this));
 
         this.updateView();
-        return this;
       },
 
       selected: function(){

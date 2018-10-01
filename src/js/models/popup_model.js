@@ -21,6 +21,8 @@ define('PopupModel',[
       },
 
       populate: function(cluster){
+        this.set(this.defaults, {silent: true});
+
         const point = this.fromLatLngToPoint(cluster.getCenter(), cluster.getMap());
         const markers = cluster.getMarkers();
         const next = markers.length > 1;
@@ -28,7 +30,6 @@ define('PopupModel',[
         this.set({
           'markers': markers,
           'marker': markers[0],
-          'index': 0,
           'point': point,
           'next': next
         });

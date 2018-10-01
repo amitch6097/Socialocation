@@ -7,9 +7,6 @@ var Twit = require('twit');
 var ig = require('instagram-node').instagram();
 var request = require("request");
 
-
-console.log(process.env)
-
 var T = new Twit({
   consumer_key:         process.env.TWITTER_CONSUMER_KEY,
   consumer_secret:      process.env.TWITTER_CONSUMER_SECRET,

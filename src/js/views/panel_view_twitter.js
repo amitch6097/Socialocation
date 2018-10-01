@@ -27,19 +27,20 @@ define('PanelViewTwitter',[
       },
 
       initialize: function(options) {
-        this.subView = PanelViewTweet;
-        this.uniqueName = "twitter";
-        this.removedIds = [];
-        this.heading = PanelViewTwitterTemplate();
-
         this.collection = new TweetCollection(null, {bounds: options.bounds});
+        this.removedIds = [];
+
+        options['uniqueName'] = "twitter";
+        options['subView'] = PanelViewTweet;
+        options['heading'] = PanelViewTwitterTemplate();
 
         PanelView.prototype.initialize.apply(this, [options]);
       },
 
       showPanel: function(settings){
         this.collection.setSettings(settings);
-        let css = {height: "90%"};
+        let css = {height: "95%", width: "330px" };
+
         this.changeView(this.holdHtml,
           css,
           {begin: {left: "-=500"}, end: {left: "+=500"}},
@@ -55,7 +56,7 @@ define('PanelViewTwitter',[
         this.collection.setSettings(settings)
         this.holdHtml = $(this.el).html();
 
-        let css = {height: "auto"};
+        let css = {height: "auto", width: "auto"};
         this.changeView(
           newHtml,
           css,
@@ -89,7 +90,7 @@ define('PanelViewTwitter',[
         let searchValue = $("#tweet-search-text").val();
         this.collection.setSearchValue(searchValue);
         this.clear();
-        this.collection.clear();
+
       },
 
       tweetMouseHover: function(e){

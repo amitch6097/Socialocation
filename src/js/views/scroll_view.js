@@ -11,7 +11,6 @@ define('ScrollView',[
         initialize: function(data) {
           this.collection = data.collection;
           this.el = data.el;
-          return this;
         },
 
         clear: function(){

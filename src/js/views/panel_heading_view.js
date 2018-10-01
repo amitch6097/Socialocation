@@ -12,8 +12,7 @@ define('PanelHeadingView',[
         this.el = data.el;
 
         this.template = PanelHeadingViewTemplate;
-        $(this.el).html(this.template({heading: data.heading, uniqueName: data.uniqueName}));
-        return this;
+        $(this.el).html(this.template({heading: data.heading, uniqueName: data.uniqueName}));        
       },
 
       render: function(){

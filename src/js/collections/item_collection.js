@@ -5,58 +5,73 @@ define('ItemCollection',[
   Backbone, EventMediator
 ){
 
+	// REALLY ALL OF THIS SHOULD HAVE BEEN PUT IN A MODEL
 	var ItemCollection = Backbone.Collection.extend({
 
       setSettings: function(settings){
-        this.settings = Object.assign(this.settings, settings);
-        if(this.settings.hide === true ||
-          this.settings.pause
+        settings = Object.assign(this.attributeGet('settings'), settings);
+				this.attributeSet('settings', settings);
+
+        if(settings.hide === true ||
+          settings.pause === true
         ){
           this.forceHide();
         }
       },
 
 			clear: function(){
-				this.scrollTo = undefined;
-				this.allModels = {};
-				this.clusters = [];
+				this.attributeSet({
+					scrollTo: undefined,
+					allModels: {},
+					clusters: [],
+				});
+
 				this.each((model) => {
 					model.hide();
 				});
 			},
 
       forceHide: function(){
-        Object.keys(this.allModels).forEach((id) => {
-          this.allModels[id].hide();
+				const allModels = this.attributeGet('allModels');
+        Object.keys(allModels).forEach((id) => {
+          allModels[id].hide();
         });
       },
 
       updateViews: function(){
-        if(this.settings.hide === true ||
-          this.settings.pause == true
+				const settings = this.attributeGet('settings');
+
+        if(settings.hide === true ||
+          settings.pause == true
         ) return;
-        Object.keys(this.allModels).forEach((id_str) => {
-          this.allModels[id_str].updateView();
+
+				const allModels = this.attributeGet('allModels');
+        Object.keys(allModels).forEach((id_str) => {
+          allModels[id_str].updateView();
         });
+
       },
 
-      mapBoundsChange: function(data){
-        if(this.settings.pause) return;
-
-				let query = data.query;
+      mapBoundsChange: function(query){
+				const settings = this.attributeGet('settings')
+        if(settings.pause) return;
         this.updateViews();
         this.fetchData(query);
       },
 
 			fetchData: function(query){
-				if(this.timeout){
+				const timeout = this.attributeGet('timeout');
+				if(timeout){
 					return;
 				}
-				this.timeout  = true;
+				this.attributeSet('timeout', true);
 
-				this.params = Object.assign(this.params, query);
+				let params = this.attributeGet('params');
+				params = Object.assign(params, query);
+				this.attributeSet('params', params);
+
 				this.fetch({
-					data: this.params,
+					data: params,
 					processData: true,
 					remove: true,
 					success: this.dataLoaded.bind(this),
@@ -64,34 +79,38 @@ define('ItemCollection',[
 						throw "ERROR FETCHING";
 					}
 				});
-				 setTimeout(() => {this.timeout = false;}, 1000);
+				 setTimeout(() => {this.attributeSet('timeout', false)}, 1000);
 			},
 
       dataLoaded: function(collection, response, options){
-        collection.each((model) => {
-          this.allModels[model.id_str] = model;
-        });
+				const allModels = this.attributeGet('allModels');
+				const settings = this.attributeGet('settings');
 
-        this.newElements = this.models;
+        collection.each((model) => {
+          allModels[model.id_str] = model;
+        });
 
         EventMediator.emit("collection-locations-loaded", {twitter: this.models});
 
-        if(this.settings.hide === true) return;
-        this.trigger("change:newElements");
+				const trigger = settings.hide === true ? false : true;
+				this.attributeSet('newElements', this.models, trigger);
       },
 
       selectHover: function(id_str){
-        let model = this.allModels[id_str];
+				const allModels = this.attributeGet('allModels');
+        const model = allModels[id_str];
         EventMediator.emit('item-hover-request', model.get('latlng'));
       },
 
       mapClusterSelected: function(model){
-        if(this.settings.hide === true ||
-          this.settings.pause
+				const settings = this.attributeGet('settings');
+
+        if(settings.hide === true ||
+          settings.pause
         ) return;
 
-        this.scrollTo = model;
-        this.trigger("change:scrollTo");
+				this.attributeSet('scrollTo', model, true);
+        // this.trigger("change:scrollTo");
 
         // clusterCids.forEach((cid) => {
         //   let model = this.get(cid);
@@ -99,14 +118,48 @@ define('ItemCollection',[
         //   model.set({selected: true});
         // });
       },
-
     });
 
-    ItemCollection.prototype.set = function(items) {
-      if(this.settings.pause === true) return;
+		ItemCollection.prototype.attributeGet = function(attribute) {
+			if(!this.attributes)  this.attributes = {};
+			return this.attributes[attribute];
+		}
 
+		ItemCollection.prototype.attributeSet = function(attribute, value, trigger) {
+			if(!this.attributes) this.attributes = {};
+			// IF PARAM IS A OBJECT attributeSet({'attr': value})
+			if(attribute !== null && typeof attribute === 'object'){
+				let attributes = attribute;
+				Object.keys(attributes).forEach((attr) => {
+					this.attributes[attr] = attributes[attr];
+					// this.trigger(`change:${attr}`);
+				});
+				return;
+
+			}
+			// IF PARAM IS A STRING attributeSet('attr', value)
+			if(typeof attribute === 'string'){
+				this.attributes[attribute] = value;
+
+				// CHECK IF TRIGGER
+				if(
+					trigger !== undefined &&
+					typeof trigger === typeof true &&
+					trigger === true
+				){
+					this.trigger(`change:${attribute}`);
+				}
+				return;
+			}
+		}
+
+    ItemCollection.prototype.set = function(items) {
+			const settings = this.attributeGet('settings');
+      if(settings.pause === true) return;
+
+			const allModels = this.attributeGet('allModels');
       let newItems = _.reject(items, (item) => {
-        return this.allModels[item.id_str] !== undefined;
+        return allModels[item.id_str] !== undefined;
       });
       return Backbone.Collection.prototype.set.call(this, newItems);
     }

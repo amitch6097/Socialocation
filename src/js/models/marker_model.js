@@ -6,6 +6,7 @@ define('MarkerModel',[
   ){
 
     var MarkerModel = function(tweetModel){
+      
       const latlng = tweetModel.get('latlng');
 
       var marker = new google.maps.Marker({

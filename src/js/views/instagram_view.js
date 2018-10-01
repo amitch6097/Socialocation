@@ -11,10 +11,9 @@ define('InstagramView',[
       initialize: function(data) {
         this.model = data.model;
         this.el = data.el;
-        this.width = data.width === undefined ? 300 : data.width;
-
         this.template = InstagramViewTemplate;
         let link = this.model.getLink();
+
         this.html = this.template({
           link: link,
           id_str: this.model.id_str

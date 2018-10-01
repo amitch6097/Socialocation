@@ -18,6 +18,7 @@ define('PanelViewGram',[
         this.visible = false;
 
         this.superTemplate = PanelViewGramTemplate
+
         this.html = this.superTemplate({
           id_str: this.model.id_str,
           instagramHtml: this.html,
@@ -30,8 +31,6 @@ define('PanelViewGram',[
         this.model.on("change:update", this.updateView.bind(this));
 
         this.updateView();
-
-        return this;
       },
 
       selected: function(){

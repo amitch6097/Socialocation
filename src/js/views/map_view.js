@@ -21,6 +21,7 @@ define('MapView',[
       initialize: function(data) {
         this.$el.html(MapViewTemplate());
 
+        // NECESSARY FOR GOOGLE MAPS API
         $('#map-map').css({
           width:$( window ).width(),
           height:$( window ).height()
@@ -80,7 +81,11 @@ define('MapView',[
           this.model
         );
 
-        return this;
+        EventMediator.listen('map-clear-all',
+          this.clear,
+          this
+       );
+
       },
 
       clear: function(){

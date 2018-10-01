@@ -22,24 +22,29 @@ define('PopupView',[
       },
 
       initialize: function(data) {
-        this.$el.html(PopupViewTemplate());
         this.subElement = '#holder-map-items';
 
         this.model = new PopupModel({});
         this.model.on('change:marker', this.render, this);
-
-        return this;
       },
 
       render: function(){
+        this.$el.html(PopupViewTemplate());
+
         $(this.subElement).empty();
 
         const point = this.model.get('point');
         const previous = this.model.get('previous');
         const next = this.model.get('next');
 
+        const hidden = !previous && !next;
+        if(hidden === true){
+          $("#holder-map-title").empty();
+        }
+
         $("#holder-title-previous").prop("disabled",!previous);
         $("#holder-title-next").prop("disabled",!next);
+
 
         this.$el.css({left:point.x, top:point.y});
 
@@ -59,7 +64,6 @@ define('PopupView',[
         let item = new viewObject({
           el: this.subElement,
           model: itemModel,
-          width: 100
         });
 
       item.render();

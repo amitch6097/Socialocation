@@ -18,16 +18,15 @@ define('HomeView',[
         this.$el.html(this.html);
 
         // BOUNDS OR GRAND RAPIDS
-        this.bounds = options.bounds !== undefined ?
+        const bounds = options.bounds !== undefined ?
           options.bounds :  {center:{lat: 42.9634, lng:-85.6681}, dist: 0.015};
 
-        this.panelLeftView = new PanelViewTwitter({el:'#panel-twitter', bounds: this.bounds});
-        this.panelRightView = new PanelViewInstagram({el:'#panel-instagram', bounds: this.bounds});
+        this.panelLeftView = new PanelViewTwitter({el:'#panel-twitter', bounds: bounds});
+        this.panelRightView = new PanelViewInstagram({el:'#panel-instagram', bounds: bounds});
 
         let geolocationView = new GeolocationView({el: '#geolocation-view'});
-        let mapView = new MapView({el:'#map-view', bounds: this.bounds});
+        let mapView = new MapView({el:'#map-view', bounds: bounds});
         mapView.render();
-        return this;
       },
 
 

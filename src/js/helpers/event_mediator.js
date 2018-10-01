@@ -14,6 +14,7 @@ define('EventMediator',[
         'item-hover-request':[],
         'map-model-assign-locations':[],
         'map-bounds-changed':[],
+        'map-clear-all':[],
       };
 
       var listen = function(event, callback, obj){

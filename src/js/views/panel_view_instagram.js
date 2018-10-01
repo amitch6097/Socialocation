@@ -22,11 +22,16 @@ define('PanelViewInstagram',[
       },
 
       initialize: function(options) {
-        this.subView = PanelViewGram;
-        this.uniqueName = "instagram";
-        this.heading = PanelViewInstagramTemplate();
-
         this.collection = new InstagramCollection(null, {bounds: options.bounds});
+
+        // this.subView = PanelViewGram;
+        // this.uniqueName = "instagram";
+
+        // this.collection = new InstagramCollection(null, {bounds: options.bounds});
+        options['uniqueName'] = "instagram";
+        options['subView'] = PanelViewGram
+        options['heading'] = PanelViewInstagramTemplate();
+
         PanelView.prototype.initialize.apply(this, [options]);
       },
 
@@ -39,7 +44,7 @@ define('PanelViewInstagram',[
       showPanel: function(settings){
         this.collection.setSettings(settings);
         let html = this.holdHtml
-        let css = {height: "90%"};
+        let css = {height: "95%", width: "330px" };
         this.changeView(
           html,
           css,
@@ -51,7 +56,7 @@ define('PanelViewInstagram',[
         this.holdHtml = $(this.el).html();
         this.collection.setSettings(settings)
 
-        let css = {height: "auto"};
+        let css = {height: "auto", width: "auto"};
         this.changeView(
           newHtml,
           css,

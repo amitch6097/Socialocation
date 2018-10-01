@@ -17,7 +17,6 @@ define('Router',[
       this.homeView;
       this.homeViewHasRendered = false;
       EventMediator.listen('map-bounds-changed', this.updateURL, this);
-      return this;
     },
 
     start: function(){

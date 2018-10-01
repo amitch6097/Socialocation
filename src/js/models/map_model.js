@@ -8,7 +8,6 @@ define('MapModel',[
     Backbone, EventMediator, ClusterModel, MarkerModel
   ){
 
-  var LAT_LNG_TO_MILES = function(miles){return miles*69;}
   var PARSE_LAT_LNG = function(num){return parseInt(10000 * num) / 10000;}
 
   var MapModel = Backbone.Model.extend({
@@ -26,7 +25,8 @@ define('MapModel',[
             PARSE_LAT_LNG(data.bounds.center.lat),
             PARSE_LAT_LNG(data.bounds.center.lng)
           ),
-          mapTypeId: google.maps.MapTypeId.ROADMAP
+          mapTypeId: google.maps.MapTypeId.ROADMAP,
+          disableDefaultUI: true,
         });
 
         this.clusters = new ClusterModel(this.map, []);
@@ -37,7 +37,7 @@ define('MapModel',[
 
         const params = {
           position: latlng,
-          label: "currenTweets",
+          label: "",
           map: this.map
         };
 

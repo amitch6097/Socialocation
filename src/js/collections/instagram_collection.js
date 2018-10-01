@@ -12,40 +12,53 @@ define('InstagramCollection',[
       model: ItemModelInstagram,
       url: '/api/instagram',
 
-      parse:function(data){
-        return data;
-      },
-
       initialize: function(models, options){
-				this.bounds = options.bounds;
-				this.params = {lat: this.bounds.center.lat, lng: this.bounds.center.lng};
-        this.timeout = false;
-        this.scrollTo = undefined;
-        this.clusters = [];
-        this.allModels = {};
-        this.settings = {remove: false, collapse: false};
+
+				this.attributeSet({
+					bounds : options.bounds,
+					timeout : false,
+					scrollTo : undefined,
+					clusters : [],
+					allModels : {},
+					params : {
+						lat: options.bounds.center.lat,
+						lng: options.bounds.center.lng
+					},
+					settings : {
+						hide: false,
+						pause: false,
+					},
+				});
 
         EventMediator.listen('map-bounds-changed', this.mapBoundsChange, this);
         EventMediator.listen('map-cluster-selected', this.mapClusterSelected, this);
 
-        this.fetchData(this.params);
-				return this;
+				this.fetchData(this.attributeGet('params'));
       },
 
 			mapBoundsChange: function(data){
-				this.bounds = data.bounds;
-        this.clusters = data.clusters;
-				data.query = {lat: this.bounds.center.lat, lng: this.bounds.center.lng};
-        if(Math.abs(data.query.lat - this.params.lat)  < 0.0001 &&
-          Math.abs(data.query.lng - this.params.lng) < 0.0001
+				this.attributeSet({
+					bounds: data.bounds,
+					clusters: data.clusters
+				});
+
+				const query = {
+					lat: data.bounds.center.lat,
+					lng: data.bounds.center.lng
+				};
+
+				const params = this.attributeGet('params');
+
+        if(Math.abs(query.lat - params.lat)  < 0.0001 &&
+          Math.abs(query.lng - params.lng) < 0.0001
         ) return;
 
-        ItemCollection.prototype.mapBoundsChange.apply(this, [data])
+        ItemCollection.prototype.mapBoundsChange.apply(this, [query])
 			},
 
 			clear: function(){
 				ItemCollection.prototype.clear.apply(this)
-        EventMediator.emit('instagram-clear', null);
+        EventMediator.emit('instagram-cleared', null);
       },
 
     });

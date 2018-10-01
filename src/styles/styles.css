@@ -1,6 +1,7 @@
 body {
   background-color: white;
   margin: 0 auto;
+  font-family: Helvetica;
 }
 #nav-bar {
   font-family: Arial, Helvetica, sans-serif;
@@ -30,24 +31,24 @@ body {
 #nav-bar #nav-data ul li:hover {
   text-decoration: underline;
 }
-twitterwidget {
-  cursor: not-allowed;
+button {
+  font-family: inherit;
+  font-size: inherit;
+  color: white;
+  background: none;
+  cursor: pointer;
+  border: 1px solid white;
+  display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  outline: none;
+  position: relative;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  transition: all 0.3s;
 }
 #app-main {
   display: grid;
-}
-#app-main #app-boxes {
-  margin: 0 auto;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-#app-main #app-boxes .box {
-  margin: 100px;
-  height: 100px;
-  width: 100px;
-  background-color: black;
 }
 #app-main #home-view {
   margin: 0 auto;
@@ -56,62 +57,259 @@ twitterwidget {
 }
 #app-main #home-view #map-options {
   position: absolute;
-  z-index: 2;
-  left: 50%;
-  top: 10%;
+  z-index: 0;
+  left: 0%;
+  width: 100%;
+  margin-top: 20px;
+  display: inline-flex;
+  margin: 20px auto;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+}
+#app-main #home-view #map-options input {
+  color: black;
+  height: 38px;
+  margin-left: 20px;
+  width: 25%;
+  background-color: #fff;
+  border: 1px solid #d4dada;
+  border-radius: 3px;
+  font-size: 24px;
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+#app-main #home-view #map-options button {
+  color: black;
+  display: block;
+  margin: 0;
+  border: 1px solid #d4dada;
+  box-sizing: border-box;
+  outline: none;
+  white-space: nowrap;
+  height: 40px;
+  line-height: 40px;
+  padding: 0 14px;
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+  background: #fff;
+  border-radius: 4px;
+  font-size: 15px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+#app-main #home-view #map-options button:active {
+  background-color: #f6f9fc;
+  transform: translateY(1px);
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 #app-main #home-view .panel-moving {
   position: absolute;
-  z-index: 1;
+  width: 300px;
+  z-index: 3;
   margin: 0px;
   padding: 0px;
-  background-color: black;
   overflow: scroll;
+  background-color: white;
+  border-radius: 3px 3px 10px 10px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #e1e8ed;
+}
+#app-main #home-view .panel-moving button {
+  color: black;
+}
+#app-main #home-view .panel-moving #holder-map-title {
+  width: 300px;
+  color: black !important;
+  font-weight: 900;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #e1e8ed;
+  border-bottom: 0px;
+  border-radius: 3px 3px 0px 0px;
+}
+#app-main #home-view .panel-moving button:disabled {
+  background-color: #d8d8d8;
+  color: white;
+}
+#app-main #home-view .panel-moving #holder-title-previous {
+  width: 49%;
+  margin: 0px;
+  border: 0 solid white;
+}
+#app-main #home-view .panel-moving #holder-title-next {
+  width: 49%;
+  margin: 0px;
+  border: 0 solid white;
+}
+#app-main #home-view .panel-moving twitterwidget {
+  margin: 0 !important;
+}
+#app-main #home-view .show-button,
+#app-main #home-view .start-button {
+  padding: 10px;
+  border: 0px solid white !important;
+}
+#app-main #home-view #panel-twitter {
+  left: 0;
+  background-color: rgba(71, 160, 234, 0.7);
+}
+#app-main #home-view #panel-twitter .show-button:hover {
+  color: #0e83cd;
+  background: #fff;
+}
+#app-main #home-view #panel-twitter .start-button:hover {
+  color: #0e83cd;
+  background: #fff;
+}
+#app-main #home-view #panel-instagram {
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+#app-main #home-view #panel-instagram .show-button:hover {
+  color: rgba(0, 0, 0, 0.5);
+  background: #fff;
+}
+#app-main #home-view #panel-instagram .start-button:hover {
+  color: rgba(0, 0, 0, 0.5);
+  background: #fff;
 }
 #app-main #home-view .panel {
-  height: 90%;
+  height: 95%;
+  width: 330px;
   background-color: black;
-  padding: 10px;
   border-radius: 10px;
   margin: 20px;
   top: 0;
   position: absolute;
   z-index: 1;
 }
+#app-main #home-view .panel .hide-button {
+  border-radius: 5px 0px 0px 0px;
+}
+#app-main #home-view .panel .pause-button {
+  border-radius: 0px 5px 0px 0px;
+}
+#app-main #home-view .panel .hide-button,
+#app-main #home-view .panel .pause-button {
+  padding: 10px;
+  border-color: 0px solid rgba(0, 0, 0, 0);
+  border-top: 0px;
+  border-right: 0px;
+  color: #fff;
+  width: 50%;
+}
+#app-main #home-view .panel .hide-button {
+  border-left: 0px;
+}
+#app-main #home-view .panel #panel-instagram-title button:hover,
+#app-main #home-view .panel #panel-instagram-title button:hover {
+  color: rgba(0, 0, 0, 0.5);
+  background: #fff;
+}
+#app-main #home-view .panel #panel-twitter-title button:hover,
+#app-main #home-view .panel #panel-twitter-title button:hover {
+  color: #0e83cd;
+  background: #fff;
+}
 #app-main #home-view .panel .panel-title {
   position: relative;
   z-index: 2;
+  padding-bottom: 10px;
 }
-#app-main #home-view .panel-items {
-  position: relative;
-  height: 90%;
-  overflow: scroll;
+#app-main #home-view .panel .panel-title #twitter-search {
+  width: 100%;
+  text-align: center;
+  display: block;
 }
-#app-main #home-view #panel-instagram-items {
-  display: grid;
-  height: 85%;
+#app-main #home-view .panel .panel-title #twitter-search #tweet-search-text {
+  width: 60%;
+  border: none;
+  margin-top: 8px;
+  padding: 2px;
+  margin-right: 0px;
+  font-size: 17px;
 }
-#app-main #home-view #panel-instagram-items .instagram-container:hover {
-  margin-left: 10px;
-  box-shadow: -10px 10px 10px 0 rgba(0, 0, 0, 0.2);
+#app-main #home-view .panel .panel-title #twitter-search #tweet-search-submit {
+  padding-top: 4px;
 }
-#app-main #home-view #panel-twitter-items {
+#app-main #home-view .panel .panel-title #instagrams-options {
+  text-align: center;
+}
+#app-main #home-view .panel .panel-title #instagrams-options #instagram-authorization {
+  border: 1px solid white;
+  padding: 5px 40px 5px 40px;
+  color: white;
+  text-decoration: none;
+  font-family: inherit;
+  font-size: inherit;
+  background: none;
+  cursor: pointer;
+  display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  outline: none;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  transition: all 0.3s;
+}
+#app-main #home-view .panel .panel-title #instagrams-options #instagram-authorization:hover {
+  color: rgba(0, 0, 0, 0.5);
+  background: #fff;
+}
+#app-main #home-view .panel .panel-title .social-icon {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+#app-main #home-view .panel #panel-twitter-items {
   background-color: rgba(0, 0, 0, 0);
-  height: 85%;
 }
-#app-main #home-view #panel-twitter-items .tweet-container:hover {
+#app-main #home-view .panel #panel-twitter-items .tweet-container {
+  padding-top: 20px;
+}
+#app-main #home-view .panel #panel-twitter-items .tweet-container twitterwidget {
+  background-color: white;
+  cursor: not-allowed !important;
+  margin: 0px !important;
+  border-top: 0px !important;
+  border-bottom: 0px !important;
+  border-right: 0px !important;
+  border: 1px solid white;
+  border-radius: 0px 0px 5px 5px;
+}
+#app-main #home-view .panel #panel-twitter-items .tweet-container .button-go-to-tweet-location {
+  border-radius: 5px 5px 0px 0px;
+  color: white;
+  padding: 5px;
+}
+#app-main #home-view .panel #panel-twitter-items .tweet-container .button-go-to-tweet-location:hover {
+  color: #0e83cd;
+  background: #fff;
+}
+#app-main #home-view .panel #panel-twitter-items .tweet-container:hover {
   margin-left: 10px;
   box-shadow: -10px 10px 10px 0 rgba(0, 0, 0, 0.2);
 }
-#app-main #home-view #panel-twitter-items .tweet-container-selected {
+#app-main #home-view .panel #panel-twitter-items .tweet-container-selected {
   margin-left: 10px;
   box-shadow: -10px 10px 10px 0 rgba(0, 0, 0, 0.2);
 }
-#app-main #home-view #panel-twitter {
-  left: 0;
-  background-color: #47a0ea;
+#app-main #home-view .panel #panel-twitter-items .button-go-to-tweet-location {
+  width: 300px;
 }
-#app-main #home-view #panel-instagram {
-  right: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+#app-main #home-view .panel #panel-instagram-items {
+  display: grid;
+}
+#app-main #home-view .panel #panel-instagram-items .instagram-container:hover {
+  margin-left: 10px;
+  box-shadow: -10px 10px 10px 0 rgba(0, 0, 0, 0.2);
+}
+#app-main #home-view .panel .panel-items {
+  padding: 10px;
+  position: relative;
+  height: calc(80% - 50px);
+  overflow: scroll;
 }

@@ -13,50 +13,61 @@ define('TweetCollection',[
       model: ItemModelTweet,
       url: '/api/tweets',
 
-      parse:function(data){
-        return data;
-      },
-
       boundsQueryToString(bounds){
         return `${bounds.center.lat},${bounds.center.lng},${LAT_LNG_TO_MILES(bounds.dist)}mi`;
       },
 
       initialize: function(models, options){
-        this.bounds = options.bounds;
-        this.params = {geocode: this.boundsQueryToString(this.bounds)}
-        this.timeout = false;
-        this.scrollTo = undefined;
-        this.clusters = [];
-        this.allModels = {};
-        this.settings = {hide: false, pause: false};
+				this.attributeSet({
+					bounds : options.bounds,
+					timeout : false,
+					scrollTo : undefined,
+					clusters : [],
+					allModels : {},
+					params : {
+						geocode: this.boundsQueryToString(options.bounds)
+					},
+					settings : {
+						hide: false,
+						pause: false,
+					},
+				});
 
         EventMediator.listen('map-bounds-changed', this.mapBoundsChange, this);
         EventMediator.listen('map-cluster-selected', this.mapClusterSelected, this);
 
-        this.fetchData(this.params);
-        return this;
+        this.fetchData(this.attributeGet('params'));
       },
 
 			mapBoundsChange: function(data){
-				this.bounds = data.bounds;
-        this.clusters = data.clusters;
-				data.query = {geocode: this.boundsQueryToString(data.bounds)};
-        if(data.query.geocode === this.params.geocode) return;
-				ItemCollection.prototype.mapBoundsChange.apply(this, [data])
+				this.attributeSet({
+					bounds: data.bounds,
+					clusters: data.clusters
+				});
+
+				const query = {geocode: this.boundsQueryToString(data.bounds)}
+				const oldGeocode = this.attributeGet('params').geocode;
+
+        if(query.geocode === oldGeocode) return;
+
+				ItemCollection.prototype.mapBoundsChange.apply(this, [query])
 			},
 
       clear: function(){
 				ItemCollection.prototype.clear.apply(this)
-        EventMediator.emit('twitter-clear', null);
+        EventMediator.emit('twitter-cleared', null);
       },
 
       setSearchValue: function(searchValue){
-        this.params = Object.assign(this.params, {q:searchValue});
+				let params = this.attributeGet('params');
+        params = Object.assign(params, {q:searchValue});
+				this.attributeSet('params', params);
       },
 
 			showIds: function(ids){
+				const allModels = this.attributeGet('allModels');
 				ids.forEach((id) => {
-					this.allModels[id].show();
+					allModels[id].show();
 				});
 			},
 

@@ -11,16 +11,12 @@ define('TweetView',[
       initialize: function(data) {
         this.model = data.model;
         this.el = data.el;
-        this.width = data.width === undefined ? 300 : data.width;
 
         this.template = TweetViewTemplate;
         let link = this.model.getLink();
         this.html = this.template({
           link: link,
-          width: this.width,
         });
-
-        return this;
       },
 
       render: function() {

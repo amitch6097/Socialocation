@@ -1,4 +1,4 @@
-<blockquote class="twitter-tweet" width="<%= width %>" height="<%= width %>" data-lang="en">
+<blockquote class="twitter-tweet" width="300" data-lang="en">
   <a href="<%= link %>">
   </a>
 </blockquote>

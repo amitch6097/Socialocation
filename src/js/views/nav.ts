@@ -1,4 +1,3 @@
-declare const $: any;
 declare const define: any;
 
 interface Data {

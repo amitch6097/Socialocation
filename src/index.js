@@ -143,7 +143,6 @@ app.get('/api/instagram', function (req, res) {
                 edge['lng'] = lng;
                 edge['id_str'] = edge.node.id;
                 instagrams.push(edge)
-                break;
               }
               // });
             }

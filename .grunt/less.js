@@ -11,7 +11,7 @@ module.exports = {
   production: {
     options: {
       cleancss: true, // minify css
-      // compress: true, // minify css
+      compress: true, // minify css
     },
     files: {
       //compiling base.less into main.min.css

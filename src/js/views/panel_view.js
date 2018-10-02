@@ -32,7 +32,10 @@ define('PanelView',[
 
         this.collection.on("change:newElements", this.scrollView.render.bind(this.scrollView));
         this.collection.on("change:scrollTo", this.scrollTo.bind(this));
-        EventMediator.listen('map-clear-all', this.clear, this)
+
+        EventMediator.listen('map-clear-all', this.clear, this);
+        EventMediator.listen('map-bounds-changed', this.collection.mapBoundsChange, this.collection);
+        EventMediator.listen('map-cluster-selected', this.collection.mapClusterSelected, this.collection);
       },
 
       scrollTo: function(){

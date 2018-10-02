@@ -3,6 +3,7 @@
         "module": "commonJS",
         "alwaysStrict": true,
         "removeComments": true,
+        "target": "es6",
         "include": [
             "src/**/*"
         ],

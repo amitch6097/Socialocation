@@ -4,7 +4,7 @@
 body{
   background-color: white;
   margin: 0 auto;
-  font-family:Helvetica; 
+  font-family:Helvetica;
 }
 
 #app-body{
@@ -281,13 +281,39 @@ button {
             width: 60%;
             border: none;
             margin-top: 8px;
-            padding: 2px;
+            padding: 10px;
             margin-right:0px;
             font-size: 17px;
+            background-color: #fff;
+            border: 1px solid #d4dada;
+            border-radius: 3px;
+            box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+
+          }
+
+          button:active {
+            background-color: #f6f9fc;
+            transform: translateY(1px);
+            box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
           }
 
           #tweet-search-submit {
-            padding-top: 4px;
+            color: black;
+            margin: 0;
+            border: 1px solid #d4dada;
+            box-sizing: border-box;
+            outline: none;
+            white-space: nowrap;
+            height: 40px;
+            line-height: 40px;
+            box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+            background: #fff;
+            border-radius: 4px;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-decoration: none;
+            transition: all 0.15s ease;
           }
         }
         #instagrams-options{
@@ -336,7 +362,8 @@ button {
         background-color: rgba(0, 0, 0, 0);
 
         .tweet-container{
-          padding-top:20px;
+          margin-bottom:20px;
+
           twitterwidget {
             background-color: white;
             cursor: not-allowed !important;
@@ -371,9 +398,10 @@ button {
         }
         .button-go-to-tweet-location{
           width: 300px;
-
         }
       }
+
+
 
       #panel-instagram-items{
         display: grid;

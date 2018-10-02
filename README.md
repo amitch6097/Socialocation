@@ -14,10 +14,7 @@ npm install http-server -g npm install grunt build npm start-local
 
 This appliation requires npm. To install npm, go to https://www.npmjs.com/get-npm and follow the instructions. If you are unsure if you have npm, enter the command "npm -v" in the command line. Run "npm install" to fetch all the packages required for the app.
 
-Once installed, in the command line, install bower using the command "npm install bower".
-In the command line, navigate to the root directory, i.e. "C:/Users/../Backbone_weather".
-Run "npm install" to fetch all the packages required for the app.
-Run "grunt build". This takes all of the files from the "src" folder, and creates a productiom build under the "build" folder.
+Once installed, in the command line, install bower using the command "npm install bower".  Next to install all of the front end dependencies run "bower install".
 
 Run "npm start" This will start the application's server, pointing it to localhost:2020.
 Navigate to localhost:2020 in your browser to run the application. For full functionality, please allow location access.

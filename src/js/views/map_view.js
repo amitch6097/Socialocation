@@ -58,7 +58,7 @@ define('MapView',[
         });
 
         google.maps.event.addListener(this.model.clusters, 'clusteringend', (clusterItem) => {
-          this.model.updateBounds.apply(this.model, [clusterItem])
+          this.model.updateBounds.apply(this.model)
         });
 
         EventMediator.listen('twitter-clear',

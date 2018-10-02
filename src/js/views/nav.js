@@ -3,10 +3,16 @@ define('NavView', [
     'backbone',
     'underscore',
 ], function (Backbone, _) {
-    var NavView = Backbone.View.extend({
+    let NavView = Backbone.View.extend({
         initialize: function (data) {
             this.router = data.router;
-            var template = _.template("\n        <ul>\n          <% _.each(Object.keys(routes), function(route){ %>\n              <li id=\"nav-<%= route %>\" data-url=\"<%= route %>\"><%= route %></li>\n          <% }); %>\n        </ul>\n      ");
+            let template = _.template(`
+        <ul>
+          <% _.each(Object.keys(routes), function(route){ %>
+              <li id="nav-<%= route %>" data-url="<%= route %>"><%= route %></li>
+          <% }); %>
+        </ul>
+      `);
             this.$el.html(template({ routes: this.router.routes }));
             return this;
         },
@@ -14,8 +20,8 @@ define('NavView', [
             "click": "onClick"
         },
         onClick: function (e) {
-            var $li = $(e.target);
-            var router = this.router;
+            let $li = $(e.target);
+            let router = this.router;
             router.navigate($li.attr("data-url"), { trigger: true });
         }
     });

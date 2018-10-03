@@ -14,7 +14,7 @@ define('ItemModelInstagram',[
         'visible': false,
       },
 
-      initialize: function (data: any) {
+      initialize: function (data: any) : void{
         this.set('latlng', {lat: data.lat, lng:data.lng});
         this.id_str = data.id_str;
       },

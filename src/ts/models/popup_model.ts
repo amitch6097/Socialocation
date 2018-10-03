@@ -19,7 +19,7 @@ define('PopupModel',[
         'next': false,
       },
 
-      populate: function(cluster: App.MarkerClusterer){
+      populate: function(cluster: App.MarkerClusterer): void{
         this.set(this.defaults, {silent: true});
 
         const point: google.maps.Point = this.fromLatLngToPoint(cluster.getCenter(), cluster.getMap());

@@ -22,7 +22,7 @@ module.exports = {
             {expand: true, cwd: 'src', src: ['index.html'], dest: 'build/'},
 
             // Server
-            {expand: true, cwd: 'src', src: ['index.js'], dest: 'build/'},
+            {expand: true, cwd: 'src', src: ['server.js'], dest: 'build/'},
 
             //Templates
             {expand: true, cwd: 'src', src: ['js/views/templates/*'], dest: 'build/'},

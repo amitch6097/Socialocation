@@ -52,7 +52,7 @@ define('TweetCollection',[
 				ItemCollection.prototype.mapBoundsChange.apply(this, [query])
 			},
 
-      clear: function(){
+      clear: function(): void{
 				ItemCollection.prototype.clear.apply(this)
         EventMediator.emit('twitter-cleared', null);
       },

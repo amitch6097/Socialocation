@@ -28,15 +28,12 @@ bower install
 ```
 grunt build
 ```
-```
-npm start
-```
 
 Next, you will need to get API parameters for both the Twitter API and Instagram API
 * [Twitter Developer](https://developer.twitter.com/en.html) - Twitter developer Website
 * [Instagram Developer](https://www.instagram.com/developer/) - Instagram developer Website
 
-Following this you will need to create a .env file with the following parameters which corresponding to the API parameters you received.
+Following this you will need to create a .env file in the root project folder with the following parameters which corresponding to the API parameters you received.
 
 ```
 TWITTER_CONSUMER_KEY=?
@@ -50,7 +47,11 @@ INSTAGRAM_REDIRECT_URI=?
 INSTAGRAM_ACCESS_TOKEN=?
 ```
 
--Navigate to http://localhost:3000
+Finally run the production build with the following command
+```
+npm start
+```
+Navigate to http://localhost:3000
 
 ### Installing - Detailed
 

@@ -1,4 +1,9 @@
 src/js/lib
+src/js/scripts.js
+
 node_modules
+build
+
 .DS_Store
 .env
+.tscache

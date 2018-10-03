@@ -10,20 +10,20 @@ module.exports = {
   },
   ts: {
       // Watch all .ts files from the styles directory)
-      files: ['src/**/*.ts'],
+      files: ['src/ts/**/*.ts'],
       tasks: ['ts'],
       // Reloads the browser
       options: {
         livereload: true
       }
   },
-  requirejs: {
-      // Watch only main.js so that we do not constantly recompile the .js files
-      files: [ 'src/js/main.js' ],
-      tasks: [ 'requirejs' ],
-      // Reloads the browser
-      options: {
-        livereload: true
-      }
-  }
+  // requirejs: {
+  //     // Watch only main.js so that we do not constantly recompile the .js files
+  //     files: [ 'src/js/main.js' ],
+  //     tasks: [ 'requirejs' ],
+  //     // Reloads the browser
+  //     options: {
+  //       livereload: true
+  //     }
+  // }
 }

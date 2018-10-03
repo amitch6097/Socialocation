@@ -1,14 +1,16 @@
 {
     "compilerOptions": {
-        "module": "commonJS",
+        "module": "AMD",
         "alwaysStrict": true,
         "removeComments": true,
         "target": "es6",
         "include": [
-            "src/**/*"
+            "src/ts/**/*.ts"
         ],
         "exclude": [
             "node_modules"
-        ]
+        ],
+        "sourceMap": false,
+        "outFile": "src/js/scripts.js"
     }
 }

@@ -35,6 +35,8 @@ declare namespace App {
     label: string,
     map: any
   }
+  class Model extends Backbone.Model{
+  }
 
   class ItemModel extends Backbone.Model {
     show(): void;
@@ -86,6 +88,11 @@ declare namespace App {
     listen: string,
     context: any,
     callback: any
+  }
+
+  interface PanelAnimation {
+    begin: string,
+    end: string,
   }
 
 

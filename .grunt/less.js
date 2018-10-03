@@ -15,7 +15,7 @@ module.exports = {
     },
     files: {
       //compiling base.less into main.min.css
-      "./dist/main.min.css": "./src/styles/base.less"
+      "./build/styles/styles.css": "./src/styles/base.less"
     }
   }
 }

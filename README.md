@@ -1,12 +1,23 @@
-# Social Media Viewer by Andrew Mitchell @ 2020 Spaces
+# Socialocation
+Social Media Viewer by Andrew Mitchell @ 2020 Spaces
 
-## Introduction *** An introductory onboarding app, created using the primary stack of 2020, including: -Backbone -RequireJS -Less -Grunt
+## Introduction
+An introductory onboarding app, created using the primary stack of 2020, including:
+* Backbone
+* RequireJS
+* Typescript
+* Less
+* Grunt
 
-The application uses the following free APIs: Google Maps API, Twitter API, and Instagram API
+The application uses the following free APIs:
+* Google Maps API
+* Twitter API
+* Instagram API
 
-###Installing
+### Installing
 
--Install npm. -From the projects root directory, run these commands:
+-Install npm.
+-From the projects root directory, run these commands:
 
 ```
 npm install
@@ -21,6 +32,24 @@ grunt build
 npm start
 ```
 
+Next, you will need to get API parameters for both the Twitter API and Instagram API
+* [Twitter Developer](https://developer.twitter.com/en.html) - Twitter developer Website
+* [Instagram Developer](https://www.instagram.com/developer/) - Instagram developer Website
+
+Following this you will need to create a .env file with the following parameters which corresponding to the API parameters you received.
+
+```
+TWITTER_CONSUMER_KEY=?
+TWITTER_CONSUMER_SECRET=?
+TWITTER_ACCESS_TOKEN=?
+TWITTER_ACCESS_TOKEN_SECRET=?
+
+INSTAGRAM_CLIENT_ID=?
+INSTAGRAM_CLIENT_SECRET=?
+INSTAGRAM_REDIRECT_URI=?
+INSTAGRAM_ACCESS_TOKEN=?
+```
+
 -Navigate to http://localhost:3000
 
 ### Installing - Detailed
@@ -29,7 +58,7 @@ This appliation requires npm. To install npm, go to https://www.npmjs.com/get-np
 ```
 npm -v
 ```
-Next run 
+Next run
  ```
  npm install
  ```

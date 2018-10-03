@@ -5,7 +5,12 @@ module.exports = {
 
             // App & Main & Index
             {expand: true, flatten: true, src: ['src/js/app.js'], dest: 'build/js/'},
-            {expand: true, flatten: true, src: ['src/js/main.js'], dest: 'build/js/'},
+            {expand: true, flatten: true, src: ['src/js/main-prod.js'], dest: 'build/js/',
+                //function to rename file
+                rename: function(dest, src) {
+                    return dest + src.replace('-prod','');
+                  }
+            },
 
             // all the lib files
             {expand: true, cwd: 'src', src: ['js/lib/**'], dest: 'build/'},
@@ -18,9 +23,6 @@ module.exports = {
 
             // Server
             {expand: true, cwd: 'src', src: ['index.js'], dest: 'build/'},
-
-            // Styles
-            {expand: true, cwd: 'src', src: ['styles/styles.css'], dest: 'build/'},
 
             //Templates
             {expand: true, cwd: 'src', src: ['js/views/templates/*'], dest: 'build/'},

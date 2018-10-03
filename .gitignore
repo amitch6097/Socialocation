@@ -1,5 +1,10 @@
 src/js/lib
-src/js/scripts.js
+src/js/collections
+src/js/models
+src/js/helpers
+src/js/views/*.js
+
+.tmp
 
 node_modules
 build

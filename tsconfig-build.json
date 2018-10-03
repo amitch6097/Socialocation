@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "module": "commonJS",
+        "module": "AMD",
         "alwaysStrict": true,
         "removeComments": true,
         "target": "es6",
@@ -11,6 +11,6 @@
             "node_modules"
         ],
         "sourceMap": false,
-        "outDir": "src/js"
+        "outFile": ".tmp/scripts.js"
     }
 }

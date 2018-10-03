@@ -23,7 +23,7 @@ module.exports = function(grunt) {
 
   // Task definition
   grunt.registerTask('default', ['watch']);
-  grunt.registerTask('build', ['ts', 'less:production', 'copy:copy_files', 'babel:babelify_js_master','uglify:uglify_js_master', 'clean:clean_tmp']);
+  grunt.registerTask('build', ['ts:build', 'less:production', 'copy:copy_files', 'babel:babelify_js_master','uglify:uglify_js_master']);
 
 
 };

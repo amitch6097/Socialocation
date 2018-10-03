@@ -7,7 +7,7 @@ module.exports = {
     },
     babelify_js_master: {
       files: {
-        '.tmp/babled_scripts.js': 'src/js/scripts.js',
+        '.tmp/babled_scripts.js': '.tmp/scripts.js',
       }
     }
 }

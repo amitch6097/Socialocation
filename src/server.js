@@ -226,6 +226,7 @@ app.get('/api/san', function (req, res) {
 
 
 
+var port = process.env.PORT || 3000;
 
-app.listen(3000)
+app.listen(port)
 console.log("Running at Port 3000");

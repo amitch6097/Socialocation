@@ -67,10 +67,6 @@ app.get('/api/instagram', function (req, res) {
     res.send(data);
   }
 
-  // res.send(null);
-  // return;
-
-
   try {
 
     request({
@@ -131,20 +127,18 @@ app.get('/api/instagram', function (req, res) {
             ){
               console.log("... has top posts! ")
 
-              // locations[index]['top_posts'] = body.graphql.location.edge_location_to_top_posts.edges;
-              // edge_location_to_media
               let edges = body.graphql.location.edge_location_to_top_posts.edges;
               let lat = locations[index].lat;
               let lng = locations[index].lng;
 
-              // edges.forEach((edge) => {
               for(edge of edges){
                 edge['lat'] = lat;
                 edge['lng'] = lng;
                 edge['id_str'] = edge.node.id;
+                edge['thumbnail_src'] = edge.node.thumbnail_src;
+                delete edge['node']
                 instagrams.push(edge)
               }
-              // });
             }
             itemsProcessed++;
             if(itemsProcessed === locations.length){
@@ -189,14 +183,15 @@ app.get('/api/tweets', function (req, res) {
   });
 
   var getLatLng = function(status){
-    status.latlng = null;
+    let newStatus = {latlng: null}
+    // status.latlng = null;
 
     if(status.geo){
       let coords = status.geo.coordinates;
-      status.latlng = {lat: coords[0], lng: coords[1]};
+      newStatus.latlng = {lat: coords[0], lng: coords[1]};
     }
 
-    if(status.latlng === null &&
+    if(newStatus.latlng === null &&
       status.place &&
       status.place.bounding_box &&
       status.place.bounding_box.coordinates &&
@@ -204,9 +199,15 @@ app.get('/api/tweets', function (req, res) {
       status.place.bounding_box.coordinates[0][0]
     ){
       let coords = status.place.bounding_box.coordinates[0][0];
-      status.latlng = {lat: coords[1], lng: coords[0]};
+      newStatus.latlng = {lat: coords[1], lng: coords[0]};
     }
-    return status;
+
+    newStatus['id_str'] = status.id_str;
+    if(status.user && status.user.screen_name){
+      newStatus['username'] = status.user.screen_name;
+    }
+    
+    return newStatus;
   }
 });
 

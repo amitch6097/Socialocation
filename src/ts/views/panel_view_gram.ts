@@ -16,7 +16,6 @@ define('PanelViewGram',[
 
         this.el = data.el;
         this.visible = false;
-
         this.superTemplate = PanelViewGramTemplate
 
         this.html = this.superTemplate({
@@ -26,7 +25,6 @@ define('PanelViewGram',[
         });
 
         this.elementId = `#instagram-${this.model.id_str}`;
-
         this.model.on("change:selected", this.selected.bind(this));
         this.model.on("change:update", this.updateView.bind(this));
 

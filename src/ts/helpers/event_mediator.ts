@@ -15,6 +15,9 @@ define('EventMediator',[
         'map-model-assign-locations':[],
         'map-bounds-changed':[],
         'map-clear-all':[],
+        'full-screen-request':[],
+        'minimize-screen-request':[],
+        'panel-change':[],
       };
 
       var listen = function(event, callback, obj){

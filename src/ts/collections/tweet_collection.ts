@@ -65,9 +65,17 @@ define('TweetCollection',[
 
 			showIds: function(ids: string[]){
 				const allModels: App.IndexedItemModels = this.attributeGet('allModels');
-				ids.forEach((id: string) => {
-					allModels[id].show();
-				});
+				try {
+
+					ids.forEach((id: string) => {
+						allModels[id].show();
+					});
+
+				} catch( err ){
+					console.log(err);
+					this.fetchData(this.attributeGet('params'));
+				}
+
 			},
 
     });

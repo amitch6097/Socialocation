@@ -4,9 +4,10 @@ define('PopupView',[
   'PopupModel',
   'TweetView',
   'InstagramView',
+  'EventMediator',
   ],
   function(
-    Backbone, PopupViewTemplate, PopupModel, TweetView, InstagramView
+    Backbone, PopupViewTemplate, PopupModel, TweetView, InstagramView, EventMediator
   ){
 
     var VIEW_TYPES  = {
@@ -26,6 +27,8 @@ define('PopupView',[
 
         this.model = new PopupModel({});
         this.model.on('change:marker', this.render, this);
+        EventMediator.listen('full-screen-request', this.empty, this);
+
       },
 
       render: function(): void{

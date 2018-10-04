@@ -35,6 +35,8 @@ require.config({
         'ItemCollection': 'collections/item_collection',
         'TweetCollection': 'collections/tweet_collection',
         'InstagramCollection': 'collections/instagram_collection',
+        'ScrollPopupModel': 'models/scroll_popup_model',
+        'ScrollPopupView': 'views/scroll_popup_view',
     },
     shim: {
         underscore: {

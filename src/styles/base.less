@@ -80,6 +80,22 @@ button {
     display: flex;
     flex-direction: row;
 
+    .scroll-holder-items{
+      top: 80px;
+      z-index: 1;
+      position: absolute;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+      overflow: scroll;
+      justify-content: space-around;
+      div {
+        // padding: 10px;
+        // align-self:flex-start
+      }
+    }
+
     #map-options{
       position: absolute;
       z-index: 0;

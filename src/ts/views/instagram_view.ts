@@ -14,11 +14,15 @@ define('InstagramView',[
         this.model = data.model;
         this.el = data.el;
         this.template = InstagramViewTemplate;
+        
+        const width = data.width || 300;
         let link: string = this.model.getLink();
 
         this.html = this.template({
           link: link,
-          id_str: this.model.id_str
+          id_str: this.model.id_str,
+          width: width,
+          id: data.id
         });
       },
 

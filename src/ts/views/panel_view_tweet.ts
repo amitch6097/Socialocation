@@ -21,7 +21,6 @@ define('PanelViewTweet',[
         this.elementId = `#twitter-${this.model.id_str}`;
         this.superTemplate = PanelViewTweetTemplate
 
-
         this.html = this.superTemplate({
           id_str: this.model.id_str,
           tweetHtml: this.html,

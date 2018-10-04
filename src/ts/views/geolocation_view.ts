@@ -13,7 +13,8 @@ define('GeolocationView',[
     var GeolocationView = Backbone.View.extend({
 
       events: {
-        "click #map-button-search":"userLocationInput"
+        "click #map-button-search":"userLocationInput",
+        "click #screen-switch-button": "screenSwitch"
       },
 
       initialize: function(data: any): void {
@@ -21,6 +22,20 @@ define('GeolocationView',[
         this.html = GeolocationViewTemplate();
         $(this.el).html(this.html);
         this.model.on("change:latlng", this.modelLocationLoaded.bind(this))
+      },
+
+      screenSwitch: function(e: Event): void {
+        let request = $(e.target).attr('data-url');
+
+        if(request === 'full-screen-request'){
+          $(e.target).html("Revert");
+          $(e.target).attr('data-url', 'minimize-screen-request');
+        } else {
+          $(e.target).html("Full Screen");
+          $(e.target).attr('data-url', 'full-screen-request');
+        }
+
+        EventMediator.emit(request, request);
       },
 
       userLocationInput: function(e: Event): void{

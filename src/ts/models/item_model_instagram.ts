@@ -20,7 +20,7 @@ define('ItemModelInstagram',[
       },
 
       getLink: function(): string{
-        return this.get('node').thumbnail_src;
+        return this.get('thumbnail_src');
       },
 
   });

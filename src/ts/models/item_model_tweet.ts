@@ -19,7 +19,7 @@ define('ItemModelTweet',[
       },
 
       getLink: function(): string{
-        let username: string = this.get('user').screen_name;
+        let username: string = this.get('username');
         let id_str: string= this.get('id_str');
         let link: string = `https://twitter.com/${username}/status/${id_str}`;
         return link;

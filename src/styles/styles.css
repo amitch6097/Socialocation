@@ -55,6 +55,17 @@ button {
   display: flex;
   flex-direction: row;
 }
+#app-main #home-view .scroll-holder-items {
+  top: 80px;
+  z-index: 1;
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  overflow: scroll;
+  justify-content: space-around;
+}
 #app-main #home-view #map-options {
   position: absolute;
   z-index: 0;

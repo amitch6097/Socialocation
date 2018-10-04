@@ -1,6 +1,5 @@
 # Socialocation
-Social Media Viewer by Andrew Mitchell @ 2020 Spaces
-Heroku Site https://powerful-bayou-69488.herokuapp.com/
+Social Media Viewer by Andrew Mitchell @ 2020 Spaces: https://powerful-bayou-69488.herokuapp.com/
 
 ## Introduction
 An introductory onboarding app, created using the primary stack of 2020, including:

@@ -1,0 +1,23 @@
+{
+  "name": "requirejs-tpl-bower",
+  "version": "0.1.0",
+  "description": "AMD Template Plugin compatible with bower",
+  "main": "tpl.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/nnance/requirejs-tpl.git"
+  },
+  "keywords": [
+    "Backbone",
+    "requirejs",
+    "bower"
+  ],
+  "author": "Nick Nance",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nnance/require-js/issues"
+  },
+  "homepage": "https://github.com/nnance/require-js",
+  "dependencies": {},
+  "devDependencies": {}
+}

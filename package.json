@@ -8,8 +8,11 @@
   },
   "scripts": {
     "start": "node build/server.js",
-    "start-src" : "trap 'kill %1; kill %2' SIGINT && node src/server.js & grunt",
     "build": "grunt build",
+
+    "start-src" : "trap 'kill %1; kill %2' SIGINT && node src/server.js & grunt",
+    "build-src": "grunt build-src",
+
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Andrew Mitchell",

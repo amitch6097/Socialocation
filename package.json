@@ -7,8 +7,8 @@
     "node": "8.11.4"
   },
   "scripts": {
-    "start": "node src/server.js",
-    "start-src" : "node src/server.js",
+    "start": "node build/server.js",
+    "start-src" : "trap 'kill %1; kill %2' SIGINT && node src/server.js & grunt",
     "build": "grunt build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

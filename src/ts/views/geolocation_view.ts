@@ -24,6 +24,12 @@ define('GeolocationView',[
         this.model.on("change:latlng", this.modelLocationLoaded.bind(this))
       },
 
+      ForceMinimizedView: function(): void{
+        $('#screen-switch-button').html("Full Screen");
+        $('#screen-switch-button').attr('data-url', 'full-screen-request');
+        EventMediator.emit('minimize-screen-request', 'minimize-screen-request');
+      },
+
       screenSwitch: function(e: Event): void {
         let request = $(e.target).attr('data-url');
 
@@ -37,6 +43,7 @@ define('GeolocationView',[
 
         EventMediator.emit(request, request);
       },
+
 
       userLocationInput: function(e: Event): void{
         let input: string | undefined = $('#map-search-text').val() as string;

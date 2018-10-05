@@ -1,0 +1,230 @@
+@twitter-color: #0e83cd;
+@see-through-grey: rgba(0, 0, 0, .5);
+
+.show-button, .start-button{
+  padding: 10px;
+  border: 0px solid white !important;
+}
+
+#panel-twitter{
+  left:0;
+  background-color: rgba(71,160,234, 0.7);
+
+  .show-button:hover{
+    color: @twitter-color;
+    background: #fff;
+  }
+  .start-button:hover{
+    color: @twitter-color;
+    background: #fff;
+  }
+}
+
+#panel-instagram{
+  right:0;
+  background-color: @see-through-grey;
+
+  .show-button:hover{
+    color: @see-through-grey;
+    background: #fff;
+  }
+
+  .start-button:hover{
+    color: @see-through-grey;
+    background: #fff;
+  }
+}
+
+.panel {
+  height: 95%;
+  width: 330px;
+  background-color: black;
+  border-radius: 10px;
+  margin:20px;
+  top: 0;
+  position: absolute;
+  z-index: 1;
+
+  .hide-button {
+    border-radius: 5px 0px 0px 0px;
+  }
+
+  .pause-button {
+    border-radius: 0px 5px 0px 0px;
+  }
+
+  .hide-button, .pause-button{
+    padding: 10px;
+    border-color: 0px solid rgba(0,0,0,0);
+    border-top: 0px;
+    border-right: 0px;
+    color: #fff;
+    width: 50%;
+  }
+  .hide-button {
+    border-left: 0px;
+  }
+
+  #panel-instagram-title{
+    button:hover, button:hover {
+        color: @see-through-grey;
+        background: #fff;
+    }
+  }
+
+  #panel-twitter-title{
+    button:hover, button:hover {
+        color: @twitter-color;
+        background: #fff;
+    }
+  }
+
+  .panel-title{
+    position: relative;
+    z-index: 2;
+    padding-bottom: 10px;
+
+    #twitter-search{
+      width: 100%;
+      text-align: center;
+      display: block;
+
+      #tweet-search-text {
+        width: 60%;
+        border: none;
+        margin-top: 8px;
+        padding: 10px;
+        margin-right:0px;
+        font-size: 17px;
+        background-color: #fff;
+        border: 1px solid #d4dada;
+        border-radius: 3px;
+        box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+
+      }
+
+      button:active {
+        background-color: #f6f9fc;
+        transform: translateY(1px);
+        box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+      }
+
+      #tweet-search-submit {
+        color: black;
+        margin: 0;
+        border: 1px solid #d4dada;
+        box-sizing: border-box;
+        outline: none;
+        white-space: nowrap;
+        height: 40px;
+        line-height: 40px;
+        box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+        background: #fff;
+        border-radius: 4px;
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        text-decoration: none;
+        transition: all 0.15s ease;
+      }
+    }
+    #instagrams-options{
+      text-align: center;
+      // width: 100%;
+
+       #instagram-authorization {
+          // width: 100%;
+          border: 1px solid white;
+
+          padding: 5px 40px 5px 40px;
+          color: white;
+          text-decoration: none;
+
+
+          font-family: inherit;
+          font-size: inherit;
+          background: none;
+          cursor: pointer;
+          display: inline-block;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+          // font-weight: 700;
+          outline: none;
+          // position: relative;
+          -webkit-transition: all 0.3s;
+          -moz-transition: all 0.3s;
+          transition: all 0.3s;
+
+        }
+
+        #instagram-authorization:hover{
+          color: @see-through-grey;
+          background: #fff;
+        }
+    }
+
+    .social-icon{
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+
+  #panel-twitter-items{
+    background-color: rgba(0, 0, 0, 0);
+
+    .tweet-container{
+      margin-bottom:20px;
+
+      twitterwidget {
+        background-color: white;
+        cursor: not-allowed !important;
+        margin: 0px !important;
+        border-top: 0px !important;
+        border-bottom: 0px !important;
+        border-right: 0px !important;
+
+        border: 1px solid white;
+
+        border-radius: 0px 0px 5px 5px;
+        // border: 1px solid white;
+      }
+      .button-go-to-tweet-location{
+        border-radius: 5px 5px 0px 0px;
+        color: white;
+        padding: 5px;
+      }
+
+      .button-go-to-tweet-location:hover {
+          color: @twitter-color;
+          background: #fff;
+      }
+    }
+    .tweet-container:hover{
+      margin-left: 10px;
+      box-shadow: -10px 10px 10px 0 rgba(0, 0, 0, 0.2);
+    }
+    .tweet-container-selected{
+      margin-left: 10px;
+      box-shadow: -10px 10px 10px 0 rgba(0, 0, 0, 0.2);
+    }
+    .button-go-to-tweet-location{
+      width: 300px;
+    }
+  }
+
+  #panel-instagram-items{
+    display: grid;
+    .instagram-container:hover{
+      margin-left: 10px;
+      box-shadow: -10px 10px 10px 0 rgba(0, 0, 0, 0.2);
+    }
+  }
+
+  .panel-items {
+    padding: 10px;
+    position: relative;
+    height: calc(80% - 50px);
+    overflow: scroll;
+  }
+}

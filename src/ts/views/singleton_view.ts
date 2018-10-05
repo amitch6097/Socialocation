@@ -1,23 +1,23 @@
-define('SingletonView',[
-  'backbone'
-  ],
-  function(
-    Backbone
-  ){
+define('SingletonView', [
+	'backbone',
+	],
+	function(
+		Backbone,
+	) {
 
-    var SingletonView = function(obj: any){
+		const SingletonView = function(obj: any) {
 
-      var instance: any = undefined;
+			let instance: any;
 
-      var createInstance = function(params: any){
-        if(instance === undefined){
-          instance = new obj(params);
-        }
-        return instance;
-      }
+			const createInstance = function(params: any) {
+				if (instance === undefined) {
+					instance = new obj(params);
+				}
+				return instance;
+			};
 
-      return createInstance;
-    }
+			return createInstance;
+		};
 
-    return SingletonView;
+		return SingletonView;
 });

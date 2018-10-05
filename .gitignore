@@ -11,3 +11,7 @@ node_modules
 .DS_Store
 .env
 .tscache
+
+*.txt
+.eslintrc.json
+tslint.json

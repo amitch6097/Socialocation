@@ -1,31 +1,31 @@
-define('ItemModelTweet',[
-  'backbone',
-  'ItemModel',
-  ],
-  function(
-    Backbone, ItemModel
-  ){
+define('ItemModelTweet', [
+	'backbone',
+	'ItemModel',
+	],
+	function(
+		Backbone, ItemModel,
+	) {
 
-  var ItemModelTweet = ItemModel.extend({
+	const ItemModelTweet = ItemModel.extend({
 
-      defaults:{
-        'modelType': "twitter",
-        'selected': false,
-        'visible': false
-      },
+			defaults: {
+				modelType: "twitter",
+				selected: false,
+				visible: false,
+			},
 
-      initialize: function (data: any) {
-        this.id_str = data.id_str;
-      },
+			initialize(data: any) {
+				this.id_str = data.id_str;
+			},
 
-      getLink: function(): string{
-        let username: string = this.get('username');
-        let id_str: string= this.get('id_str');
-        let link: string = `https://twitter.com/${username}/status/${id_str}`;
-        return link;
-      }
-  });
+			getLink(): string {
+				const username: string = this.get('username');
+				const id_str: string = this.get('id_str');
+				const link: string = `https://twitter.com/${username}/status/${id_str}`;
+				return link;
+			},
+	});
 
-  return ItemModelTweet;
+	return ItemModelTweet;
 
 });

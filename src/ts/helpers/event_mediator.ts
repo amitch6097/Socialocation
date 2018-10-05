@@ -1,49 +1,49 @@
-define('EventMediator',[
-  'backbone',
-  ],
-  function(
-    Backbone
-  ){
+define('EventMediator', [
+	'backbone',
+	],
+	function(
+		Backbone,
+	) {
 
-    var EventMediator = function(){
+		const EventMediator = function() {
 
-      var events = {
-        'twitter-clear':[],
-        'collection-locations-loaded':[],
-        'map-center-request':[],
-        'item-hover-request':[],
-        'map-model-assign-locations':[],
-        'map-bounds-changed':[],
-        'map-clear-all':[],
-        'full-screen-request':[],
-        'minimize-screen-request':[],
-        'panel-change':[],
-      };
+			const events = {
+				'twitter-clear': [],
+				'collection-locations-loaded': [],
+				'map-center-request': [],
+				'item-hover-request': [],
+				'map-model-assign-locations': [],
+				'map-bounds-changed': [],
+				'map-clear-all': [],
+				'full-screen-request': [],
+				'minimize-screen-request': [],
+				'panel-change': [],
+			};
 
-      var listen = function(event, callback, obj){
-        if(!events[event]) events[event] = [];
-        if(events[event] === undefined){
-          throw "Event Not Recognized: " + event;
-        }
-        events[event].push({callback: callback, obj:obj});
-        return this;
-      };
+			const listen = function(event, callback, obj) {
+				if (!events[event]) { events[event] = []; }
+				if (events[event] === undefined) {
+					throw new Error("Event Not Recognized: " + event);
+				}
+				events[event].push({callback, obj});
+				return this;
+			};
 
-      var emit = function(event, data){
-        if(!events[event]) return false;
-        events[event].forEach((subscription) => {
-          if(subscription.callback === undefined) return;
-          subscription.callback.apply(subscription.obj, [data])
-        });
-        return this;
-      };
+			const emit = function(event, data) {
+				if (!events[event]) { return false; }
+				events[event].forEach((subscription) => {
+					if (subscription.callback === undefined) { return; }
+					subscription.callback.apply(subscription.obj, [data]);
+				});
+				return this;
+			};
 
-      return {
-        listen: listen,
-        emit: emit
-      };
+			return {
+				listen,
+				emit,
+			};
 
-    }();
+		}();
 
-    return EventMediator;
+		return EventMediator;
 });

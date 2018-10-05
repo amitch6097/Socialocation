@@ -1,29 +1,29 @@
 /// <reference path="../../../types/index.d.ts" />
 
-define('ScrollPopupModel',[
-  'backbone',
-  'gmaps'
-  ],
-  function(
-    Backbone, gmaps
-  ){
+define('ScrollPopupModel', [
+	'backbone',
+	'gmaps',
+	],
+	function(
+		Backbone, gmaps,
+	) {
 
-  var ScrollPopupModel = Backbone.Model.extend({
+	const ScrollPopupModel = Backbone.Model.extend({
 
-      defaults:{
-        'markers': [],
-      },
+			defaults: {
+				markers: [],
+			},
 
-      populate: function(cluster: App.MarkerClusterer): void{
-        this.set(this.defaults, {silent: true});
-        const markers: App.Marker[] = cluster.getMarkers();
-        this.set({
-          'markers': markers,
-        });
-      },
+			populate(cluster: App.MarkerClusterer): void {
+				this.set(this.defaults, {silent: true});
+				const markers: App.Marker[] = cluster.getMarkers();
+				this.set({
+					markers,
+				});
+			},
 
-  });
+	});
 
-  return ScrollPopupModel;
+	return ScrollPopupModel;
 
 });

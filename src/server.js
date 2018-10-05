@@ -8,12 +8,12 @@ var ig = require('instagram-node').instagram();
 var request = require("request");
 
 var T = new Twit({
-  consumer_key:         process.env.TWITTER_CONSUMER_KEY,
-  consumer_secret:      process.env.TWITTER_CONSUMER_SECRET,
-  access_token:         process.env.TWITTER_ACCESS_TOKEN,
-  access_token_secret:  process.env.TWITTER_ACCESS_TOKEN_SECRET,
-  timeout_ms:           60*1000,  // optional HTTP request timeout to apply to all requests.
-  strictSSL:            true,     // optional - requires SSL certificates to be valid.
+  consumer_key: process.env.TWITTER_CONSUMER_KEY,
+  consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
+  access_token: process.env.TWITTER_ACCESS_TOKEN,
+  access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET,
+  timeout_ms: 60 * 1000, // optional HTTP request timeout to apply to all requests.
+  strictSSL: true, // optional - requires SSL certificates to be valid.
 });
 
 ig.use({
@@ -25,11 +25,12 @@ var redirect_uri = process.env.INSTAGRAM_REDIRECT_URI;
 var access_token = process.env.INSTAGRAM_ACCESS_TOKEN;
 var timeout = false;
 
-
-
 exports.authorize_user = function(req, res) {
   console.log("Authorizing ...")
-  res.redirect(ig.get_authorization_url(redirect_uri, { scope: ['public_content'], state: 'a state' }));
+  res.redirect(ig.get_authorization_url(redirect_uri, {
+    scope: ['public_content'],
+    state: 'a state'
+  }));
 };
 
 exports.handleauth = function(req, res) {
@@ -52,18 +53,18 @@ app.get('/handleauth', exports.handleauth);
 
 app.use(express.static(__dirname));
 
-app.get('/', function (req, res, next) {
-  res.sendFile(path.join(__dirname+'/index.html'));
+app.get('/', function(req, res, next) {
+  res.sendFile(path.join(__dirname + '/index.html'));
 });
 
-app.get('/api/instagram', function (req, res) {
+app.get('/api/instagram', function(req, res) {
   let query = req.query;
   let lat = query.lat;
   let lng = query.lng;
 
   console.log(`getting instagram location id for ${lat}, ${lng}...`);
 
-  var sendDataBack = function(data){
+  var sendDataBack = function(data) {
     res.send(data);
   }
 
@@ -72,22 +73,26 @@ app.get('/api/instagram', function (req, res) {
     request({
       method: 'GET',
       url: 'https://api.instagram.com/v1/locations/search',
-      qs:{
+      qs: {
         lat: lat,
         lng: lng,
         access_token: access_token
       },
-      headers:{
+      headers: {
         'Postman-Token': '68958031-0dd5-47a0-bf4e-fa4be61f6936',
         'Cache-Control': 'no-cache',
         Authorization: 'OAuth oauth_consumer_key=\\"91a2375259584d71b13334976dc499f3\\",oauth_signature_method=\\"HMAC-SHA1\\",oauth_timestamp=\\"1537976685\\",oauth_nonce=\\"pMKyFM4qk4U\\",oauth_version=\\"1.0\\",oauth_signature=\\"h9EUYXScC80Pa86G55YPWP0lp4s%3D\\"'
       }
-     }, function (error, response, body) {
+    }, function(error, response, body) {
       if (error) throw new Error(error);
       body = JSON.parse(body);
-      if(!body.data) return;
+      if (!body.data) return;
       let locations = body.data.map((dataPoint) => {
-          return { id:  dataPoint.id, lat: dataPoint.latitude, lng: dataPoint.longitude };
+        return {
+          id: dataPoint.id,
+          lat: dataPoint.latitude,
+          lng: dataPoint.longitude
+        };
       });
       let itemsProcessed = 0;
       let instagrams = [];
@@ -98,40 +103,42 @@ app.get('/api/instagram', function (req, res) {
           request({
             method: 'GET',
             url: `https://www.instagram.com/explore/locations/${location.id}/`,
-            qs: { __a: '1' },
-            headers:{
+            qs: {
+              __a: '1'
+            },
+            headers: {
               'Postman-Token': 'c0a3a8a1-9913-4d4d-baa6-99ed98bdd408',
               'Cache-Control': 'no-cache'
             }
-          }, function (error, response, body) {
-            if (error){
+          }, function(error, response, body) {
+            if (error) {
               itemsProcessed++;
-              if(itemsProcessed === locations.length){
+              if (itemsProcessed === locations.length) {
                 sendDataBack(instagrams)
               }
             }
-            try{
+            try {
               body = JSON.parse(body);
-            } catch(err){
+            } catch (err) {
               itemsProcessed++;
-              if(itemsProcessed === locations.length){
+              if (itemsProcessed === locations.length) {
                 sendDataBack(instagrams)
               }
             }
-            if(
+            if (
               body &&
               body.graphql &&
               body.graphql.location &&
               body.graphql.location.edge_location_to_top_posts &&
               body.graphql.location.edge_location_to_top_posts.edges
-            ){
+            ) {
               console.log("... has top posts! ")
 
               let edges = body.graphql.location.edge_location_to_top_posts.edges;
               let lat = locations[index].lat;
               let lng = locations[index].lng;
 
-              for(edge of edges){
+              for (edge of edges) {
                 edge['lat'] = lat;
                 edge['lng'] = lng;
                 edge['id_str'] = edge.node.id;
@@ -141,20 +148,20 @@ app.get('/api/instagram', function (req, res) {
               }
             }
             itemsProcessed++;
-            if(itemsProcessed === locations.length){
+            if (itemsProcessed === locations.length) {
               sendDataBack(instagrams)
             }
           });
-        } catch(err){
+        } catch (err) {
           console.log("second requestion error")
           itemsProcessed++;
-          if(itemsProcessed === locations.length){
+          if (itemsProcessed === locations.length) {
             sendDataBack(instagrams)
           }
         }
       });
     });
-  } catch(err){
+  } catch (err) {
     console.log("initial requestion error", err)
   }
 
@@ -162,48 +169,56 @@ app.get('/api/instagram', function (req, res) {
 
 
 
-app.get('/api/tweets', function (req, res) {
+app.get('/api/tweets', function(req, res) {
 
   T.get('search/tweets',
     req.query,
     function(err, data, response) {
 
       let statuses = [];
-      if(!data.statuses) {
+      if (!data.statuses) {
         res.send([]);
         return;
       }
-      for(let status of data.statuses){
+      for (let status of data.statuses) {
         status = getLatLng(status);
-        if(status.latlng !== null){
+        if (status.latlng !== null) {
           statuses.push(status)
         }
       }
       res.send(statuses);
-  });
+    });
 
-  var getLatLng = function(status){
-    let newStatus = {latlng: null}
+  var getLatLng = function(status) {
+    let newStatus = {
+      latlng: null
+    }
     // status.latlng = null;
 
-    if(status.geo){
+    if (status.geo) {
       let coords = status.geo.coordinates;
-      newStatus.latlng = {lat: coords[0], lng: coords[1]};
+      newStatus.latlng = {
+        lat: coords[0],
+        lng: coords[1]
+      };
     }
 
-    if(newStatus.latlng === null &&
+    if (newStatus.latlng === null &&
       status.place &&
       status.place.bounding_box &&
       status.place.bounding_box.coordinates &&
       status.place.bounding_box.coordinates[0] &&
       status.place.bounding_box.coordinates[0][0]
-    ){
+    ) {
       let coords = status.place.bounding_box.coordinates[0][0];
-      newStatus.latlng = {lat: coords[1], lng: coords[0]};
+      newStatus.latlng = {
+        lat: coords[1],
+        lng: coords[0]
+      };
     }
 
     newStatus['id_str'] = status.id_str;
-    if(status.user && status.user.screen_name){
+    if (status.user && status.user.screen_name) {
       newStatus['username'] = status.user.screen_name;
     }
 
@@ -211,13 +226,15 @@ app.get('/api/tweets', function (req, res) {
   }
 });
 
-app.get('/api/san', function (req, res) {
-  var sanFrancisco = [ '-122.75', '36.8', '-121.75', '37.8' ]
-  var grandRapids = [ '-85.751534','42.88364','-85.568649','43.029053'];
+app.get('/api/san', function(req, res) {
+  var sanFrancisco = ['-122.75', '36.8', '-121.75', '37.8']
+  var grandRapids = ['-85.751534', '42.88364', '-85.568649', '43.029053'];
 
-  var stream = T.stream('statuses/filter', { locations: grandRapids })
+  var stream = T.stream('statuses/filter', {
+    locations: grandRapids
+  })
 
-  stream.on('tweet', function (tweet) {
+  stream.on('tweet', function(tweet) {
     console.log(tweet)
   })
 });

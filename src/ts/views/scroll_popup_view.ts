@@ -70,7 +70,7 @@ define("ScrollPopupView", [
 					const item = new viewObject({
 						el: this.$el,
 						model: marker.model,
-						randomWidth,
+						width: randomWidth,
 						id,
 					});
 

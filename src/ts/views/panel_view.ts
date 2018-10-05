@@ -1,131 +1,125 @@
-define('PanelView',[
-  'backbone',
-  'PanelHeadingView',
-  'EventMediator',
-  'ScrollView',
-  'tpl!views/templates/panel_view.tpl'
-  ],
-  function(
-    Backbone, PanelHeadingView, EventMediator, ScrollView, PanelViewTemplate
-  ){
+define('PanelView', [
+	'backbone',
+	'PanelHeadingView',
+	'EventMediator',
+	'ScrollView',
+	'tpl!views/templates/panel_view.tpl',
+	],
+	function(
+		Backbone, PanelHeadingView, EventMediator, ScrollView, PanelViewTemplate,
+	) {
 
-    var PanelView = Backbone.View.extend({
+		const PanelView = Backbone.View.extend({
 
-      initialize: function(options: any): void {
-        const titleId: string = `panel-${options.uniqueName}-title`;
-        const itemsId: string = `panel-${options.uniqueName}-items`;
-        this.unique = options.uniqueName;
-        this.inView = true;
+			initialize(options: any): void {
+				const titleId: string = `panel-${options.uniqueName}-title`;
+				const itemsId: string = `panel-${options.uniqueName}-items`;
+				this.unique = options.uniqueName;
+				this.inView = true;
+				this.template = PanelViewTemplate;
+				this.$el.css({visibility: "visible"});
+				this.$el.html(this.template({
+					titleId,
+					itemsId,
+				}));
+				this.headingView = new PanelHeadingView({
+					el: `#${titleId}`,
+					heading: options.heading,
+					uniqueName: options.uniqueName,
+				});
+				const ScrollViewInit = new ScrollView(options.subView);
+				this.scrollView = new ScrollViewInit({el: `#${itemsId}`, collection: this.collection});
+				this.collection.on("change:newElements", this.scrollView.render.bind(this.scrollView));
+				this.collection.on("change:scrollTo", this.scrollTo.bind(this));
+				EventMediator.listen('full-screen-request', this.hide, this);
+				EventMediator.listen('minimize-screen-request', this.show, this);
+				EventMediator.listen('map-clear-all', this.clear, this);
+				EventMediator.listen('map-bounds-changed', this.collection.mapBoundsChange, this.collection);
+				EventMediator.listen('map-cluster-selected', this.collection.mapClusterSelected, this.collection);
+			},
 
-        this.template = PanelViewTemplate;
-        this.$el.css({visibility: "visible"});
-        this.$el.html(this.template({
-          titleId:titleId,
-          itemsId:itemsId
-        }));
+			scrollTo(): void {
+				const scrollToModel: App.ItemModel = this.collection.attributeGet('scrollTo');
+				if (scrollToModel === undefined ||
+					this.uniqueName !== scrollToModel.get('modelType')
+				) { return; }
 
-        this.headingView = new PanelHeadingView({
-          el: `#${titleId}`,
-          heading: options.heading,
-          uniqueName: options.uniqueName
-        });
+				$(`#panel-${this.uniqueName}-items`).animate({
+					scrollTop: $(`#panel-${this.uniqueName}-items`).scrollTop() +
+					$(`#${this.uniqueName}-${scrollToModel.id_str}`).position().top,
+				}, 1000);
+			},
 
-        const ScrollViewInit = new ScrollView(options.subView);
-        this.scrollView = new ScrollViewInit({el: `#${itemsId}`, collection: this.collection});
+			render(): void {
+				this.scrollView.render();
+				return this;
+			},
 
-        this.collection.on("change:newElements", this.scrollView.render.bind(this.scrollView));
-        this.collection.on("change:scrollTo", this.scrollTo.bind(this));
+			clear(): void {
+				EventMediator.emit('panel-change');
+				this.scrollView.clear();
+				this.collection.clear();
+			},
 
-        EventMediator.listen('full-screen-request', this.hide, this);
-        EventMediator.listen('minimize-screen-request', this.show, this);
+			show(e: Event): void {
+				if (this.inView) { return; }
+				this.inView = true;
+				this.$el.attr('data-url', 'show');
 
-        EventMediator.listen('map-clear-all', this.clear, this);
-        EventMediator.listen('map-bounds-changed', this.collection.mapBoundsChange, this.collection);
-        EventMediator.listen('map-cluster-selected', this.collection.mapClusterSelected, this.collection);
-      },
+				this.showPanel({hide: false});
+			},
 
-      scrollTo: function() : void{
-        const scrollToModel: App.ItemModel = this.collection.attributeGet('scrollTo');
+			start(e: Event) {
+				if (this.inView) { return; }
+				this.inView = true;
+				this.$el.attr('data-url', 'start');
 
-        if(scrollToModel === undefined ||
-          this.uniqueName !== scrollToModel.get('modelType')
-        ) return;
+				this.showPanel({pause: false});
+			},
 
-        $(`#panel-${this.uniqueName}-items`).animate({
-          scrollTop: $(`#panel-${this.uniqueName}-items`).scrollTop() + $(`#${this.uniqueName}-${scrollToModel.id_str}`).position().top
-        }, 1000);
-      },
+			pause(e: Event) {
+				if (!this.inView) { return; }
+				this.$el.attr('data-url', 'pause');
 
-      render: function(): void{
-        this.scrollView.render();
-        return this;
-      },
+				this.inView = false;
+				const uniqueName: string = this.unique;
+				this.hidePanel(
+					`<button class="start-button" id="${uniqueName}-start" >Start</button>`,
+					{pause: true},
+				);
+			},
 
-      clear: function(): void{
-        EventMediator.emit('panel-change');
-        this.scrollView.clear();
-        this.collection.clear();
-      },
+			hide(e: Event) {
+				if (!this.inView) { return; }
+				this.$el.attr('data-url', 'hide');
 
-      show: function(e: Event): void{
-        if(this.inView) return;
-        this.inView = true;
-        this.$el.attr('data-url', 'show');
+				this.inView = false;
+				const uniqueName: string = this.unique;
+				this.hidePanel(
+					`<button class="show-button" id="${uniqueName}-show" >Show</button>`,
+					{hide: true},
+				);
+			},
 
-        this.showPanel({hide:false});
-      },
+			changeView(html: string, css: object, animation: App.PanelAnimation, callback: any, context: any, data: any) {
+				EventMediator.emit('panel-change');
+				this.$el.animate(animation.begin, 200, () => {
+					this.$el.html(html);
+					this.$el.css(css);
+					this.$el.animate(animation.end, 200, () => {
+						if (callback !== undefined) {
+							callback.call(context, data);
+						}
+					});
+				});
+			},
 
-      start: function(e: Event){
-        if(this.inView) return;
-        this.inView = true;
-        this.$el.attr('data-url', 'start');
+			empty(): void {
+				this.$el.empty();
+				this.$el.css({visibility: "hidden"});
+			},
 
-        this.showPanel({pause:false});
-      },
+		});
 
-      pause: function(e: Event){
-        if(!this.inView) return;
-        this.$el.attr('data-url', 'pause');
-
-        this.inView = false;
-        const uniqueName:string = this.unique;
-        this.hidePanel(
-          `<button class="start-button" id="${uniqueName}-start" >Start</button>`,
-          {pause:true}
-        );
-      },
-
-      hide: function(e: Event){
-        if(!this.inView) return;
-        this.$el.attr('data-url', 'hide');
-
-        this.inView = false;
-        const uniqueName:string = this.unique;
-        this.hidePanel(
-          `<button class="show-button" id="${uniqueName}-show" >Show</button>`,
-          {hide:true}
-        );
-      },
-
-      changeView: function(html: string, css: object, animation: App.PanelAnimation, callback: any, context: any, data: any){
-        EventMediator.emit('panel-change');
-        this.$el.animate(animation.begin, 200, ()=>{
-          this.$el.html(html);
-          this.$el.css(css)
-          this.$el.animate(animation.end, 200, () => {
-            if(callback !== undefined){
-              callback.call(context, data);
-            }
-          });
-        });
-      },
-
-      empty: function():void{
-        this.$el.empty();
-        this.$el.css({visibility: "hidden"});
-      }
-
-    });
-
-    return PanelView;
+		return PanelView;
 });

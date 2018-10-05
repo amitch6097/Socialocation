@@ -1,35 +1,34 @@
-define('ScrollView',[
-  'backbone'
-  ],
-  function(
-    Backbone
-  ){
-    var initScrollView = function(viewObj){
+define('ScrollView', [
+	'backbone',
+	],
+	function(
+		Backbone,
+	) {
+		const initScrollView = function(viewObj) {
 
-      var ScrollView = Backbone.View.extend({
+			const ScrollView = Backbone.View.extend({
 
-        initialize: function(data: any): void {
-          this.collection = data.collection;
-          this.el = data.el;
-        },
+				initialize(data: any): void {
+					this.collection = data.collection;
+					this.el = data.el;
+				},
 
-        clear: function(): void{
-          $(this.el).empty();
-        },
+				clear(): void {
+					$(this.el).empty();
+				},
+				render(): void {
+					this.collection.each((model: App.ItemModel) => {
+						const view = new viewObj({
+							el: this.el,
+							model,
+						});
+					});
+					return this;
+				},
+			});
 
-        render: function(): void {
-          this.collection.each((model: App.ItemModel) => {
-            var view = new viewObj({
-              el: this.el,
-              model: model,
-            });
-          });
-          return this;
-        }
-      });
+			return ScrollView;
+		};
 
-      return ScrollView;
-    }
-
-    return initScrollView;
+		return initScrollView;
 });

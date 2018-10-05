@@ -1,0 +1,43 @@
+{
+    "defaultSeverity": "error",
+    "extends": [
+        "tslint:recommended"
+    ],
+    "jsRules": {},
+    "rules": {
+        "only-arrow-functions":false,
+        "no-trailing-whitespace": true,
+        "no-irregular-whitespace": true,
+        "quotemark": false,
+        "indent": [true, "tabs", 2],
+        "object-literal-sort-keys": false,
+        "ordered-imports": false,
+        "member-ordering": false,
+        "one-line": false,
+        "interface-name": false,
+        "variable-name": false,
+        "max-classes-per-file": false,
+        "no-unused-expression": false,
+        "no-empty": false,
+        "one-variable-per-declaration": false,
+        "no-consecutive-blank-lines": true,
+        "no-string-literal": false,
+        "no-bitwise": false,
+        "no-reference": false,
+        "no-console": false,
+        "whitespace": [
+            true,
+            "check-branch",
+            "check-decl",
+            "check-operator",
+            "check-module",
+            "check-separator",
+            "check-rest-spread",
+            "check-type",
+            "check-typecast",
+            "check-type-operator",
+            "check-preblock"
+        ]
+    },
+    "rulesDirectory": []
+}

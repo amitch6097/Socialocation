@@ -1,34 +1,34 @@
-define('ItemModel',[
-  'backbone'
-  ],
-  function(
-    Backbone
-  ){
+define('ItemModel', [
+	'backbone',
+	],
+	function(
+		Backbone,
+	) {
 
-  var ItemModel = Backbone.Model.extend({
-    
-      show: function() : void {
-        this.changeVisible(true);
-        this.updateView();
-      },
+	const ItemModel = Backbone.Model.extend({
 
-      hide: function() : void {
-        this.changeVisible(false);
-        this.updateView();
-      },
+			show(): void {
+				this.changeVisible(true);
+				this.updateView();
+			},
 
-      changeVisible: function(value: boolean): void {
-        this.set('visible', value);
-      },
-      updateView: function(): void {
-        this.trigger('change:update');
-      },
+			hide(): void {
+				this.changeVisible(false);
+				this.updateView();
+			},
 
-      getLink: function(): string{
-        throw "NEED TO IMPLMENT GET LINK";
-      }
-  });
+			changeVisible(value: boolean): void {
+				this.set('visible', value);
+			},
+			updateView(): void {
+				this.trigger('change:update');
+			},
 
-  return ItemModel;
+			getLink(): string {
+				throw new Error("NEED TO IMPLMENT GET LINK");
+			},
+	});
+
+	return ItemModel;
 
 });

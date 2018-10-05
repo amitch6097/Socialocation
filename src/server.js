@@ -206,7 +206,7 @@ app.get('/api/tweets', function (req, res) {
     if(status.user && status.user.screen_name){
       newStatus['username'] = status.user.screen_name;
     }
-    
+
     return newStatus;
   }
 });

@@ -1,29 +1,28 @@
-define('PanelHeadingView',[
-  'backbone',
-  'tpl!views/templates/panel_heading_view.tpl'
-  ],
-  function(
-    Backbone, PanelHeadingViewTemplate
-  ){
+define('PanelHeadingView', [
+	'backbone',
+	'tpl!views/templates/panel_heading_view.tpl',
+	],
+	function(
+		Backbone, PanelHeadingViewTemplate,
+	) {
 
-    var PanelHeadingView = Backbone.View.extend({
+		const PanelHeadingView = Backbone.View.extend({
 
-      initialize: function(data: any): void {
-        this.el = data.el;
+			initialize(data: any): void {
+				this.el = data.el;
 
-        this.template = PanelHeadingViewTemplate;
-        $(this.el).html(this.template({heading: data.heading, uniqueName: data.uniqueName}));
-      },
+				this.template = PanelHeadingViewTemplate;
+				$(this.el).html(this.template({heading: data.heading, uniqueName: data.uniqueName}));
+			},
 
-      render: function(): void{
-        return this;
-      }
+			render(): void {
+				return this;
+			},
 
-    });
+		});
 
-    return PanelHeadingView;
+		return PanelHeadingView;
 });
-
 
 // <h1> Tweets </h1>
 // <div id="twitter-search">

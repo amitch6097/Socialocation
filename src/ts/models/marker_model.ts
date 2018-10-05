@@ -1,26 +1,25 @@
 /// <reference path="../../../types/index.d.ts" />
 
-define('MarkerModel',[
-  'gmaps',
-  ],
-  function(
-    gmaps
-  ){
+define('MarkerModel', [
+	'gmaps',
+	],
+	function(
+		gmaps,
+	) {
 
-    var MarkerModel = function(model: App.ItemModel){
+		const MarkerModel = function(model: App.ItemModel) {
 
-      const latlng: App.LatLng = model.get('latlng');
+			const latlng: App.LatLng = model.get('latlng');
+			const marker = new google.maps.Marker({
+				position: {lat: latlng.lat, lng: latlng.lng },
+				label: model.id_str,
+			});
+			// @ts-ignore: error TS2339: Property 'model' does not exist on type 'Marker'
+			marker.model = model;
 
-      var marker = new google.maps.Marker({
-        position: {lat: latlng.lat, lng: latlng.lng },
-        label: model.id_str,
-      });
-      // @ts-ignore: error TS2339: Property 'model' does not exist on type 'Marker'
-      marker.model = model;
+			return marker;
 
-      return marker;
+		};
 
-    }
-
-    return MarkerModel;
+		return MarkerModel;
 });

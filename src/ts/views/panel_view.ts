@@ -18,6 +18,7 @@ define('PanelView',[
         this.inView = true;
 
         this.template = PanelViewTemplate;
+        this.$el.css({visibility: "visible"});
         this.$el.html(this.template({
           titleId:titleId,
           itemsId:itemsId
@@ -67,6 +68,7 @@ define('PanelView',[
       },
 
       show: function(e: Event): void{
+        if(this.inView) return;
         this.inView = true;
         this.$el.attr('data-url', 'show');
 
@@ -74,6 +76,7 @@ define('PanelView',[
       },
 
       start: function(e: Event){
+        if(this.inView) return;
         this.inView = true;
         this.$el.attr('data-url', 'start');
 
@@ -116,6 +119,11 @@ define('PanelView',[
           });
         });
       },
+
+      empty: function():void{
+        this.$el.empty();
+        this.$el.css({visibility: "hidden"});
+      }
 
     });
 

@@ -47,6 +47,14 @@ button {
   -moz-transition: all 0.3s;
   transition: all 0.3s;
 }
+@media screen and (max-width: 1250px) {
+  .panel {
+    visibility: hidden !important;
+  }
+  #screen-switch-button {
+    visibility: hidden;
+  }
+}
 #app-main {
   display: grid;
 }

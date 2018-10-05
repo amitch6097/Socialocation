@@ -69,6 +69,23 @@ define('MapView',[
         }
       },
 
+      resize: function(): void{
+        this.clusterView.empty();
+        
+        $('#map-map').css({
+          width:$( window ).width(),
+          height:$( window ).height()
+        });
+        $('#map').css({
+          width:$( window ).width(),
+          height:$( window ).height()
+        });
+
+        var currCenter = this.model.map.getCenter();
+        google.maps.event.trigger(this.model.map, 'resize');
+        this.model.map.setCenter(currCenter);
+      },
+
       clear: function(): void{
         this.model.clear();
       },
